@@ -1,0 +1,81 @@
+' vim: filetype=vb
+
+'vim_mapping
+'normal mode
+	'move
+	nmap l move_right
+	nmap h move_left
+	nmap k move_up
+	nmap j move_down
+	nmap gg gg
+	nmap G G
+	nmap w vim_w
+	nmap b vim_b
+	nmap <c-u> scroll_up
+	nmap <c-d> scroll_down
+	nmap ^ move_head
+	nmap $ move_tail
+
+	'mode_chage
+	nmap i insert_mode
+	nmap a insert_mode
+	nmap V n_v_
+	nmap v n_v
+	nmap : command_vim
+
+	'Find
+	nmap / find
+	nmap n findNext
+	nmap N findPrevious
+
+	'operator
+	nmap o insertRowDown
+	nmap O insertRowUp
+	nmap dd n_dd
+	nmap dc n_dc
+	nmap yy n_yy
+	nmap yv yank_value
+	nmap p n_p
+	nmap u n_u
+	nmap <ESC> n_ESC
+
+'visual_mode
+	vmap <ESC> v_ESC
+
+	'move
+	vmap j v_j
+	vmap k v_k
+	vmap h v_h
+	vmap l v_l
+	vmap gg v_gg
+	vmap G v_G
+	vmap w v_w
+	vmap b v_b
+	vmap <c-u> v_scroll_up
+	vmap <c-d> v_scroll_down
+	vmap ^ v_move_head
+	vmap $ v_move_tail
+	vmap a v_a
+	vmap <HOME> v_move_head
+	vmap <END> v_move_tail
+
+	'operator
+	vmap : command_vim
+	vmap y v_y
+	vmap d v_d
+	vmap D v_D_
+	vmap x v_x
+
+'line_visual_mode
+	'move
+	lvmap j v_j
+	lvmap k v_k
+	lvmap gg v_gg
+	lvmap G v_G
+
+	'operator
+	lvmap <ESC> v_ESC
+	lvmap y v_y
+	lvmap d lv_d
+	lvmap x lv_d
+
