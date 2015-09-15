@@ -17,12 +17,12 @@ Attribute VB_Exposed = False
 Private Sub UserForm_Initialize() '{{{
 	ListBox1.MultiSelect = fmMultiSelectMulti
 	' ListBox1.MultiSelect = fmMultiSelectExtended
-	' ListBox1.ListStyle = fmListStyleOption 
+	' ListBox1.ListStyle = fmListStyleOption
 	Me.ListBox1.Clear
-	For Each buf In UniteCandidatesList
-		Me.ListBox1.AddItem Split(buf, ":::")(0)
-	Next buf
-	
+	For Each Buf In UniteCandidatesList
+		Me.ListBox1.AddItem Split(Buf, ":::")(0)
+	Next Buf
+
 	TextBox1.SetFocus
 End Sub '}}}
 
@@ -33,29 +33,29 @@ Private Sub TextBox1_Change() '{{{
 	'リストボックスの内容を初期化
 	Me.ListBox1.Clear
 	'GatherCandidateで集めたリストをパターンマッチング
-	For Each buf In UniteCandidatesList
+	For Each Buf In UniteCandidatesList
 		hit = True
-		buf = Split(buf, ":::")(0)
+		Buf = Split(Buf, ":::")(0)
 		'patternに対してテストを繰り返す｡
 		For i = 0 To UBound(patternlist)
 			RE.pattern = patternlist(i)
 			'migemo version. too late
 			'Dim buf2 As String: buf2 = patternlist(i)
 			'RE.pattern = migemize(buf2) 'migemo version
-			If Not RE.test(buf) Then
+			If Not RE.test(Buf) Then
 				hit = False
 			End If
 		Next i
 		If hit Then
-			Me.ListBox1.AddItem buf
+			Me.ListBox1.AddItem Buf
 		End If
-	Next buf
+	Next Buf
 End Sub '}}}
 
 Private Sub TextBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal shift As Integer) '{{{
 	If KeyCode = 27 Then 'ESC時の挙動
 		If TextBox1.Text = "" Or Me.ListBox1.ListCount = 0 Then
-		' If TextBox1.Text = "" Then
+			' If TextBox1.Text = "" Then
 			Unload Me
 		Else
 			ListBox1.SetFocus
@@ -77,14 +77,14 @@ Private Sub ListBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal shift
 			selectCount = 0
 			Dim selected As String
 			For i = 0 To .ListCount - 1
-				If .Selected(i) = True Then
+				If .selected(i) = True Then
 					selected = selected & .List(i) & vbCrLf
 					selectCount = selectCount + 1
 				End If
 			Next i
 
 			If selectCount > 0 Then
-				selected = Left(selected, Len(selected)-2) '末尾のvbCrLfを削除
+				selected = Left(selected, Len(selected) - 2) '末尾のvbCrLfを削除
 			Else
 				selected = .List(.ListIndex)
 			End If
@@ -111,7 +111,7 @@ Private Sub ListBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal shift
 		Me.TextBox1.SetFocus
 	End If
 
-	If KeyCode = vbkeyK Then 'k
+	If KeyCode = vbKeyK Then 'k
 		SendKeys "{UP}"
 	End If
 
@@ -124,7 +124,7 @@ Private Sub ListBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal shift
 		SendKeys "{DOWN}"
 	End If
 
-	If KeyCode = vbkeyY Then 'y
+	If KeyCode = vbKeyY Then 'y
 		Me.Hide
 		With New MSForms.DataObject
 			.SetText Me.ListBox1.List(Me.ListBox1.ListIndex) '変数の値をDataObjectに格納する
@@ -133,18 +133,18 @@ Private Sub ListBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal shift
 		Unload Me
 	End If
 
-	If KeyCode = vbkeyTab Then 'tab commnad box
+	If KeyCode = vbKeyTab Or KeyCode = 186 Then 'tab or colon: commnad box
 		With Me.ListBox1
 			selectCount = 0
 			For i = 0 To .ListCount - 1
-				If .Selected(i) = True Then
+				If .selected(i) = True Then
 					unite_argument = unite_argument & .List(i) & vbCrLf
 					selectCount = selectCount + 1
 				End If
 			Next i
 
 			If selectCount > 0 Then
-				unite_argument = Left(unite_argument, Len(unite_argument)-2) '末尾のvbCrLfを削除
+				unite_argument = Left(unite_argument, Len(unite_argument) - 2) '末尾のvbCrLfを削除
 			Else
 				unite_argument = .List(.ListIndex)
 			End If
@@ -161,10 +161,10 @@ End Sub '}}}
 
 Private Sub ListBox1_DblClick(ByVal Cancel As MSForms.ReturnBoolean) '{{{
 	'リストボックスの値をダブルクリックしたときに実行するコード
-	Dim buf As String
+	Dim Buf As String
 	'リストボックスの値を変数bufに格納する
-	buf = Me.ListBox1.value
+	Buf = Me.ListBox1.Value
 	'メッセージボックスにリストボックスの値を表示する
-	MsgBox buf & "を選択しました。"
+	MsgBox Buf & "を選択しました。"
 End Sub '}}}
 

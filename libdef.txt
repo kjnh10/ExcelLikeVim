@@ -10,6 +10,7 @@ bundle ./src/register.bas
 bundle ./src/oneliner.bas
 bundle ./src/UniteInterface.frm
 bundle ./src/updater.bas
+'bundle ~/.vimxrc
 
 bundle ./src/global/FileOperation.bas
 bundle ./src/global/EditOperation.bas

@@ -3,6 +3,7 @@ Attribute VB_Name = "UniteCaller"
 Public UniteCandidatesList As Collection '
 Public unite_source As String
 Public unite_argument As String
+Public isExistPython As Boolean
 
 Public Sub unite(Optional sourceName As String = "") '{{{
 	If sourceName = "" Then
@@ -23,7 +24,7 @@ Public Sub unite(Optional sourceName As String = "") '{{{
 End Sub '}}}
 
 'mru
-Function GatherCandidates_mru(Optional isExistPython As Boolean = True) As Collection '{{{
+Function GatherCandidates_mru() As Collection '{{{
 	Dim result As New Collection
 	Dim reverseResult As New Collection
 	Set FSO = CreateObject("Scripting.FileSystemObject")

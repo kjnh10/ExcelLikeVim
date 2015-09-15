@@ -2,10 +2,13 @@ Attribute VB_Name = "FileOperation"
 'Option Explicit
 
 'File operation
-Sub w() '{{{
-    Set atwb = ActiveWorkbook
-    atwb.Save
-    'MsgBox "updated " & atwb.Path & "\" & atwb.Name
+Sub w(Optional fileName As String = "") '{{{
+	If fileName = "" Then
+		Set wb = ActiveWorkbook
+	Else
+		Set wb = Workbooks(fileName)
+	End If
+    wb.Save
 End Sub '}}}
 Sub wa() '{{{
 	For Each wb In Workbooks
@@ -56,6 +59,11 @@ Sub qa_exclamation() '{{{
         If Workbooks.count = 0 Then
                 Application.quit
         End If
+End Sub '}}}
+
+Sub wq(Optional fileName As String = "") '{{{
+	Call w(fileName)
+	Call q(fileName)
 End Sub '}}}
 
 Sub cos() '{{{

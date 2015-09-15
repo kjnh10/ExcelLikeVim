@@ -5,13 +5,13 @@ from datetime import datetime as dt
 
 def sort_mru():
     #TODO 引数でvbからもらう事にする｡
-    filename = os.environ["HOME"] + "\\Dropbox\\functional\\synced_setting_files\\Office\\Excel\\VBA2\\.cache\\mru.txt"
+    filename = os.environ["HOME"] + "\\Dropbox\\functional\\synced_setting_files\\Office\\Excel\\VBA3\\.cache\\mru.txt"
 
     buf = []
     with open(filename, "r") as f1:
         lines = f1.readlines()
         lines_sorted = sorted(lines, key=lambda line: line.decode("cp932").split(":::")[1], reverse=True)
-        lines_sorted = sorted(lines, key=lambda line: get_open_date(line), reverse=True)
+        lines_sorted = sorted(lines, key=lambda line: get_open_date(line), reverse=False)
         buf = lines_sorted
     with open(filename, "w") as f2:
         for l in buf:
