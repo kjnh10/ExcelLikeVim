@@ -25,6 +25,5 @@ bundle ./src/template/forSelection.bas
 bundle ./src/lib/copyRange.bas
 bundle ./src/lib/AdobeRead.bas
 bundle ./src/lib/xlwings.bas
-bundle ./src/lib/AllKeyAssign.bas
 bundle ./src/lib/ktHolidayName.bas
 ' bundle ./src/lib/migemo/migemo.bas

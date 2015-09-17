@@ -16,7 +16,9 @@ Function ExeStringPro(commandString As String, Optional bookName As String = "")
 
 	AWBcommandArray = commandArray
 	If bookName = "" Then
-		bookName = ActiveWorkbook.Name
+		On Error Resume Next 'for when there is no book 
+			bookName = ActiveWorkbook.Name
+		On Error Goto 0
 	End If
 	AWBcommandArray(0) = bookName & "!" & commandArray(0)
 
@@ -28,13 +30,13 @@ Function ExeStringPro(commandString As String, Optional bookName As String = "")
 		If buf(1) = 0 Then
 			Call SetVariant(ExeStringPro, buf(2))
 		Else
-			MsgBox "指定された関数" & commandString & "は存在しません。"
+			MsgBox "指定された関数" & commandString & "の実行に失敗しました｡ 関数が存在しているか､引数が不正でないか確認して下さい｡"
 		End If
 	End If
 End Function '}}}
 
 Function ExeStringPro_core(commandArray) As Variant '{{{
-	'return (result, Err.Number)
+	'return (Err.Number, result)
 	Dim buf As New Collection
 
 	Debug.Print "Start ExeStringPro_core"

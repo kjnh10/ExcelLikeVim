@@ -10,8 +10,9 @@ Public Sub InitializeApplication()'{{{
 	Call SpecialMapping
 	Call SetAppEvent
 	' IsExistPython = True 意味なし｡グローバル変数は消える｡
-	'Call read_setting(~/.vimxrc)
-	If visualmodefeature Then
+	Call read_setting(Environ("homepath") & "/.vimxrc")
+	' If visualmodefeature Then
+	If True Then
 		Call OpenRegisterBook()
 		If Workbooks.Count = 1 Then
 			Workbooks.Add
@@ -21,6 +22,36 @@ Public Sub InitializeApplication()'{{{
 End Sub'}}}
 
 Public Sub read_setting(filePath As String)'{{{
+	filePath = absPath(filePath) 
+	Open FilePath For Input As #1
+	Do Until EOF(1)
+		Line Input #1, buf
+		buf = Replace(buf,vbTab,"") 'ignore indent
+
+		If Left(buf,1) = "'" Then 'ignore comment
+			Goto NextLoop
+		End If
+
+		If buf <> "" Then
+			instruction = Split(buf, " ")(0)
+			' argument = Mid(buf, Instr(Instr(buf, " ") + 1, buf, " ") + 1) '2つ目のスペース以降を取得
+			argument_start = Instr(buf, " ")
+			If argument_start <> 0 Then
+				argument = Mid(buf, Instr(buf, " ") + 1) '1つ目のスペース以降を取得
+			End If
+			If Instr(instruction, "map") = 0 And Instr(instruction, "for") = 0 Then 'map系じゃなければそのまま実行 TODO map系もそのうち
+				Debug.Print "instruction:" & instruction & vbCrLf & "argument:" & argument
+				If argument_start = 0 Then
+					Application.Run instruction
+				Else
+					Application.Run instruction, argument
+				End If
+			End If
+		End If
+
+		NextLoop:
+	Loop
+	Close #1
 End Sub'}}}
 '------supplimental functions-------------
 Public Sub SpecialMapping()'{{{

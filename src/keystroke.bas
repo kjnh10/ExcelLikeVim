@@ -111,7 +111,7 @@ Public Sub AllKeyAssign_dummy() '{{{
     Application.OnKey "+9", "dummy"
 End Sub '}}}
 
-Public Sub AllKeyAssign_reset() '{{{
+Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "a"
     Application.OnKey "b"
     Application.OnKey "c"
@@ -479,15 +479,17 @@ Public Function SetKeyMapDic(Optional mode As String = "normal", Optional settin
 
 	Call SetKeyMapDicCore(mode) 'default_mappingÇÃì«Ç›çûÇ›
 	If settingFilePath = "" Then
-		Call SetKeyMapDicCore(mode, "C:\" & Environ("homepath") & "\mapping.txt") 'customize_mappingÇÃì«Ç›çûÇ›
+		Call SetKeyMapDicCore(mode, "C:\" & Environ("homepath") & "\.vimxrc") 'customize_mappingÇÃì«Ç›çûÇ›
 	End If
 End Function '}}}
 
 Public Function SetKeyMapDicCore(Optional mode As String = "normal", Optional settingFilePath As String = "") As Variant '{{{
 	If settingFilePath = "" Then
-		Open ThisWorkbook.path & "\data\" & "default_mapping.txt" For Input As #1
+		Open ThisWorkbook.path & "\data\" & ".vimxrc" For Input As #1
 	Else
-		Open settingFilePath For Input As #1
+		On Error Goto FileReadError
+			Open settingFilePath For Input As #1
+		On Error Goto 0
 	End If
 
 	intCount = 0
@@ -523,7 +525,9 @@ Public Function SetKeyMapDicCore(Optional mode As String = "normal", Optional se
 	Close #1
 	'MsgBox "SetKeyMapDicÇ™êVÇΩÇ…åƒÇŒÇÍÇ‹ÇµÇΩ"
 
+FileReadError:
 	isNewStroke = True 'èâä˙âª
+	Exit Function
 End Function '}}}
 
 Private Sub AssesKey()'{{{

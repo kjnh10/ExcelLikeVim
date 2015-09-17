@@ -12,6 +12,7 @@ Public Sub unite(Optional sourceName As String = "") '{{{
 
 	On Error GoTo Myerror
 		' Set UniteCandidatesList = Application.Run("GatherCandidates_" & sourceName) 'CandidateList‚Ìİ’è
+		Debug.Print sourceName
 		Set UniteCandidatesList = ExeStringPro("GatherCandidates_" & sourceName) 'CandidateList‚Ìİ’è
 	On Error GoTo 0
 	unite_source = sourceName 'source–¼‚Ìİ’è

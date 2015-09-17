@@ -41,7 +41,7 @@ Private Sub appevent_WorkbookBeforeClose(Byval wb As Workbook, Cancel As Boolean
 End Sub '}}}
 
 Private Sub appevent_SheetActivate(ByVal Sh As Object) '{{{
-	'Debug.Print "App.clsで監視中です｡SheetActivateイベントが発生しました｡"
+	Debug.Print "App.clsで監視中です｡SheetActivateイベントが発生しました｡"
 	'Debug.print sh.Name
 	Call SetKeyMapDic
 End Sub '}}}
