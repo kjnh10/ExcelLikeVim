@@ -4,7 +4,8 @@ Public myobject As New ApplicationEvent
 
 '-------main----------
 Public Sub InitializeApplication()'{{{
-On Error Goto MyError
+' On Error Goto MyError
+On Error Resume Next
 	Call SetReference
 	Call AllKeyToAssesKeyFunc
 	Call SpecialMapping
