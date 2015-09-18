@@ -27,6 +27,10 @@ End Sub '}}}
 Public Sub unite_mru() '{{{
 	Call unite("mru")
 End Sub '}}}
+Public Sub unite_command() '{{{
+	Call unite("command")
+End Sub '}}}
+
 'mru
 Function GatherCandidates_mru() As Collection '{{{
 	Dim result As New Collection
