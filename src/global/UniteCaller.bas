@@ -24,6 +24,9 @@ Public Sub unite(Optional sourceName As String = "") '{{{
 		MsgBox "sourceNameÇ™ïsê≥Ç≈Ç∑°" & Err.Description
 End Sub '}}}
 
+Public Sub unite_mru() '{{{
+	Call unite("mru")
+End Sub '}}}
 'mru
 Function GatherCandidates_mru() As Collection '{{{
 	Dim result As New Collection
