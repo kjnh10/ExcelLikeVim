@@ -4,7 +4,7 @@ Public myobject As New ApplicationEvent
 
 '-------main----------
 Public Sub InitializeApplication()'{{{
-	Debug.Print "InitializeApplication"
+On Error Goto MyError
 	Call SetReference
 	Call AllKeyToAssesKeyFunc
 	Call SpecialMapping
@@ -19,6 +19,12 @@ Public Sub InitializeApplication()'{{{
 		End If
 	End If
 	Application.Cursor = xlNorthwestArrow
+On Error Goto 0
+MyError:
+If Err.Description <> "" Then
+	MsgBox Err.Description
+End If
+
 End Sub'}}}
 
 Public Sub read_setting(filePath As String)'{{{
