@@ -27,7 +27,7 @@ End Sub '}}}
 Public Sub unite_mru() '{{{
 	Call unite("mru")
 End Sub '}}}
-Public Sub unite_command() '{{{
+Public Sub unite_command_() '{{{
 	Call unite("command")
 End Sub '}}}
 
