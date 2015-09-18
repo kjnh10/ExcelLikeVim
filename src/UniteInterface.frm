@@ -54,7 +54,8 @@ End Sub '}}}
 
 Private Sub TextBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal shift As Integer) '{{{
 	If KeyCode = 27 Then 'ESCŽž‚Ì‹““®
-		If TextBox1.Text = "" Or Me.ListBox1.ListCount = 0 Then
+		' If TextBox1.Text = "" Or Me.ListBox1.ListCount = 0 Then
+		If Me.ListBox1.ListCount = 0 Then
 			' If TextBox1.Text = "" Then
 			Unload Me
 		Else

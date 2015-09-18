@@ -342,3 +342,7 @@ End Sub
 Sub diffRange(targetRange As Range, fromRange As Range)
 	'TODO
 End Sub
+
+Sub abcdefc(targetRange As Range, fromRange As Range)
+	Call diffsh(ActiveWorkbook.Worksheets("•ÏX“_"), ActiveWorkbook.Worksheets("•ÏXŒ³"))
+End Sub
