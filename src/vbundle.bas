@@ -9,31 +9,6 @@ Enum Module'{{{
   Document = 100
 End Enum'}}}
 
-'----------------------------- main -----------------------
-Public Sub read_vimxrc()'{{{
-	settingFilePath = Environ("homepath") & "\.vimxrc"
-
-	Open settingFilePath For Input As #1
-	Do Until EOF(1)
-		Line Input #1, buf
-		buf = Replace(buf,vbTab,"") 'tab(インデント)を無視
-
-		If Left(buf,1) = "'" Then
-			Goto NextLoop
-		End If
-
-		If buf <> "" Then
-			instruction = Split(buf, " ")(0)
-			argument = Mid(buf, Instr(Instr(buf, " ") + 1, buf, " ") + 1) '2つ目のスペース以降を取得
-			' Application.Run instruction, argument
-			Debug.Print "instruction:" & instruction & vbCrLf & "argument:" & argument
-		End If
-
-		NextLoop:
-	Loop
-	Close #1
-End Sub'}}}
-
 '----------------------------- updatemodules --------------
 Public Function bundle()
 End Function

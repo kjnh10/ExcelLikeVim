@@ -60,7 +60,11 @@ Private Sub UpdateMru(Wb As Workbook)'{{{
 	Dim buflines As New Collection
 
 	'If mru_file does not exist, make mru_file.
-	If Dir(ThisWorkbook.Path & "\.cache\" & "mru.txt") = "" Then
+	Dim mruDir As String: mruDir = ThisWorkbook.Path & "\.cache\"
+	If Dir(mruDir & "mru.txt") = "" Then
+		If Dir(mruDir, vbDirectory) = "" Then
+			MkDir mruDir
+		End If
 		CreateObject("Scripting.FileSystemObject").CreateTextFile ThisWorkbook.Path & "\.cache\" & "mru.txt"
 	End If
 

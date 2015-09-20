@@ -60,6 +60,7 @@ Public Sub read_setting(filePath As String)'{{{
 	Loop
 	Close #1
 End Sub'}}}
+
 '------supplimental functions-------------
 Public Sub SpecialMapping()'{{{
 	'‚±‚±‚Åw’è‚µ‚½ŠÖ”‚Íkeystroke.bas‚ª•s‹ï‡‚Å‚à“­‚­¡mapping.txt‚ğã‘‚­
