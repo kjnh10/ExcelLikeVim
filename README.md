@@ -1,4 +1,4 @@
-#What is cVim?
+#What is VimX?
 
 Vim for Excel. I hate using the mouse, especially after learning Vim. I'm very frustrated using Excel, I wanna use dd, yy , jkhl, ・・・like vim!. Is There some way to solve this? I found vimxls. But vimxls has some problem for me. For Example not customizable of mapping in setting file like .vimrc. VimX aims to eliminate this problem, and add many features inspired from popular vim plugin like budle, unite, ・・・. 
 
