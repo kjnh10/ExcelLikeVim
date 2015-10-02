@@ -311,6 +311,23 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "^+."
     Application.OnKey "^+/"
     Application.OnKey "^_"
+
+    Application.OnKey "{F1}"
+    Application.OnKey "{F2}"
+    Application.OnKey "{F3}"
+    Application.OnKey "{F4}"
+    Application.OnKey "{F5}"
+    Application.OnKey "{F6}"
+    Application.OnKey "{F7}"
+    Application.OnKey "{F8}"
+    Application.OnKey "{F9}"
+    Application.OnKey "{F10}"
+    Application.OnKey "{F11}"
+    Application.OnKey "{F12}"
+    Application.OnKey "{F13}"
+    Application.OnKey "{F14}"
+    Application.OnKey "{F15}"
+    Application.OnKey "{F16}"
 End Sub '}}}
 
 Public Sub AllKeyToAssesKeyFunc()'{{{
