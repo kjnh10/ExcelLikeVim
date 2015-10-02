@@ -161,11 +161,25 @@ Private Sub ListBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal shift
 End Sub '}}}
 
 Private Sub ListBox1_DblClick(ByVal Cancel As MSForms.ReturnBoolean) '{{{
-	'リストボックスの値をダブルクリックしたときに実行するコード
-	Dim Buf As String
-	'リストボックスの値を変数bufに格納する
-	Buf = Me.ListBox1.Value
-	'メッセージボックスにリストボックスの値を表示する
-	MsgBox Buf & "を選択しました。"
+	Me.Hide
+	With Me.ListBox1
+		selectCount = 0
+		Dim selected As String
+		For i = 0 To .ListCount - 1
+			If .selected(i) = True Then
+				selected = selected & .List(i) & vbCrLf
+				selectCount = selectCount + 1
+			End If
+		Next i
+
+		If selectCount > 0 Then
+			selected = Left(selected, Len(selected) - 2) '末尾のvbCrLfを削除
+		Else
+			selected = .List(.ListIndex)
+		End If
+
+		Call Application.Run("defaultAction_" & unite_source, selected)
+	End With
+	Unload Me
 End Sub '}}}
 
