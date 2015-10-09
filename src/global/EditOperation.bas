@@ -304,16 +304,18 @@ Sub sp(Optional clearFilterdRowValue = 0) '{{{ smartpaste
 		Dim i As Integer: i = 0
 		Dim r As Range
 		For Each r In destRange
-			If V(i) <> "" Then
-				A = Split(CStr(V(i)), vbTab) 'i行目
-				For j = 0 to Ubound(A)
-					If Cstr(Val(A(j))) = A(j) Then 'A(j)が元は数値
-						r.Offset(0, j).Value = Val(A(j))
-					Else
-						r.Offset(0, j).Value = A(j)
-					End If
-				Next j
+			A = Split(CStr(V(i)), vbTab) 'i行目
+			For j = 0 to Ubound(A)
+				If Cstr(Val(A(j))) = A(j) Then 'A(j)が元は数値
+					r.Offset(0, j).Value = Val(A(j))
+				Else
+					r.Offset(0, j).Value = A(j)
+				End If
+			Next j
+			If Ubound(A) = -1 Then
+				r.Offset(0, j).Value = ""
 			End If
+
 			i = i + 1
 			If i >= UBound(V) Then
 				Exit For
@@ -325,8 +327,79 @@ Sub sp(Optional clearFilterdRowValue = 0) '{{{ smartpaste
 	Set r = Nothing
 End Sub '}}}
 
-Sub sp2(Optional clearFilterdRowValue = 0) '{{{ smartpaste
-	'書式もコピー出来るようにする｡
+Sub sp2(Optional clearFilterdRowValue = 1) '{{{ smartpaste
+	'Todo コピー元のデータを消去する｡(Cut mode)
+
+	Application.ScreenUpdating = False
+
+	'Microsoft Forms 2.0 Object Library に参照設定要
+	Dim V As Variant    'クリップボードのデータ全体
+	Dim A As Variant    'その内の一行
+
+
+	Set destRange = Range(ActiveCell, cells(Rows.count, ActiveCell.Column)) 'ActiveCellから一番下まで
+	Set destRange = destRange.SpecialCells(xlCellTypeVisible)   '可視セルのみを取得
+
+	'clipboardからデータを取得し変数Vに2次元配列として格納'{{{
+	Dim Dobj As DataObject
+	Set Dobj = New DataObject
+	With Dobj
+		.GetFromClipboard
+		On Error Resume Next
+		V = .GetText
+		On Error GoTo 0
+	End With'}}}
+
+	If Not IsEmpty(V) Then    'クリップボードからテキストが取得できた時のみ実行
+		V = Split(CStr(V), vbCrLf) '行を要素としたstring配列
+
+		'フィルターで隠れている行のデータを削除する｡'{{{
+		If clearFilterdRowValue = 1 Then
+			referencRangeHeight = UBound(V) + 1
+			referencRangeWidth = UBound(Split(CStr(V(0)), vbTab)) + 1
+			Debug.Print referencRangeHeight
+			Debug.Print referencRangeWidth
+			For Each c in ActiveCell.Resize(referencRangeHeight, referencRangeWidth)
+				c.Value = ""
+			Next c
+		End If'}}}
+
+		'元データ削除 TODO
+		If Application.CutCopyMode = xlCut Then
+			'srcからdstを除いた部分をClearContents
+			Set srcRange = GetCopiedRange(ActiveSheet.Name)
+			For Each c in srcRange
+				c.Value = ""
+			Next c
+
+			Application.CutCopyMode = False
+		End If
+
+		'貼り付け'{{{
+		Dim i As Integer: i = 0
+		Dim r As Range
+		For Each r In destRange
+			A = Split(CStr(V(i)), vbTab) 'i行目
+			For j = 0 to Ubound(A)
+				If Cstr(Val(A(j))) = A(j) Then 'A(j)が元は数値
+					r.Offset(0, j).Value = Val(A(j))
+				Else
+					r.Offset(0, j).Value = A(j)
+				End If
+			Next j
+			If Ubound(A) = -1 Then
+				r.Offset(0, j).Value = ""
+			End If
+
+			i = i + 1
+			If i >= UBound(V) Then
+				Exit For
+			End If
+		Next'}}}
+	End If
+
+	Set Dobj = Nothing
+	Set r = Nothing
 End Sub '}}}
 
 '---------diff-----------------
