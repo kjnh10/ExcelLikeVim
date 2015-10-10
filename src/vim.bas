@@ -220,6 +220,17 @@ End Function '}}}
 
 Public Sub n_ESC()'{{{
 	Application.CutCopyMode = False
+	If IMEStatus <> 2 Then
+		' Call SendKeys("{KANJI}", True)
+		MsgBox "hello"
+	End if
+End Sub'}}}
+
+Public Sub n_ESC_ime_off()'{{{
+	Application.CutCopyMode = False
+	If IMEStatus <> 2 Then
+		Call SendKeys("{KANJI}", True)
+	End if
 End Sub'}}}
 
 Public Sub n_u()'{{{
