@@ -93,16 +93,42 @@ Function defaultAction_book(arg) 'table‚É‚µ‚½•û‚ª‚æ‚¢‚©'{{{
 	Workbooks(arg).Activate
 End Function'}}}
 
-'project
-Function GatherCandidates_project() As Collection '{{{
+'filter
+Function GatherCandidates_filter() As Collection '{{{
 	Dim ValueCollection As New Collection
-	Set targetColumnRange = Range(Cells(2, ActiveCell.Column), Cells(ActiveSheet.UsedRange.Rows.Count, ActiveCell.Column))
+	Set targetColumnRange = InterSect(GetFilterRange, Columns(ActiveCell.Column))
+	Set targetColumnRange = targetColumnRange.SpecialCells(xlCellTypeVisible)
 
 	On Error Resume Next
 		For Each c in targetColumnRange
 			If c.Value <> "" Then
-				Debug.Print c.Row
-				ValueCollection.Add c.Value, c.Value
+				Debug.Print c.Value
+				ValueCollection.Add c.Value, Cstr(c.Value)
+			End If
+		Next c
+	On Error GoTo 0
+
+	Set GatherCandidates_filter = ValueCollection
+End Function '}}}
+Function defaultAction_filter(SelectionMerged As String) 'table‚É‚µ‚½•û‚ª‚æ‚¢‚©'{{{
+	Application.ScreenUpdating = False
+	' If ActiveSheet.FilterMode Then
+	' 	ActiveSheet.ShowAllData
+	' End If
+	GetFilterRange.AutoFilter field:= ActiveCell.Column - GetFilterRange.Column + 1, Criteria1:=Split(SelectionMerged, vbCrLf), Operator:=xlFilterValues
+	Call gg()
+	Call move_down()
+End Function '}}}
+
+'project
+Function GatherCandidates_project() As Collection '{{{
+	Dim ValueCollection As New Collection
+	Set targetColumnRange = InterSect(GetFilterRange, Columns(GetFilterRange.Column))
+
+	On Error Resume Next
+		For Each c in targetColumnRange
+			If c.Value <> "" Then
+				ValueCollection.Add c.Value, Cstr(c.Value)
 			End If
 		Next c
 	On Error GoTo 0
@@ -114,8 +140,7 @@ Function defaultAction_project(SelectionMerged As String) 'table‚É‚µ‚½•û‚ª‚æ‚¢‚©
 	If ActiveSheet.FilterMode Then
 		ActiveSheet.ShowAllData
 	End If
-	ActiveSheet.UsedRange.AutoFilter field:= ActiveCell.Column, Criteria1:=Split(SelectionMerged, vbCrLf), Operator:=xlFilterValues
+	GetFilterRange.AutoFilter field:= GetFilterRange.Column, Criteria1:=Split(SelectionMerged, vbCrLf), Operator:=xlFilterValues
 	Call gg()
 	Call move_down()
 End Function '}}}
-

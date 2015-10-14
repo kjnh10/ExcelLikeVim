@@ -1,6 +1,6 @@
 Attribute VB_Name = "EditOperation"
 Sub InteriorColor(number) '{{{
-        Selection.Interior.ColorIndex = number
+	Selection.Interior.ColorIndex = number
 End Sub '}}}
 
 Sub FontColor(number) '{{{
@@ -9,153 +9,153 @@ Sub FontColor(number) '{{{
 End Sub '}}}
 
 Sub SetRuledLines() '{{{
-        Selection.Borders.LineStyle = xlContinuous
+	Selection.Borders.LineStyle = xlContinuous
 End Sub '}}}
 
 Sub UnsetRuledLines() '{{{
-        Selection.Borders.LineStyle = xlLineStyleNone
+	Selection.Borders.LineStyle = xlLineStyleNone
 End Sub '}}}
 
 Sub merge() '{{{
-        Selection.merge
+	Selection.merge
 End Sub '}}}
 
 Sub unmerge() '{{{
-        Selection.unmerge
+	Selection.unmerge
 End Sub '}}}
 
 Sub ex_up() '{{{
-        Application.ScreenUpdating = False
-        cur_row = ActiveCell.Row
-        Rows(cur_row).Copy
-        'target_rowの選択
-        Dim i As Long
-        i = 1
-        Do Until ActiveCell.Offset(-i, 0).EntireRow.Hidden = False
-                i = i + 1
-        Loop
-        target_row = ActiveCell.Offset(-i, 0).Row
-        target_column = ActiveCell.Offset(-i, 0).Column
+	Application.ScreenUpdating = False
+	cur_row = ActiveCell.Row
+	Rows(cur_row).Copy
+	'target_rowの選択
+	Dim i As Long
+	i = 1
+	Do Until ActiveCell.Offset(-i, 0).EntireRow.Hidden = False
+		i = i + 1
+	Loop
+	target_row = ActiveCell.Offset(-i, 0).Row
+	target_column = ActiveCell.Offset(-i, 0).Column
 
-        Rows(target_row).Select
-        Selection.Insert
+	Rows(target_row).Select
+	Selection.Insert
 
-        '移動前のセルを削除
-        Rows(cur_row + 1).Delete
-        '処理後の選択セルを自然に
-        cells(target_row, target_column).Select
+	'移動前のセルを削除
+	Rows(cur_row + 1).Delete
+	'処理後の選択セルを自然に
+	cells(target_row, target_column).Select
 End Sub '}}}
 
 Sub ex_below() '{{{
-        Application.ScreenUpdating = False
-        cur_row = ActiveCell.Row
-        Rows(cur_row).Copy
-        'target_rowの選択
-        Dim i As Long
-        i = 1
-        Do Until ActiveCell.Offset(i, 0).EntireRow.Hidden = False
-                i = i + 1
-        Loop
-        target_row = ActiveCell.Offset(i, 0).Row
-        target_column = ActiveCell.Offset(i, 0).Column
+	Application.ScreenUpdating = False
+	cur_row = ActiveCell.Row
+	Rows(cur_row).Copy
+	'target_rowの選択
+	Dim i As Long
+	i = 1
+	Do Until ActiveCell.Offset(i, 0).EntireRow.Hidden = False
+		i = i + 1
+	Loop
+	target_row = ActiveCell.Offset(i, 0).Row
+	target_column = ActiveCell.Offset(i, 0).Column
 
-        Rows(target_row + 1).Select
-        Selection.Insert
-        Rows(cur_row).Delete
+	Rows(target_row + 1).Select
+	Selection.Insert
+	Rows(cur_row).Delete
 
-        '処理後の選択セルを自然に
-        cells(target_row, target_column).Select
+	'処理後の選択セルを自然に
+	cells(target_row, target_column).Select
 End Sub '}}}
 
 Sub ex_right() '{{{
-        Application.ScreenUpdating = False
-        cur_col = ActiveCell.Column
-        Columns(cur_col).Copy
-        'target_rowの選択
-        Dim i As Long
-        i = 1
-        Do Until ActiveCell.Offset(0, i).EntireColumn.Hidden = False
-                i = i + 1
-        Loop
-        target_row = ActiveCell.Offset(0, i).Row
-        target_column = ActiveCell.Offset(0, i).Column
+	Application.ScreenUpdating = False
+	cur_col = ActiveCell.Column
+	Columns(cur_col).Copy
+	'target_rowの選択
+	Dim i As Long
+	i = 1
+	Do Until ActiveCell.Offset(0, i).EntireColumn.Hidden = False
+		i = i + 1
+	Loop
+	target_row = ActiveCell.Offset(0, i).Row
+	target_column = ActiveCell.Offset(0, i).Column
 
-        Columns(target_column + 1).Select
-        Selection.Insert
-        Columns(cur_col).Delete
+	Columns(target_column + 1).Select
+	Selection.Insert
+	Columns(cur_col).Delete
 
-        '処理後の選択セルを自然に
-        cells(target_row, target_column).Select
+	'処理後の選択セルを自然に
+	cells(target_row, target_column).Select
 End Sub '}}}
 
 Sub ex_left() '{{{
-        Application.ScreenUpdating = False
-        cur_col = ActiveCell.Column
-        Columns(cur_col).Copy
-        'target_rowの選択
-        Dim i As Long
-        i = 1
-        Do Until ActiveCell.Offset(0, -i).EntireColumn.Hidden = False
-                i = i + 1
-        Loop
-        target_row = ActiveCell.Offset(0, -i).Row
-        target_column = ActiveCell.Offset(0, -i).Column
+	Application.ScreenUpdating = False
+	cur_col = ActiveCell.Column
+	Columns(cur_col).Copy
+	'target_rowの選択
+	Dim i As Long
+	i = 1
+	Do Until ActiveCell.Offset(0, -i).EntireColumn.Hidden = False
+		i = i + 1
+	Loop
+	target_row = ActiveCell.Offset(0, -i).Row
+	target_column = ActiveCell.Offset(0, -i).Column
 
-        Columns(target_column).Select
-        Selection.Insert
-        Columns(cur_col + 1).Delete
+	Columns(target_column).Select
+	Selection.Insert
+	Columns(cur_col + 1).Delete
 
-        '処理後の選択セルを自然に
-        cells(target_row, target_column).Select
+	'処理後の選択セルを自然に
+	cells(target_row, target_column).Select
 End Sub '}}}
 
 Sub ZoomInWindow() '{{{
-        ActiveWindow.Zoom = ActiveWindow.Zoom + 5
+	ActiveWindow.Zoom = ActiveWindow.Zoom + 5
 End Sub '}}}
 
 Sub ZoomOutWindow() '{{{
-        ActiveWindow.Zoom = ActiveWindow.Zoom - 5
+	ActiveWindow.Zoom = ActiveWindow.Zoom - 5
 End Sub '}}}
 
 Sub MouseNormal() '{{{
-        Application.Cursor = xlDefault
+	Application.Cursor = xlDefault
 End Sub '}}}
 
 Sub SetSeqNumber(Optional destRange As Range = Nothing) '{{{
-        Application.ScreenUpdating = False
-        If destRange Is Nothing Then
-                Set destRange = Selection
-        End If
-        Set destRange = destRange.SpecialCells(xlCellTypeVisible)
-    n = 1
-        For Each r In destRange
-                r.value = n
-                'Selection.NumberFormatLocal = "G/標準"
-                Selection.NumberFormatLocal = "0_);[赤](0)"
-                n = n + 1
-    Next
+	Application.ScreenUpdating = False
+	If destRange Is Nothing Then
+		Set destRange = Selection
+	End If
+	Set destRange = destRange.SpecialCells(xlCellTypeVisible)
+	n = 1
+	For Each r In destRange
+		r.value = n
+		'Selection.NumberFormatLocal = "G/標準"
+		Selection.NumberFormatLocal = "0_);[赤](0)"
+		n = n + 1
+	Next
 End Sub '}}}
 
 Sub SortCurrentColumn() '{{{
-        Application.ScreenUpdating = False
-        Set targetRange = Selection.CurrentRegion
+	Application.ScreenUpdating = False
+	Set targetRange = Selection.CurrentRegion
 
-        With ActiveSheet.Sort
-                With .SortFields
-                        .Clear
-                        .Add _
-                                Key:=Columns(ActiveCell.Column), _
-                                SortOn:=xlSortOnValues, _
-                                Order:=xlAscending, _
-                                DataOption:=xlSortNormal
-                End With
-                        .SetRange targetRange
-                        .Header = xlYes '見出し行の有無の判断｡xlGuessはExcelに任せる｡
-                        .MatchCase = False
-                        .Orientation = xlTopToBottom
-                        .SortMethod = xlPinYin
-                        .Apply
-        End With
+	With ActiveSheet.Sort
+		With .SortFields
+			.Clear
+			.Add _
+			Key:=Columns(ActiveCell.Column), _
+			SortOn:=xlSortOnValues, _
+			Order:=xlAscending, _
+			DataOption:=xlSortNormal
+		End With
+		.SetRange targetRange
+		.Header = xlYes '見出し行の有無の判断｡xlGuessはExcelに任せる｡
+		.MatchCase = False
+		.Orientation = xlTopToBottom
+		.SortMethod = xlPinYin
+		.Apply
+	End With
 End Sub '}}}
 
 '--------sheet_move-------------------
@@ -182,21 +182,15 @@ End Sub '}}}
 '---------auto_filter-----------------
 Sub focusFromScratch() '{{{
 	Application.ScreenUpdating = False
-	cur_row = ActiveCell.Row
-	cur_col = ActiveCell.Column
-	buf = cells(cur_row, cur_col).value
 	If ActiveSheet.FilterMode Then
 		ActiveSheet.ShowAllData
 	End If
-	Range("B3").AutoFilter cur_col, buf
+	GetFilterRange.AutoFilter ActiveCell.Column - GetFilterRange.Column + 1, ActiveCell.Value
 End Sub '}}}
 
 Sub focus() '{{{
 	Application.ScreenUpdating = False
-	cur_row = ActiveCell.Row
-	cur_col = ActiveCell.Column
-	buf = cells(cur_row, cur_col).value
-	Range("B3").AutoFilter cur_col, buf
+	GetFilterRange.AutoFilter ActiveCell.Column - GetFilterRange.Column + 1, ActiveCell.Value
 End Sub '}}}
 
 Sub exclude()'{{{
@@ -207,16 +201,16 @@ Sub exclude()'{{{
 	buf = cells(ActiveCell.Row ,ActiveCell.Column).value
 
 	Debug.Print Cells(Rows.Count, ActiveCell.Column).End(xlUp).Row
-	Set targetColumnRange = Range(Cells(2, ActiveCell.Column), Cells(Rows.Count, ActiveCell.Column).End(xlUp))
+	Set targetColumnRange = InterSect(GetFilterRange, Columns(ActiveCell.Column))
 	Set targetColumnRange = targetColumnRange.SpecialCells(xlCellTypeVisible)
 
 	Set showedValueCollection = CreateObject("Scripting.Dictionary")
 	On Error Resume Next
-		For Each c in targetColumnRange
-			If c.Value <> buf Then
-				showedValueCollection.Add "_" & c.Value, c.Value
-			End If
-		Next c
+	For Each c in targetColumnRange
+		If c.Value <> buf Then
+			showedValueCollection.Add "_" & c.Value, c.Value
+		End If
+	Next c
 	On Error GoTo 0
 
 	filterCondition = showedValueCollection.Keys
@@ -226,29 +220,37 @@ Sub exclude()'{{{
 		filterCondition(e) = Mid(filterCondition(e),2)
 	Next e
 
-	Range("B3").AutoFilter field:= ActiveCell.Column, Criteria1:=filterCondition, Operator:=xlFilterValues
+	GetFilterRange.AutoFilter field:= ActiveCell.Column - GetFilterRange.Column + 1, Criteria1:=filterCondition, Operator:=xlFilterValues
 End Sub'}}}
 
 Sub filterOff() '{{{
 	Application.ScreenUpdating = False
-	Range("B3").AutoFilter ActiveCell.Column
+	GetFilterRange.AutoFilter ActiveCell.Column
 End Sub '}}}
 
+Function GetFilterRange() As Range
+	On Error GoTo error
+	Set GetFilterRange = ActiveSheet.AutoFilter.Range
+	Exit Function
+error:
+	Set GetFilterRange = ActiveSheet.UsedRange
+End Function
+
 Function smallerFonts() '{{{
-  Dim currentFontSize As Long
-  On Error GoTo ERROR01
-  currentFontSize = Selection.Font.Size
-  Selection.Font.Size = currentFontSize - 1
-  period_buff = ">"
+	Dim currentFontSize As Long
+	On Error GoTo ERROR01
+	currentFontSize = Selection.Font.Size
+	Selection.Font.Size = currentFontSize - 1
+	period_buff = ">"
 ERROR01:
 End Function '}}}
 
 Function biggerFonts() '{{{
-  Dim currentFontSize As Long
-  On Error GoTo ERROR01
-  currentFontSize = Selection.Font.Size
-  Selection.Font.Size = currentFontSize + 1
-  period_buff = "<"
+	Dim currentFontSize As Long
+	On Error GoTo ERROR01
+	currentFontSize = Selection.Font.Size
+	Selection.Font.Size = currentFontSize + 1
+	period_buff = "<"
 ERROR01:
 End Function '}}}
 
@@ -419,3 +421,27 @@ End Sub
 Sub abcdefc(targetRange As Range, fromRange As Range)
 	Call diffsh(ActiveWorkbook.Worksheets("変更点"), ActiveWorkbook.Worksheets("変更元"))
 End Sub
+
+'-----------Supplimental functions------------------------
+Function Field_No(fieldName As String, Optional sheetName As String = "", Optional fieldRowNum As Long = 1)'{{{
+	If sheetName = "" Then
+		set sheet = ActiveSheet
+	Else
+		set sheet = Worksheets(sheetName)
+	End If
+
+    Field_No = sheet.Range(Cells(fieldRowNum,1),Cells(fieldRowNum,50)).Find(What:=fieldName, LookIn:=xlFormulas, LookAt _
+        :=xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:= _
+        False, MatchByte:=False, SearchFormat:=False).Column
+End Function'}}}
+
+Function GroupNo(groupName as String)'{{{
+    GroupNo = ActiveSheet.Columns("A:A").Find(What:=groupName, LookIn:=xlFormulas, LookAt _
+        :=xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:= _
+        False, MatchByte:=False, SearchFormat:=False).Row
+End Function'}}}
+
+Function AlphabetColumn(num As Long)
+    buf = Cells(1, num).Address(True, False)
+    AlphabetColumn = Left(buf, InStr(buf, "$") - 1)
+End Function
