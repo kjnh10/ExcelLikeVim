@@ -11,8 +11,6 @@ Public Sub unite(Optional sourceName As String = "") '{{{
 	End If
 
 	On Error GoTo Myerror
-		' Set UniteCandidatesList = Application.Run("GatherCandidates_" & sourceName) 'CandidateList‚Ìİ’è
-		Debug.Print sourceName
 		Set UniteCandidatesList = ExeStringPro("GatherCandidates_" & sourceName) 'CandidateList‚Ìİ’è
 	On Error GoTo 0
 	unite_source = sourceName 'source–¼‚Ìİ’è
@@ -22,13 +20,6 @@ Public Sub unite(Optional sourceName As String = "") '{{{
 	Exit Sub
 	Myerror:
 		MsgBox "sourceName‚ª•s³‚Å‚·¡" & Err.Description
-End Sub '}}}
-
-Public Sub unite_mru() '{{{
-	Call unite("mru")
-End Sub '}}}
-Public Sub unite_command_() '{{{
-	Call unite("command")
 End Sub '}}}
 
 'mru

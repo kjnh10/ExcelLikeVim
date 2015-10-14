@@ -23,7 +23,7 @@ On Error Resume Next
 On Error Goto 0
 MyError:
 If Err.Description <> "" Then
-	MsgBox Err.Description
+	MsgBox "koji" & Err.Description
 End If
 
 End Sub'}}}
@@ -44,7 +44,7 @@ Public Sub read_setting(filePath As String)'{{{
 			' argument = Mid(buf, Instr(Instr(buf, " ") + 1, buf, " ") + 1) '2つ目のスペース以降を取得
 			argument_start = Instr(buf, " ")
 			If argument_start <> 0 Then
-				argument = Mid(buf, Instr(buf, " ") + 1) '1つ目のスペース以降を取得
+				Dim argument As String:argument = Mid(buf, Instr(buf, " ") + 1) '1つ目のスペース以降を取得
 			End If
 			If Instr(instruction, "map") = 0 And Instr(instruction, "for") = 0 Then 'map系じゃなければそのまま実行 TODO map系もそのうち
 				Debug.Print "instruction:" & instruction & vbCrLf & "argument:" & argument
@@ -111,3 +111,19 @@ Function AddToReference(strFileName As String) As Boolean'{{{
 					Err.Description, 16, "タイプライブラリへの参照"
 		End Select
 End Function'}}}
+
+Sub wrap(arg As String)'{{{
+	buf = Split(arg, ",")
+	a = buf(0):b = buf(1)
+	With ThisWorkbook.VBProject.VBComponents("wrapper").CodeModule
+		.InsertLines 1, "Sub " & a & "()"
+		.InsertLines 2, "End Sub"
+		.InsertLines 2, "ExeStringPro(""" & b & """)"
+	End With
+End Sub'}}}
+
+Sub clearWrapper(a As String, b As String)'{{{
+	With ThisWorkbook.VBProject.VBComponents("wrapper").CodeModule
+		.DeleteLines StartLine:=1, count:=.CountOfLines
+	End With
+End Sub'}}}

@@ -8,6 +8,7 @@ bundle ./src/initApp.bas
 bundle ./src/vim.bas
 bundle ./src/register.bas
 bundle ./src/oneliner.bas
+bundle ./src/wrapper.bas
 bundle ./src/UniteInterface.frm
 bundle ./src/updater.bas
 'bundle ~/.vimxrc

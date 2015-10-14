@@ -10,9 +10,6 @@ Enum Module'{{{
 End Enum'}}}
 
 '----------------------------- updatemodules --------------
-Public Function bundle()
-End Function
-
 Public Function UpdateModulesOfBook(Optional bookPath As String = "", Optional isCalledFromThisWorkbookModule = False) '{{{
 	Const moduleListFile As String = "libdef.txt" 'ライブラリリストのファイル名
 	Dim msgError As String: msgError = "Error Message"

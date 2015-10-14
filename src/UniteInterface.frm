@@ -90,9 +90,9 @@ Private Sub ListBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal shift
 				selected = .List(.ListIndex)
 			End If
 
+			Unload Me
 			Call Application.Run("defaultAction_" & unite_source, selected)
 		End With
-		Unload Me
 	End If
 
 	'http://www.accessclub.jp/samplefile/help/help_154_1.htm keycode

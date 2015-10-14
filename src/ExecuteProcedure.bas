@@ -74,6 +74,7 @@ Function ExecuteAsIs(code As String)'{{{
 		.InsertLines 2, "End Sub"
 		.InsertLines 2, code
 	End With
+	DoEvents
 	Application.Run("temp_for_ExecuteAsIs")
 End Function'}}}
 
