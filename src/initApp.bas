@@ -6,10 +6,8 @@ Public myobject As New ApplicationEvent
 Public Sub InitializeApplication()'{{{
 ' On Error Goto MyError
 On Error Resume Next
-	Call SetReference
 	Call AllKeyToAssesKeyFunc
 	Call SpecialMapping
-	Call SetAppEvent
 	Application.Cursor = xlNorthwestArrow
 	' IsExistPython = True 意味なし｡グローバル変数は消える｡
 	Call read_setting(Environ("homepath") & "/.vimxrc")
@@ -75,56 +73,12 @@ Private Sub OpenRegisterBook()'{{{
 End Sub'}}}
 
 Public Sub SetAppEvent()'{{{
-	Debug.Print "Called SetAppEvent"
 	Set myobject.appEvent = Application
 	Set myobject.pptEvent = New PowerPoint.Application
 	Set myobject.wrdEvent = New Word.Application
+	MsgBox "setiing AppEvent is done"
+	' Debug.Print "setiing AppEvent is done"
 End Sub'}}}
-
-Public Sub SetReference()'{{{
-	'unite_command 用 本来はプラグイン側からの呼び出しを出来るようにしたい｡
-	Debug.Print AddToReference("C:\Program Files\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
-	Debug.Print AddToReference("C:\Program Files (x86)\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
-
-	Debug.Print AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSPPT.OLB")
-	Debug.Print AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSPPT.OLB")
-
-	Debug.Print AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSWORD.OLB")
-	Debug.Print AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSWORD.OLB")
-End Sub'}}}
-
-Function AddToReference(strFileName As String) As Boolean'{{{
-	'指定されたタイプライブラリへの参照を作成します｡
-	On Error GoTo MyError
-		' Dim ref As Reference
-		' Set ref = ThisWorkbook.VBProject.References.AddFromFile(strFileName)
-		' AddToReference = True
-		' Set ref = Nothing
-		ThisWorkbook.VBProject.References.AddFromFile(strFileName)
-		AddToReference = True
-		Exit Function
-	MyError:
-		Select Case Err.Number
-			Case 32813
-				Debug.Print strFileName & "は既に参照設定されています。", , "タイプライブラリへの参照"
-			Case 48
-				Debug.Print strFileName & "は存在しません。"
-			Case 29060
-				MsgBox "設定ファイルがインストールされていないか、" & vbNewLine & _
-					"所定のフォルダーに存在しない場合が考えられます。" & vbNewLine & _
-					"よって、参照設定ができません。", , "タイプライブラリへの参照"
-			Case Else
-				MsgBox "予期せぬエラーが発生しました。" & vbNewLine & _
-					Err.Number & vbNewLine & _
-					Err.Description, 16, "タイプライブラリへの参照"
-		End Select
-End Function'}}}
-
-Private Sub printReferencesName()
-	For Each r in ThisWorkbook.VBProject.References
-		Debug.Print r.FullName
-	Next r
-End Sub
 
 Sub wrap(arg As String)'{{{
 	buf = Split(arg, ",")

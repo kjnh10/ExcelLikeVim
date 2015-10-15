@@ -52,11 +52,15 @@ Public Function UpdateModulesOfBook(Optional bookPath As String = "", Optional i
 	Next i
 	Set myFSO = Nothing '}}}
 
+	'Set Reference'{{{
+	Call SetReference'}}}
+
+	'error handling'{{{
 	If msgError = "Error Message" Then
 		Msgbox "All Modules were successfully updated!"
 	Else
 		Msgbox msgError
-	End If
+	End If'}}}
 End Function'}}}
 
 Private Function updateSingleModule(targetBook As Workbook, modulePath As String, msgError As String)'{{{
@@ -395,3 +399,50 @@ Private Function isMemberOfVBEComponets(book As Workbook, query) As Boolean'{{{
 	Next
 	isMemberOfVBEComponets = False
 End Function'}}}
+
+Private Sub SetReference()'{{{
+	'TODO to be able to specify a book
+	'TODO stop hard coding
+	'unite_command 用 本来はプラグイン側からの呼び出しを出来るようにしたい｡
+	Debug.Print AddToReference("C:\Program Files\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
+	Debug.Print AddToReference("C:\Program Files (x86)\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
+
+	Debug.Print AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSPPT.OLB")
+	Debug.Print AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSPPT.OLB")
+
+	Debug.Print AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSWORD.OLB")
+	Debug.Print AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSWORD.OLB")
+End Sub'}}}
+
+Private Function AddToReference(strFileName As String) As Boolean'{{{
+	'指定されたタイプライブラリへの参照を作成します｡
+	On Error GoTo MyError
+		' Dim ref As Reference
+		' Set ref = ThisWorkbook.VBProject.References.AddFromFile(strFileName)
+		' AddToReference = True
+		' Set ref = Nothing
+		ThisWorkbook.VBProject.References.AddFromFile(strFileName)
+		AddToReference = True
+		Exit Function
+	MyError:
+		Select Case Err.Number
+			Case 32813
+				Debug.Print strFileName & "は既に参照設定されています。", , "タイプライブラリへの参照"
+			Case 48
+				Debug.Print strFileName & "は存在しません。"
+			Case 29060
+				MsgBox "設定ファイルがインストールされていないか、" & vbNewLine & _
+					"所定のフォルダーに存在しない場合が考えられます。" & vbNewLine & _
+					"よって、参照設定ができません。", , "タイプライブラリへの参照"
+			Case Else
+				MsgBox "予期せぬエラーが発生しました。" & vbNewLine & _
+					Err.Number & vbNewLine & _
+					Err.Description, 16, "タイプライブラリへの参照"
+		End Select
+End Function'}}}
+
+Private Sub printReferencesName()'{{{
+	For Each r in ThisWorkbook.VBProject.References
+		Debug.Print r.FullName
+	Next r
+End Sub'}}}

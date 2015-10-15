@@ -1,12 +1,3 @@
-VERSION 1.0 CLASS
-BEGIN
-  MultiUse = -1  'True
-END
-Attribute VB_Name = "ThisWorkbook"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = True
-Attribute VB_Exposed = True
 'ライブラリリストの設定 (設置フォルダはワークブックと同じディレクトリ)
 Const FILENAME_LIBLIST As String = "libdef.txt" 'ライブラリリストのファイル名
 Const REGISTRY_BOOK As String = "register.xlsx"
@@ -15,9 +6,10 @@ Const REGISTRY_BOOK As String = "register.xlsx"
 Private Sub Workbook_Open() '{{{
     Call import_vbundle
     Application.Run "updateModulesOfBook", "", True
+    'Application.Run "read_setting", "thisworkboo.vimxrc" 'default
+    'Application.Run "read_setting", "~/.vimxrc" 'user
     Application.Run "initializeApplication"
-		'Application.Run "read_setting", "thisworkbook.path.vimxrc" 'default
-		'Application.Run "read_setting", "~/.vimxrc" 'user
+    Application.OnTime Now + TimeValue("00:00:01"), "SetAppEvent"
 End Sub '}}}
 
 Private Sub Workbook_Close() '{{{

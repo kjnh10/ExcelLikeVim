@@ -134,33 +134,34 @@ Sub update() '{{{
 	ActiveSheet.Calculate
 End Sub '}}}
 
-Public Function SmartOpenBook(Target) '{{{
+Public Function SmartOpenBook(filePath) '{{{
 	Dim buf As String, Wb As Workbook
 
 	On Error Goto Myerror
-		buf = dir(Target)
+		'存在チェック
+		buf = dir(filePath)
 		If buf = "" Then
-			MsgBox Target & vbCrLf & "は存在しません", vbExclamation
+			MsgBox filePath & vbCrLf & "は存在しません", vbExclamation
 			Exit Function
 		End If
 
-		''同名ブックのチェック
+		'同名ブックのチェック
 		For Each Wb In Workbooks
-			If Wb.FullName = Target Then
+			If Wb.FullName = filePath Then
 				Wb.Activate
 				Exit Function
 			End If
 		Next Wb
 
 		DoEvents
-		Workbooks.Open FileName:=Target, Notify:=True, AddToMru:=True
-		' CreateObject("Wscript.Shell").Run 
+		' Workbooks.Open FileName:=filePath, Notify:=True, AddToMru:=True
+		CreateObject("Wscript.Shell").Run filePath, 5
 
 		Exit Function
 	Myerror:
-		MsgBox Err.Description & "alternatively copied to clipboard"
+		MsgBox Err.Description & vbCrLf & "Alternatively filepath was copied to clipboard"
 		With New MSForms.DataObject
-			.SetText Target '変数の値をDataObjectに格納する
+			.SetText filePath '変数の値をDataObjectに格納する
 			.PutInClipboard   'DataObjectのデータをクリップボードに格納する
 		End With
 End Function '}}}
