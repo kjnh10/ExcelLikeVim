@@ -8,11 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '--------------------------------------------------------------
-Public WithEvents appevent As Application
+Public WithEvents appEvent As Application
+Public WithEvents pptEvent As PowerPoint.Application
+Public WithEvents wrdEvent As Word.Application
 Attribute appevent.VB_VarHelpID = -1
 
 Private Sub appevent_WorkbookOpen(ByVal Wb As Workbook) '{{{
-	Call UpdateMru(Wb)
+	Call UpdateMru(Wb.FullName)
 	Call cd(Wb.Name)
 
 	For Each b in Workbooks
@@ -51,8 +53,17 @@ Private Sub appevent_WorkbookActivate(ByVal Wb As Workbook) '{{{
 	Call SetKeyMapDic
 End Sub '}}}
 
+Private Sub pptEvent_PresentationOpen(ByVal Pres As PowerPoint.Presentation)'{{{
+	Call UpdateMru(Pres.FullName)
+End Sub'}}}
+
+Private Sub wrdEvent_DocumentOpen(ByVal Doc As Word.Document)
+	Call UpdateMru(Doc.FullName)
+End Sub
+
 '------------------sub Function/Sub-----------------------------
-Private Sub UpdateMru(Wb As Workbook)'{{{
+
+Private Sub UpdateMru(filePath As String)'{{{
 	'ファイルを開いた履歴を書き込む
 	openTime = Now
 	newRegister = True
@@ -71,7 +82,7 @@ Private Sub UpdateMru(Wb As Workbook)'{{{
 	Open ThisWorkbook.Path & "\.cache\" & "mru.txt" For Input As #1
 	Do Until EOF(1)
 		Line Input #1, buf
-		If Split(buf, separator)(0) = Wb.FullName Then
+		If Split(buf, separator)(0) = filePath Then
 			newRegister = False
 			count = Val(Split(buf, separator)(1))
 		Else
@@ -79,7 +90,7 @@ Private Sub UpdateMru(Wb As Workbook)'{{{
 		End If
 	Loop
 	Close #1
-	buflines.Add Item:=Wb.FullName & separator & count + 1 & separator & openTime
+	buflines.Add Item:=filePath & separator & count + 1 & separator & openTime
 
 	Open ThisWorkbook.Path & "\.cache\mru.txt" For Output As #1
 	For Each record In buflines
@@ -97,3 +108,4 @@ End Sub'}}}
 
 Private Function registerdMacroBookNameList() As Collection
 End Function
+

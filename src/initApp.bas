@@ -76,13 +76,21 @@ End Sub'}}}
 
 Public Sub SetAppEvent()'{{{
 	Debug.Print "Called SetAppEvent"
-	Set myobject.appevent = Application
+	Set myobject.appEvent = Application
+	Set myobject.pptEvent = New PowerPoint.Application
+	Set myobject.wrdEvent = New Word.Application
 End Sub'}}}
 
 Public Sub SetReference()'{{{
 	'unite_command 用 本来はプラグイン側からの呼び出しを出来るようにしたい｡
 	Debug.Print AddToReference("C:\Program Files\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
 	Debug.Print AddToReference("C:\Program Files (x86)\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
+
+	Debug.Print AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSPPT.OLB")
+	Debug.Print AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSPPT.OLB")
+
+	Debug.Print AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSWORD.OLB")
+	Debug.Print AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSWORD.OLB")
 End Sub'}}}
 
 Function AddToReference(strFileName As String) As Boolean'{{{
@@ -111,6 +119,12 @@ Function AddToReference(strFileName As String) As Boolean'{{{
 					Err.Description, 16, "タイプライブラリへの参照"
 		End Select
 End Function'}}}
+
+Private Sub printReferencesName()
+	For Each r in ThisWorkbook.VBProject.References
+		Debug.Print r.FullName
+	Next r
+End Sub
 
 Sub wrap(arg As String)'{{{
 	buf = Split(arg, ",")
