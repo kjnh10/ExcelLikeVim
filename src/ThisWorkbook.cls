@@ -9,7 +9,7 @@ Private Sub Workbook_Open() '{{{
     'Application.Run "read_setting", "thisworkboo.vimxrc" 'default
     'Application.Run "read_setting", "~/.vimxrc" 'user
     Application.Run "initializeApplication"
-    Application.OnTime Now + TimeValue("00:00:01"), "SetAppEvent"
+    Application.OnTime Now + TimeValue("00:00:01"), "InitializeLater"
 End Sub '}}}
 
 Private Sub Workbook_Close() '{{{
