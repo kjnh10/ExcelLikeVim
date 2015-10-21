@@ -21,9 +21,13 @@ On Error Resume Next
 On Error Goto 0
 MyError:
 If Err.Description <> "" Then
-	MsgBox "koji" & Err.Description
+	MsgBox  Err.Number & Err.Description
 End If
 
+End Sub'}}}
+
+Public Sub InitializeLater()'{{{
+	Call SetAppEvent
 End Sub'}}}
 
 Public Sub read_setting(filePath As String)'{{{
@@ -39,16 +43,12 @@ Public Sub read_setting(filePath As String)'{{{
 
 		If buf <> "" Then
 			instruction = Split(buf, " ")(0)
-			' argument = Mid(buf, Instr(Instr(buf, " ") + 1, buf, " ") + 1) '2つ目のスペース以降を取得
 			argument_start = Instr(buf, " ")
-			If argument_start <> 0 Then
-				Dim argument As String:argument = Mid(buf, Instr(buf, " ") + 1) '1つ目のスペース以降を取得
-			End If
-			If Instr(instruction, "map") = 0 And Instr(instruction, "for") = 0 Then 'map系じゃなければそのまま実行 TODO map系もそのうち
-				Debug.Print "instruction:" & instruction & vbCrLf & "argument:" & argument
-				If argument_start = 0 Then
-					Application.Run instruction
-				Else
+			If argument_start = 0 Then
+				Application.Run instruction
+			Else
+				Dim argument As String:argument = Mid(buf, Instr(buf, " ") + 1) 'スペース以降をargumentにセット
+				If Instr(instruction, "map") = 0 And Instr(instruction, "for") = 0 Then 'map系じゃなければそのまま実行 TODO map系もそのうち
 					Application.Run instruction, argument
 				End If
 			End If
@@ -77,10 +77,9 @@ Public Sub SetAppEvent()'{{{
 	Set myobject.pptEvent = New PowerPoint.Application
 	Set myobject.wrdEvent = New Word.Application
 	MsgBox "setiing AppEvent is done"
-	' Debug.Print "setiing AppEvent is done"
 End Sub'}}}
 
-Sub wrap(arg As String)'{{{
+Sub Wrap(arg As String)'{{{
 	buf = Split(arg, ",")
 	a = buf(0):b = buf(1)
 	With ThisWorkbook.VBProject.VBComponents("wrapper").CodeModule
@@ -90,8 +89,17 @@ Sub wrap(arg As String)'{{{
 	End With
 End Sub'}}}
 
-Sub clearWrapper(a As String, b As String)'{{{
+Sub ClearWrapper(a As String, b As String)'{{{
 	With ThisWorkbook.VBProject.VBComponents("wrapper").CodeModule
 		.DeleteLines StartLine:=1, count:=.CountOfLines
 	End With
 End Sub'}}}
+
+Sub AddToInitializeLater(code As String)
+	Dim objCode As VBIDE.CodeModule
+	Set objCode = ThisWorkbook.VBProject.VBComponents("initApp").CodeModule
+	MsgBox objCode.ProcStartLine("InitializeLater", 0)
+	MsgBox objCode.ProcCountLines("InitializeLater", 0)
+End Sub
+
+
