@@ -135,3 +135,5 @@ Function defaultAction_project(SelectionMerged As String) 'table‚É‚µ‚½•û‚ª‚æ‚¢‚©
 	Call gg()
 	Call move_down()
 End Function '}}}
+
+'kind

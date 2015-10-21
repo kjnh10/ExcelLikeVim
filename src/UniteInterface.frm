@@ -27,7 +27,7 @@ Private Sub UserForm_Initialize() '{{{
 End Sub '}}}
 
 Private Sub TextBox1_Change() '{{{
-	Set RE = CreateObject("VBScript.RegExp")
+	Set RE = CreateObject("VBScript.RegExp") 'https://msdn.microsoft.com/ja-jp/library/cc392437.aspx
 	RE.IgnoreCase = True
 	patternlist = Split(Replace(Me.TextBox1, "　", " "), " ")
 	'リストボックスの内容を初期化
