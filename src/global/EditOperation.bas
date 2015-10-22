@@ -228,13 +228,13 @@ Sub filterOff() '{{{
 	GetFilterRange.AutoFilter ActiveCell.Column
 End Sub '}}}
 
-Function GetFilterRange() As Range
+Function GetFilterRange() As Range'{{{
 	On Error GoTo error
 	Set GetFilterRange = ActiveSheet.AutoFilter.Range
 	Exit Function
 error:
 	Set GetFilterRange = ActiveSheet.UsedRange
-End Function
+End Function'}}}
 
 Function smallerFonts() '{{{
 	Dim currentFontSize As Long
@@ -329,98 +329,30 @@ Sub sp(Optional clearFilterdRowValue = 0) '{{{ smartpaste
 	Set r = Nothing
 End Sub '}}}
 
-Sub sp2(Optional clearFilterdRowValue = 1) '{{{ smartpaste
-	'Todo コピー元のデータを消去する｡(Cut mode)
-
-	Application.ScreenUpdating = False
-
-	'Microsoft Forms 2.0 Object Library に参照設定要
-	Dim V As Variant    'クリップボードのデータ全体
-	Dim A As Variant    'その内の一行
-
-
-	Set destRange = Range(ActiveCell, cells(Rows.count, ActiveCell.Column)) 'ActiveCellから一番下まで
-	Set destRange = destRange.SpecialCells(xlCellTypeVisible)   '可視セルのみを取得
-
-	'clipboardからデータを取得し変数Vに2次元配列として格納'{{{
-	Dim Dobj As DataObject
-	Set Dobj = New DataObject
-	With Dobj
-		.GetFromClipboard
-		On Error Resume Next
-		V = .GetText
-		On Error GoTo 0
-	End With'}}}
-
-	If Not IsEmpty(V) Then    'クリップボードからテキストが取得できた時のみ実行
-		V = Split(CStr(V), vbCrLf) '行を要素としたstring配列
-
-		'フィルターで隠れている行のデータを削除する｡'{{{
-		If clearFilterdRowValue = 1 Then
-			referencRangeHeight = UBound(V) + 1
-			referencRangeWidth = UBound(Split(CStr(V(0)), vbTab)) + 1
-			Debug.Print referencRangeHeight
-			Debug.Print referencRangeWidth
-			For Each c in ActiveCell.Resize(referencRangeHeight, referencRangeWidth)
-				c.Value = ""
-			Next c
-		End If'}}}
-
-		'元データ削除 TODO
-		If Application.CutCopyMode = xlCut Then
-			'srcからdstを除いた部分をClearContents
-			Set srcRange = GetCopiedRange(ActiveSheet.Name)
-			For Each c in srcRange
-				c.Value = ""
-			Next c
-
-			Application.CutCopyMode = False
-		End If
-
-		'貼り付け'{{{
-		Dim i As Integer: i = 0
-		Dim r As Range
-		For Each r In destRange
-			A = Split(CStr(V(i)), vbTab) 'i行目
-			For j = 0 to Ubound(A)
-				If Cstr(Val(A(j))) = A(j) Then 'A(j)が元は数値
-					r.Offset(0, j).Value = Val(A(j))
-				Else
-					r.Offset(0, j).Value = A(j)
-				End If
-			Next j
-			If Ubound(A) = -1 Then
-				r.Offset(0, j).Value = ""
-			End If
-
-			i = i + 1
-			If i >= UBound(V) Then
-				Exit For
-			End If
-		Next'}}}
-	End If
-
-	Set Dobj = Nothing
-	Set r = Nothing
+Sub sp2() '{{{ smartpaste
+	Set srcRange = GetCopiedRange(ActiveSheet.Name)
+	For Each r in srcRange.Rows
+		Debug.Print r.row
+	Next r
 End Sub '}}}
 
 '---------diff-----------------
-Sub diffsh(targetsh As Worksheet, fromsh As Worksheet)
+Sub diffsh(targetsh As Worksheet, fromsh As Worksheet)'{{{
 	'TODO prompt
 	For Each c in fromsh.UsedRange
 		If c.Value <> targetsh.Cells(c.Row, c.Column).Value Then
 			targetsh.Cells(c.Row, c.Column).Interior.ColorIndex = 29
 		End If
 	Next c
-End Sub
+End Sub'}}}
 
-Sub diffRange(targetRange As Range, fromRange As Range)
+Sub diffRange(targetRange As Range, fromRange As Range)'{{{
 	'TODO
-End Sub
+End Sub'}}}
 
-Sub abcdefc(targetRange As Range, fromRange As Range)
+Sub abcdefc(targetRange As Range, fromRange As Range)'{{{
 	Call diffsh(ActiveWorkbook.Worksheets("変更点"), ActiveWorkbook.Worksheets("変更元"))
-End Sub
+End Sub'}}}
 
 '-----------Supplimental functions------------------------
 Function Field_No(fieldName As String, Optional sheetName As String = "", Optional fieldRowNum As Long = 1)'{{{
@@ -441,7 +373,7 @@ Function GroupNo(groupName as String)'{{{
         False, MatchByte:=False, SearchFormat:=False).Row
 End Function'}}}
 
-Function AlphabetColumn(num As Long)
+Function AlphabetColumn(num As Long)'{{{
     buf = Cells(1, num).Address(True, False)
     AlphabetColumn = Left(buf, InStr(buf, "$") - 1)
-End Function
+End Function'}}}
