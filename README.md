@@ -2,17 +2,15 @@
 
 Vim for Excel. I hate using the mouse, especially after learning Vim. I'm very frustrated using Excel, I wanna use dd, yy , jkhl, ・・・like vim!. Is There some way to solve this? I found vimxls. But vimxls has some problem for me. For Example not customizable of mapping in setting file like .vimrc. VimX aims to eliminate this problem, and add many features inspired from popular vim plugin like budle, unite, ・・・. 
 
-#Where can I get VimX?
+# Where can I get VimX?
 
- * There are two ways:
+* There are two ways:
   * You can install it through git
-  * You can download the `.zip` file [here](https://github.com/1995eaton/chromium-vim/archive/master.zip) and enable cVim by going to the `chrome://extensions` URL and checking developer mode, then pointing Chrome to the unzipped folder via the `Load unpacked extensions...` button.
 
-	  # Why is this different than vimxls?
+# Why is this different than vimxls?
+These extensions do a wonderful job of adding Vim-like keybindings to Excel, but they lack many of the features that Firefox Addon, Pentadactyl, have.
 
-	  These extensions do a wonderful job of adding Vim-like keybindings to Excel, but they lack many of the features that Firefox Addon, Pentadactyl, have.
-
- * What features does VimX add to Excel?
+* What features does VimX add to Excel?
   * vim-like key mapping
 	  * mode feature (normal,visual,line_visual,command) 
 	  * fully-customizable in ~/.vimxrc. (you can assign a function you write to any keystroke you like!)
@@ -172,13 +170,13 @@ nmap ,p unite project
 " Settings from there
 ```
 
-### option
+## option
 
-### Mappings
+## Mappings
 
-###Site-specific Configuration
+## Site-specific Configuration
 
-###Running commands when a page loads
+## Running commands when a page loads
 
 # Contributing
 Nice that you want to spend some time improving this Addin.
