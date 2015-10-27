@@ -451,6 +451,6 @@ Private Sub printReferencesName()'{{{
 		Debug.Print r.FullName
 End Sub'}}}
 
-Public Sub EmbedSourceToActiveBook()
-
-End Sub
+Public Sub EmbedSourceToActiveBook()'{{{
+	UpdateModulesofBook ActiveWorkBook.Name
+End Sub'}}}
