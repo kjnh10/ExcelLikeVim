@@ -10,20 +10,25 @@ Enum Module'{{{
 End Enum'}}}
 
 '----------------------------- updatemodules --------------
-Public Function UpdateModulesOfBook(Optional bookPath As String = "", Optional isCalledFromThisWorkbookModule = False) '{{{
+Public Function UpdateModulesOfBook(Optional bookPath As String = "", Optional isCalledFromThisWorkbookModule = False, Optional sourceDirPath As String = "") '{{{
 	Const moduleListFile As String = "libdef.txt" 'ライブラリリストのファイル名
 	Dim msgError As String: msgError = "Error Message"
 	Dim updatedModuleNameList As New Collection
 
 	'Get module list to update from libdef.'{{{
-	'Set targetBook, targetBookModuleDirectory, libDefPath 
+	'Set targetBook
 	Dim targetBook As Workbook
 	if bookPath = "" Then
 		Set targetBook = ThisWorkbook
+	Else
+		Set targetBook = Application.Workbooks(bookPath)
+	End if
+
+	'Set targetBookModuleDirectory, libDefPath 
+	if sourceDirPath = "" Then
 		targetBookModuleDirectory = ThisWorkbook.Path
 		libDefPath = targetBookModuleDirectory & "\" & moduleListFile
 	Else
-		Set targetBook = Application.Workbooks(bookPath)
 		targetBookModuleDirectory = ThisWorkbook.Path & "\src\forbook\" &targetBook.Name
 		libDefPath = targetBookModuleDirectory & "\" & moduleListFile
 	End if
@@ -444,5 +449,8 @@ End Function'}}}
 Private Sub printReferencesName()'{{{
 	For Each r in ThisWorkbook.VBProject.References
 		Debug.Print r.FullName
-	Next r
 End Sub'}}}
+
+Public Sub EmbedSourceToActiveBook()
+
+End Sub
