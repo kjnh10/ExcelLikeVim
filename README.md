@@ -1,18 +1,20 @@
 # What is VimX?
 
-Vim for Excel. I hate using the mouse, especially after learning Vim. I'm very frustrated using Excel, I wanna use dd, yy , jkhl, ・・・like vim!. Is There some way to solve this? I found vimxls. But vimxls has some problem for me. For Example not customizable of mapping in setting file like .vimrc. VimX aims to eliminate this problem, and add many features inspired from popular vim plugin like budle, unite, ・・・. 
+Vim for Excel. I hate using the mouse, especially after learning Vim. I'm very frustrated using Excel, I wanna use hjkl, dd, yy ,  ・・・like vim!. Is There some way to solve this? I found vimxls. But vimxls has some problem for me. For Example not customizable of mapping in setting file like .vimrc. VimX aims to eliminate this problem, and add many features inspired from popular vim plugin like budle, unite, ・・・.
 
 # Where can I get VimX?
-
-* There are two ways:
-  * You can install it through git
+You can install it through git
+```bash
+git clone https://github.com/kojinho10/ExcelLikeVim.git
+```
+Then register VimX.xlam As addin.
 
 # Why is this different than vimxls?
-These extensions do a wonderful job of adding Vim-like keybindings to Excel, but they lack many of the features that Firefox Addon, Pentadactyl, have.
+These extensions do a wonderful job of adding Vim-like keybindings to Excel.
 
 * What features does VimX add to Excel?
   * vim-like key mapping
-	  * mode feature (normal,visual,line_visual,command) 
+	  * mode feature (normal,visual,line_visual,command)
 	  * fully-customizable in ~/.vimxrc. (you can assign a function you write to any keystroke you like!)
   * Support for custom keyboard mappings
   * unite interface like unite in vim. you can add your source, your action! Below default sources
@@ -33,22 +35,18 @@ These extensions do a wonderful job of adding Vim-like keybindings to Excel, but
 | `^u`                       | scroll half-page up                                                 | scrollPageUp                  |
 | `gg`                      | scroll to the top of the page                                         | scrollToTop                     |
 | `G`                       | scroll to the bottom of the page                                      | scrollToBottom                  |
-| `0`                       | scroll to the left of the page                                        | scrollToLeft                    |
-| unmapped                  | edit with Vim in a terminal (need the [cvim_server.py](https://github.com/1995eaton/chromium-vim/blob/master/cvim_server.py) script running for this to work) | editWithVim     |
 
 # Customize by .vimxrc
 you can customize mapping and behaviror of some function through setting option.
-### Example configuration
+### Example configuration of .vimxrc
 ```vb
-" Settings
 ' vim: filetype=vb
-
 ' AllKeyAssign_reset
 ' MouseNormal
 wrap unite_filter,unite filter
 wrap unite_mru,unite mru
 wrap unite_command_,unite command
-wrap unite_project,unite project 
+wrap unite_project,unite project
 
 'mapping
 'normal mode
@@ -153,7 +151,7 @@ lvmap < visual_operation smallerFonts
 lvmap z visual_operation SetRuledLines
 lvmap Z visual_operation UnsetRuledLines
 
-'book特有のマッピング
+'book specific setting
 for task_management.xlsm:タスク一覧
 nmap o addtask_under
 nmap O addtask_upper
@@ -166,17 +164,7 @@ nmap gn ViewNextDay
 nmap gp ViewPreviousDay
 'nmap N SendToNextDay
 nmap ,p unite project
-
-" Settings from there
 ```
-
-## option
-
-## Mappings
-
-## Site-specific Configuration
-
-## Running commands when a page loads
 
 # Contributing
 Nice that you want to spend some time improving this Addin.
