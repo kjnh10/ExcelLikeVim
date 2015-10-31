@@ -3,10 +3,10 @@
 'vim_mapping
 'normal mode
 	'move
-	nmap l move_right
 	nmap h move_left
-	nmap k move_up
 	nmap j move_down
+	nmap k move_up
+	nmap l move_right
 	nmap gg gg
 	nmap G G
 	nmap w vim_w
