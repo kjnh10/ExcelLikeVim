@@ -155,7 +155,7 @@ Public Function SmartOpenBook(filePath) '{{{
 
 		DoEvents
 		' Workbooks.Open FileName:=filePath, Notify:=True, AddToMru:=True
-		CreateObject("Wscript.Shell").Run filePath, 5
+		CreateObject("Wscript.Shell").Run Chr(34) & filePath & Chr(34), 5
 
 		Exit Function
 	Myerror:
