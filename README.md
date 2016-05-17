@@ -1,8 +1,8 @@
-# What is VimX?
+# What is ExcelLikeVim?
 
-Vim for Excel. I hate using the mouse, especially after learning Vim. I'm very frustrated using Excel, I wanna use hjkl, dd, yy ,  ・・・like vim!. Is There some way to solve this? I found vimxls. But vimxls has some problem for me. For Example not customizable of mapping in setting file like .vimrc. VimX aims to eliminate this problem, and add many features inspired from popular vim plugin like budle, unite, ・・・.
+Vim for Excel. I hate using the mouse, especially after learning Vim. I'm very frustrated using Excel, I wanna use hjkl, dd, yy ,  ・・・like vim!. Is There some way to solve this? I found vimxls. But vimxls has some problem for me. For Example not customizable of mapping in setting file like .vimrc. ExcelLikeVim aims to eliminate this problem, and add many features inspired from popular vim plugin like budle, unite, ・・・.
 
-# Where can I get VimX?
+# Where can I get ExcelLikeVim?
 You can install it through git.
 ```bash
 git clone https://github.com/kojinho10/ExcelLikeVim.git
@@ -13,7 +13,7 @@ Then register VimX.xlam As Excel addin.
 ![3](./doc/img/install3.png)
 ![4](./doc/img/install4.png)
 
-# What can you do with Vimx ?
+# What can you do with ExcelLikeVim ?
 These extensions do a wonderful job of adding Vim-like keybindings to Excel.
 
 ## Lists of features
