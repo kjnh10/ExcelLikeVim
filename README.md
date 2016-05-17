@@ -9,7 +9,6 @@ git clone https://github.com/kojinho10/ExcelLikeVim.git
 ```
 Then register VimX.xlam As Excel addin.
 ![1](./doc/img/install1.png)
-![2](./doc/img/install2.png)
 ![3](./doc/img/install3.png)
 ![4](./doc/img/install4.png)
 
