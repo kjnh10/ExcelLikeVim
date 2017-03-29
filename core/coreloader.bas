@@ -74,6 +74,7 @@ On Error GoTo except
 	Dim moduleName As String: moduleName = myFSO.GetBaseName(modulePath)
 
 	If Not isMemberOfVBEComponets(targetBook, moduleName) Then
+		Debug.Print modulePath
 		targetBook.VBProject.VBComponents.Import modulePath
 	ElseIf moduleName <> "coreloader" And checkExistFile(modulePath) Then
 		With targetBook.VBProject.VBComponents(moduleName).CodeModule 'reference: http://futurismo.biz/archives/2386
@@ -82,7 +83,7 @@ On Error GoTo except
 
 			Select Case targetBook.VBProject.VBComponents(moduleName).type
 				Case Module.Standard
-
+					Msgbox(moduleName)
 				Case Module.Class
 					.DeleteLines StartLine:=1, count:=4
 				Case Module.Forms
