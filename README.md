@@ -236,3 +236,5 @@ it would be best to [submit an issue](https://github.com/kojinho10/ExcelLikeVim/
 You'll get feedback whether it will likely be merged.
 
 # Tips
+# log
+fileformat changed
