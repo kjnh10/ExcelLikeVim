@@ -25,8 +25,7 @@ Function GatherCandidates_command() As Collection'{{{
 		Do While iLine < objCode.CountOfLines
 			sProcName = objCode.ProcOfLine(iLine, pk)
 			If sProcName <> "" Then
-				' Debug.Print objComponent.Name & ": " & sProcName
-				result.Add sProcName
+				result.Add objComponent.Name & "." & sProcName
 				' Found a procedure. Display its details, and then skip to the end of the procedure.
 				iLine = iLine + objCode.ProcCountLines(sProcName, pk)
 			Else

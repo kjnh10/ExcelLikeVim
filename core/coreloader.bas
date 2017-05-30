@@ -1,6 +1,18 @@
 Attribute VB_Name = "coreloader"
 
-Declare Function SHCreateDirectoryEx Lib "shell32" Alias "SHCreateDirectoryExA" (ByVal hwnd As Long, ByVal pszPath As String, ByVal psa As Long) As Long
+'Declare SHCreateDirectoryEx' {{{
+#If VBA7 And Win64 Then
+    Private Declare PtrSafe Function SHCreateDirectoryEx Lib "shell32" _
+                                    Alias "SHCreateDirectoryExA" _
+        (ByVal hwnd As LongPtr, ByVal pszPath As String, _
+         ByVal psa As LongPtr) As Long
+
+#Else
+    Private Declare Function SHCreateDirectoryEx Lib "shell32" _
+                                    Alias "SHCreateDirectoryExA" _
+        (ByVal hwnd As Long, ByVal pszPath As String, _
+         ByVal psa As Long) As Long
+#End If  '}}}
 
 Private Enum Module'{{{
 	Standard = 1
@@ -10,28 +22,39 @@ Private Enum Module'{{{
 	Document = 100
 End Enum'}}}
 
-Public Sub main()'{{{
+Public Udir As String  'user_folder
+
+Public Sub init()'{{{
 	Call SetReference
-
-	'load core modules
-	Call SourceDir(ThisWorkbook.Path & "\core\", ThisWorkbook.Name, True)
-
-	'load standard plugins
-	Call SourceDir(ThisWorkbook.Path & "\sys_plugin", ThisWorkbook.Name, True)
-
-	'default setting
+	Udir = Environ("homedrive") & Environ("homepath") & "\vimx\"  
+	
+	 'default setting
 	Call RegisterModule(ThisWorkbook.Path & "\configure.bas", ThisWorkbook)
 	Call initModule("configure")
 
 	'user setting
-	Call RegisterModule(Environ("homepath") & "\.vimx\user_configure.bas", ThisWorkbook)
+	'Call RegisterModule(Environ("homedrive") & Environ("homepath") & "\.vimx\user_configure.bas", ThisWorkbook)
+	Call RegisterModule(uDir & "user_configure.bas", ThisWorkbook)
 	Call initModule("user_configure")
-
-	Msgbox "All Modules were successfully updated."
 End Sub'}}}
 
+Public Sub reload() '{{{
+	'Dont't call with of from a module functions because that module will not be deleted while this function is being executed'
+	Application.Run "clearAllModules"
+	'load core modules
+	Call LoadPluginDir(ThisWorkbook.Path & "\core\", ThisWorkbook.Name, True)
+	'load standard plugins
+	Call LoadPluginDir(ThisWorkbook.Path & "\sys_plugin", ThisWorkbook.Name, True)
+	'load user plugins
+	Call LoadPluginDir(Udir & "plugin", ThisWorkbook.Name, True)
+
+	init
+
+	Msgbox "All Modules were successfully updated."
+End Sub '}}}
+
 '------------------ Update ------------------------
-Public Sub SourceDir(Optional DirPath As String = "", Optional targetBookName As String = "", Optional isCalledFromThisWorkbookModule = False) '{{{
+Public Sub LoadPluginDir(Optional DirPath As String = "", Optional targetBookName As String = "", Optional isCalledFromThisWorkbookModule = False) '{{{
 	Dim msgError As String: msgError = "Error Message"
 
 	Set FSO = CreateObject("Scripting.FileSystemObject")
@@ -46,16 +69,6 @@ Public Sub SourceDir(Optional DirPath As String = "", Optional targetBookName As
 			Call RegisterModule(modulePath, Workbooks(targetBookName), msgError)
 		End If
 	Next modulePath
-
-	'execute main functions after registering all core modules
-	For Each modulePath in moduleList
-		filename = FSO.GetFileName(modulePath)
-		moduleName = Left(filename, InStr(filename, ".")-1) 'remove extention
-		If moduleName <> "coreloader" Then
-			Call initModule(moduleName, msgError)
-		End If
-	Next modulePath
-
 	'error handling'{{{
 	If msgError = "Error Message" Then
 	Else
@@ -63,43 +76,23 @@ Public Sub SourceDir(Optional DirPath As String = "", Optional targetBookName As
 	End If '}}}
 End Sub '}}}
 
-Public Sub Source(Optional DirPath As String = "", Optional targetBookName As String = "") '{{{
-	Call RegisterModule(modulePath, Workbooks(targetBookName), msgError)
-	Call initModule(CreateObject("Scripting.FileSystemObject").GetBaseName(modulePath), msgError)
-End Sub '}}}
-
 Private Sub RegisterModule(modulePath, Optional targetBook As Workbook = Nothing, Optional msgError As String = "")'{{{
 On Error GoTo except
 	Set myFSO = CreateObject("Scripting.FileSystemObject")
 	Dim moduleName As String: moduleName = myFSO.GetBaseName(modulePath)
 
-	If Not isMemberOfVBEComponets(targetBook, moduleName) Then
-		Debug.Print modulePath
-		targetBook.VBProject.VBComponents.Import modulePath
-	ElseIf moduleName <> "coreloader" And checkExistFile(modulePath) Then
-		With targetBook.VBProject.VBComponents(moduleName).CodeModule 'reference: http://futurismo.biz/archives/2386
-			.DeleteLines StartLine:=1, count:=.CountOfLines
-			.AddFromFile modulePath
+	If moduleName <> "coreloader" Then
+		If isMemberOfVBEComponets(targetBook, moduleName) Then
+			' remove won't get effect soon after executed, so neeed to rename for avoiding duplication when inporting.
+			delname = moduleName & "_to_delete"
+			ThisWorkbook.VBProject.VBComponents(moduleName).name = delname
+			ThisWorkbook.VBProject.VBComponents.Remove ThisWorkbook.VBProject.VBComponents.Item(delname)
+		End If
 
-			Select Case targetBook.VBProject.VBComponents(moduleName).type
-				Case Module.Standard
-					Msgbox(moduleName)
-				Case Module.Class
-					.DeleteLines StartLine:=1, count:=4
-				Case Module.Forms
-					.DeleteLines StartLine:=1, count:=10
-				Case Module.Document
-					.DeleteLines StartLine:=1, count:=4
-				Case Else
-					Debug.Print targetBook.VBProject.VBComponents(moduleName).type
-			End Select
-		End With
+		If Not isMemberOfVBEComponets(targetBook, moduleName) Then
+			targetBook.VBProject.VBComponents.Import modulePath
+		End If
 	End If
-
-	' 'runtimepathへの登録
-	' With targetBook.VBProject.VBComponents().CodeModule 'reference: http://futurismo.biz/archives/2386
-	' 	moduleName
-	' End With
 
 except:
 	If Err.Number <> 0 Then
@@ -111,10 +104,24 @@ End Sub'}}}
 
 Private Sub initModule(moduleName, Optional msgError As String = "") '{{{
 	On Error Resume Next
-	Application.Run(moduleName & ".main")
+	Application.Run(moduleName & ".init")
 	If Err.Number <> 0 And Err.Number <> 1004 Then
 		msgError = msgError & vbCrLf & Err.Description & ":" & Err.Number
 	End If
+End Sub '}}}
+
+Private Sub clearAllModules() '{{{
+	Dim moduleList As Collection: Set moduleList = New Collection
+	For Each component In ThisWorkbook.VBProject.VBComponents
+		If (component.name <> "coreloader") and (component.Type = 1 Or component.Type = 2 Or component.Type = 3) Then
+			'Standard(Type=1) / Class(Type=2) / Form(Type=3)
+			moduleList.Add(component.name)
+		End If
+	Next component
+	For Each modName in moduleList
+		Set component = ThisWorkbook.VBProject.VBComponents.Item(modName)
+		ThisWorkbook.VBProject.VBComponents.Remove component
+	Next modName
 End Sub '}}}
 
 '------------------ Other -------------------------
@@ -163,7 +170,7 @@ Private Sub printReferencesName()'{{{
 	'For Investigation
 	For Each r in ThisWorkbook.VBProject.References
 		Debug.Print r.FullName
-	End Sub'}}}
+End Sub'}}}
 
 '------------------- common Functions / Subs --------------
 Private Function isExcelObject(fileName As String) As Boolean'{{{
@@ -177,23 +184,23 @@ Private Function isExcelObject(fileName As String) As Boolean'{{{
 	End If
 End Function'}}}
 
-	Private Function getExtention(myComponent) As String'{{{
-		Dim extention As String
-		Select Case myComponent.Type
-			Case Module.Standard
-				extention = ".bas"
-			Case Module.Class
-				extention = ".cls"
-			Case Module.Forms
-				extention = ".frm"
-			Case Module.ActiveX
-				extention = ".cls"
-			Case Module.Document
-				extention = ".cls"
-		End Select
+Private Function getExtention(myComponent) As String'{{{
+	Dim extention As String
+	Select Case myComponent.Type
+		Case Module.Standard
+			extention = ".bas"
+		Case Module.Class
+			extention = ".cls"
+		Case Module.Forms
+			extention = ".frm"
+		Case Module.ActiveX
+			extention = ".cls"
+		Case Module.Document
+			extention = ".cls"
+	End Select
 
-		getExtention = extention
-	End Function'}}}
+	getExtention = extention
+End Function'}}}
 
 Private Function checkExistFile(ByVal pathFile As String) As Boolean'{{{
   On Error GoTo Err_dir
@@ -205,7 +212,7 @@ Private Function checkExistFile(ByVal pathFile As String) As Boolean'{{{
 
   Exit Function
 
-Err_dir:
+  Err_dir:
   checkExistFile = False
 End Function'}}}
 
@@ -233,7 +240,7 @@ End Function '}}}
 
 '再帰的なフォルダの取得'{{{
 Public Function ModuleListOfPlugin(folder_path As String) As Collection
-	Set ModuleListOfPlugin = AllFiles(folder_path,  ".*(bas|cls|frm)$", "not_used")
+	Set ModuleListOfPlugin = AllFiles(folder_path,  ".*(bas|cls|frm)$", "_stash")
 End Function
 
 Public Function AllFiles(folder_path As String, pattern As String, Optional excluded_folder_pattern As String = "") As Collection

@@ -9,10 +9,6 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Public WithEvents appEvent As Application
 Attribute appEvent.VB_VarHelpID = -1
-Public WithEvents pptEvent As PowerPoint.Application
-Attribute pptEvent.VB_VarHelpID = -1
-Public WithEvents wrdEvent As Word.Application
-Attribute wrdEvent.VB_VarHelpID = -1
 
 Private Sub appevent_WorkbookOpen(ByVal Wb As Workbook) '{{{
         Call UpdateMru(Wb.FullName)
@@ -44,14 +40,6 @@ Private Sub appevent_WorkbookActivate(ByVal Wb As Workbook) '{{{
         'Debug.Print "App.clsで監視中です｡WorkbookActivateイベントが発生しました｡"
 End Sub '}}}
 
-Private Sub pptEvent_PresentationOpen(ByVal Pres As PowerPoint.Presentation) '{{{
-        Call UpdateMru(Pres.FullName)
-End Sub '}}}
-
-Private Sub wrdEvent_DocumentOpen(ByVal Doc As Word.Document) '{{{
-        Call UpdateMru(Doc.FullName)
-End Sub '}}}
-
 '------------------sub Function/Sub-----------------------------
 Private Sub UpdateMru(filePath As String) '{{{
         'ファイルを開いた履歴を書き込む
@@ -61,15 +49,15 @@ Private Sub UpdateMru(filePath As String) '{{{
         Dim buflines As New Collection
 
         'If mru_file does not exist, make mru_file.
-        Dim mruDir As String: mruDir = Environ("homepath") & "\.vimx" & "\.cache\"
+        Dim mruDir As String: mruDir = Udir & ".cache\"
         If dir(mruDir & "mru.txt") = "" Then
                 If dir(mruDir, vbDirectory) = "" Then
                         MkDirRecursively mruDir
                 End If
-                CreateObject("Scripting.FileSystemObject").CreateTextFile Environ("homepath") & "\.vimx" & "\.cache\" & "mru.txt"
+                CreateObject("Scripting.FileSystemObject").CreateTextFile Udir & ".cache\" & "mru.txt"
         End If
 
-        Open Environ("homepath") & "\.vimx" & "\.cache\" & "mru.txt" For Input As #1
+        Open Udir & ".cache\" & "mru.txt" For Input As #1
         Do Until EOF(1)
                 Line Input #1, buf
                 If Split(buf, separator)(0) = filePath Then
@@ -82,7 +70,7 @@ Private Sub UpdateMru(filePath As String) '{{{
         Close #1
         buflines.Add Item:=filePath & separator & count + 1 & separator & openTime
 
-        Open Environ("homepath") & "\.vimx" & "\.cache\mru.txt" For Output As #1
+        Open Udir & ".cache\mru.txt" For Output As #1
         For Each record In buflines
                 Print #1, record
         Next record
@@ -95,5 +83,3 @@ Private Sub UpdateMru(filePath As String) '{{{
         On Error GoTo 0
 
 End Sub '}}}
-
-

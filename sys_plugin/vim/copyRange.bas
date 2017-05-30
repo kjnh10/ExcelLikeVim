@@ -1,14 +1,14 @@
 Attribute VB_Name = "copyRange"
 
-Private Declare Function OpenClipboard Lib "user32" (ByVal hwnd As Long) As Long
-Private Declare Function GetClipboardData Lib "user32" (ByVal wFormat As Long) As Long
-Private Declare Function RegisterClipboardFormat Lib "user32" Alias "RegisterClipboardFormatA" (ByVal lpString As String) As Long
-Private Declare Function CloseClipboard Lib "user32" () As Long
-Private Declare Function GlobalSize Lib "kernel32" (ByVal hMem As Long) As Long
-Private Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
-Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" (ByVal Destination As Long, ByVal Source As Long, ByVal Length As Long)
-Private Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
-Private Declare Function MultiByteToWideChar Lib "kernel32" (ByVal CodePage As Long, ByVal dwFlags As Long, ByRef lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByVal lpWideCharStr As Long, ByVal cchWideChar As Long) As Long
+Private Declare PtrSafe Function OpenClipboard Lib "user32" (ByVal hwnd As Long) As Long
+Private Declare PtrSafe Function GetClipboardData Lib "user32" (ByVal wFormat As Long) As Long
+Private Declare PtrSafe Function RegisterClipboardFormat Lib "user32" Alias "RegisterClipboardFormatA" (ByVal lpString As String) As Long
+Private Declare PtrSafe Function CloseClipboard Lib "user32" () As Long
+Private Declare PtrSafe Function GlobalSize Lib "kernel32" (ByVal hMem As Long) As Long
+Private Declare PtrSafe Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
+Private Declare PtrSafe Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" (ByVal Destination As Long, ByVal Source As Long, ByVal Length As Long)
+Private Declare PtrSafe Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
+Private Declare PtrSafe Function MultiByteToWideChar Lib "kernel32" (ByVal CodePage As Long, ByVal dwFlags As Long, ByRef lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByVal lpWideCharStr As Long, ByVal cchWideChar As Long) As Long
 
 '**
 ' コピーアドレスの取得

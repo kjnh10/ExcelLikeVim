@@ -1,8 +1,14 @@
 Attribute VB_Name = "keystrokeAsseser"
 
-Private Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Long) As Long
-Private Declare Function GetKeyboardState Lib "user32" (pbKeyState As Byte) As Long
-Private Declare Function GetTickCount Lib "kernel32" () As Long 'for measuring poformance
+#If VBA7 And Win64 Then
+  Private Declare PtrSafe Function GetAsyncKeyState Lib "User32.dll" (ByVal vKey As Long) As Integer
+  Private Declare PtrSafe Function GetKeyboardState Lib "user32" (pbKeyState As Byte) As LongLong
+  Private Declare PtrSafe Function GetTickCount Lib "kernel32" () As LongLong 'パフォーマンス計測のため｡
+#Else
+  Private Declare PtrSafe Function GetAsyncKeyState Lib "User32.dll" (ByVal vKey As Long) As Long
+  Private Declare PtrSafe Function GetKeyboardState Lib "user32" (pbKeyState As Byte) As Long
+  Private Declare PtrSafe Function GetTickCount Lib "kernel32" () As Long 'パフォーマンス計測のため｡
+#End If
 
 Private Const timeoutLen As Single = 1000 'wait time for hitting next
 Private keyStroke As String
@@ -15,13 +21,10 @@ Private keybinde As String
 Private modeOfVim As String
 Private s As Double 'for storing time from when previousley pressing a key
 
-'TODO refoctoring
-
-Public Sub main()'{{{
+Public Sub init()'{{{
+	isNewStroke = True
 	Set keyMapDic = CreateObject("Scripting.Dictionary")
-
 	Call SetModeOfVim("normal")
-	Call AllKeyToAssesKeyFunc
 End Sub'}}}
 
 Public Sub SetModeOfVim(modeName)'{{{
@@ -507,7 +510,7 @@ Public Sub AllKeyAssign_dummy() '{{{
     Application.OnKey "+9", "dummy"
 End Sub '}}}
 
-'----------- configre mapping-----------------------
+'----------- mapping def function -----------------------
 Public Sub nmap(key, func, optional context = "default")'{{{
 	if not keyMapDic.exists(context) then
 		CreateMap(context)
@@ -550,9 +553,8 @@ Private Sub AssesKey(optional context As String = "default")'{{{
 	Application.EnableCancelKey = xlDisabled 'for Esc Command. Without this, cannot catch ESC key.
 	'
 	If keyMapDic is Nothing Then 
-		Application.Run("keystrokeAsseser.main")
-		Application.Run("configure.SetKeyMapping")
-		Application.Run("user_configure.SetKeyMapping")
+		Application.Run("keystrokeAsseser.init")
+		Application.Run("user_configure.mykeymap")
 	End If
 
 	s = GetTickCount '0 milisecond
@@ -567,6 +569,7 @@ Private Sub AssesKey(optional context As String = "default")'{{{
 
 	If newkey = "" Then 'When Application.OnKey Works, but GetKeyString does not work.'{{{
 		MsgBox "couldn't get newkey"
+		isNewStroke = True
 		Exit Sub
 	End If'}}}
 
@@ -709,7 +712,8 @@ Private Function GetKeyStringAsync()'{{{
 '}}}'}}}
 
 	'返り値をセット'{{{
-	keyStringAsync = ""
+	GetkeyStringAsync = ""
+         Debug.print "mainkey" & mainkey
 	If shift Then
 		GetKeyStringAsync = UCase(mainkey)
 	ElseIf control Then
@@ -882,7 +886,7 @@ End Function'}}}
 
 Private Function NumberOfHits(stroke As String, context, modeOfVim) As Long'{{{
 	'keyMapDicの中で､keystrokeに前方一致する項目の数を返す
-	Dim s As Long
+	Dim s As LongLong
 	s = GetTickCount
 
 	c = 0

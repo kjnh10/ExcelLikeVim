@@ -28,7 +28,7 @@ Function GatherCandidates_mru() As Collection '{{{
 	Dim reverseResult As New Collection
 	Set FSO = CreateObject("Scripting.FileSystemObject")
 
-	Open Environ("homepath") & "\.vimx" & "/.cache/mru.txt" For Input As #1
+	Open Udir & ".cache\mru.txt" For Input As #1
 	Do Until EOF(1)
 		Line Input #1, buf
 		FileName = Split(buf, ":::")(0)
