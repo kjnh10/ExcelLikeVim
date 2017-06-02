@@ -618,7 +618,7 @@ Private Sub AssesKey(optional context As String = "default")'{{{
 			e = GetTickCount
 		Loop
 
-		' Debug.print "loopが全て回ったため､このストロークで評価します｡"
+		' Debug.print "have waited for timeoutlen:" & timeoutlen & ", so will execute the stroke:" & KeyStroke
 		Application.Run keyMapDic(context)(modeOfVim)(keyStroke)
 		isNewStroke = True
 	End If
