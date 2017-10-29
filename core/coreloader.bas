@@ -35,9 +35,9 @@ Public Sub init()'{{{
 	Call initModule("user_configure")
 End Sub'}}}
 
-Public Function Udir() As String  'user_folder
+Public Function Udir() As String  'user_folder'{{{
 	Udir = Environ("homedrive") & Environ("homepath") & "\vimx\"  
-End Function
+End Function'}}}
 
 Public Sub reload() '{{{
 	'Dont't call with of from a module functions because that module will not be deleted while this function is being executed'

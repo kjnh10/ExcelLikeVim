@@ -1,12 +1,7 @@
 Attribute VB_Name = "user_configure"
 
 Public Sub init() '{{{
-	Application.Cursor = xlNorthwestArrow
-	Call SetAppEvent
-	Call keystrokeAsseser.init
-	call vimize.main
 	call mykeymap
-	application.onkey "{F3}", "'unite ""command""'"
 End Sub '}}}
 
 private sub mykeymap() '{{{
