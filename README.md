@@ -5,7 +5,7 @@ ExcelLikeVim provides vim-like interface for Excel aiming to provide
 It's now under developing so 
 
 # Installation
-Download *the latest vimx.xlam* file from this page.
+Go to the [releases page](https://github.com/kojinho10/ExcelLikeVim/releases/tag/v2.2), download *the latest vimx.xlam* file.
 Then register vimx.xlam as Excel addin.
 
 That's all.
