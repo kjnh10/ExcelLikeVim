@@ -89,8 +89,9 @@ Please see the section 'Default Key bindings' for more detailed list you can do.
 | LineVisual | `x`         | lv_d
 
 # Customization 
-Editing ~/vimx/user_configure.bas, you can customize key-mapping and behaviror of some function through setting option.
-Firstly you need to make ~/vimx/user_configure.bas
+Editing *~/vimx/user_configure.bas*, you can customize key-mapping and behaviror of some function through setting option.
+Firstly you need to make *~/vimx/user_configure.bas*
+This configure file will be loaded while Excel launch.
 
 ## Example configuration of user_configure.bas
 ```vb
@@ -103,7 +104,7 @@ Public Sub init()
   call vimize.main
   call mykeymap
   application.onkey "{F3}", "coreloader.reload"
-  End Sub 
+End Sub 
 
 private sub mykeymap()
   Call nmap("<HOME>", "move_head")
@@ -168,7 +169,7 @@ private sub mykeymap()
   Call lvmap("<", "visual_operation smallerFonts")
   Call lvmap("z", "visual_operation SetRuledLines")
   Call lvmap("Z", "visual_operation UnsetRuledLines")
-  end sub
+End Sub
   ```
 
 # Contributing
