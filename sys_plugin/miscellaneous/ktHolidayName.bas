@@ -86,157 +86,157 @@ End Function
 
 '========================================================================
 Private Function prvj“ú(ByVal “ú•t As Date) As String
-Dim int”N As Integer
-Dim intŒ As Integer
-Dim int“ú As Integer
-Dim intH•ª“ú As Integer
-Dim str‘æN—j“ú As String
-' ƒf[ƒ^(¬”•”)‚Íæ‚èœ‚¢‚Ä‚ ‚é‚Ì‚ÅA‰º‹L‚Ì“ú•t‚Æ‚Ì”äŠr‚Í‚n‚j
-Const cstj“ú–@{s As Date = "1948/7/20"
-Const cstº˜a“Vc‚Ì‘å‘r‚Ì—ç As Date = "1989/2/24"
-Const cst–¾me‰¤‚ÌŒ‹¥‚Ì‹V As Date = "1959/4/10"
-Const cst“¿me‰¤‚ÌŒ‹¥‚Ì‹V As Date = "1993/6/9"
-Const cst‘¦ˆÊ—ç³“a‚Ì‹V As Date = "1990/11/12"
+  Dim int”N As Integer
+  Dim intŒ As Integer
+  Dim int“ú As Integer
+  Dim intH•ª“ú As Integer
+  Dim str‘æN—j“ú As String
+  ' ƒf[ƒ^(¬”•”)‚Íæ‚èœ‚¢‚Ä‚ ‚é‚Ì‚ÅA‰º‹L‚Ì“ú•t‚Æ‚Ì”äŠr‚Í‚n‚j
+  Const cstj“ú–@{s As Date = "1948/7/20"
+  Const cstº˜a“Vc‚Ì‘å‘r‚Ì—ç As Date = "1989/2/24"
+  Const cst–¾me‰¤‚ÌŒ‹¥‚Ì‹V As Date = "1959/4/10"
+  Const cst“¿me‰¤‚ÌŒ‹¥‚Ì‹V As Date = "1993/6/9"
+  Const cst‘¦ˆÊ—ç³“a‚Ì‹V As Date = "1990/11/12"
 
-    int”N = Year(“ú•t)
-    intŒ = Month(“ú•t)
-    int“ú = Day(“ú•t)
+  int”N = Year(“ú•t)
+  intŒ = Month(“ú•t)
+  int“ú = Day(“ú•t)
 
-    prvj“ú = ""
-    If (“ú•t < cstj“ú–@{s) Then
-        Exit Function    ' j“ú–@{sˆÈ‘O
-    End If
+  prvj“ú = ""
+  If (“ú•t < cstj“ú–@{s) Then
+    Exit Function    ' j“ú–@{sˆÈ‘O
+  End If
 
-    Select Case intŒ
+  Select Case intŒ
     Case 1
-        If (int“ú = 1) Then
-            prvj“ú = "Œ³“ú"
-        Else
-            If (int”N >= 2000) Then
-                str‘æN—j“ú = (((int“ú - 1) \ 7) + 1) & Weekday(“ú•t)
-                If (str‘æN—j“ú = "22") Then  'Monday:2
-                    prvj“ú = "¬l‚Ì“ú"
-                End If
-            Else
-                If (int“ú = 15) Then
-                    prvj“ú = "¬l‚Ì“ú"
-                End If
-            End If
-        End If
-    Case 2
-        If (int“ú = 11) Then
-            If (int”N >= 1967) Then
-                prvj“ú = "Œš‘‹L”O‚Ì“ú"
-            End If
-        ElseIf (“ú•t = cstº˜a“Vc‚Ì‘å‘r‚Ì—ç) Then
-            prvj“ú = "º˜a“Vc‚Ì‘å‘r‚Ì—ç"
-        End If
-    Case 3
-        If (int“ú = prvt•ª“ú(int”N)) Then  ' 1948`2150ˆÈŠO‚Í[99]
-            prvj“ú = "t•ª‚Ì“ú"            ' ‚ª•Ô‚é‚Ì‚Å¤•K‚¸‚‚É‚È‚é
-        End If
-    Case 4
-        If (int“ú = 29) Then
-            If (int”N >= 2007) Then
-                prvj“ú = "º˜a‚Ì“ú"
-            ElseIf (int”N >= 1989) Then
-                prvj“ú = "‚İ‚Ç‚è‚Ì“ú"
-            Else
-                prvj“ú = "“Vc’a¶“ú"
-            End If
-        ElseIf (“ú•t = cst–¾me‰¤‚ÌŒ‹¥‚Ì‹V) Then
-            prvj“ú = "c‘¾q–¾me‰¤‚ÌŒ‹¥‚Ì‹V"
-        End If
-    Case 5
-        If (int“ú = 3) Then
-            prvj“ú = "Œ›–@‹L”O“ú"
-        ElseIf (int“ú = 4) Then
-            If (int”N >= 2007) Then
-                prvj“ú = "‚İ‚Ç‚è‚Ì“ú"
-            ElseIf (int”N >= 1986) Then
-                ' 5/4‚ª“ú—j“ú‚Íw‘ü‚Ì“ú—jx¤Œ—j“ú‚ÍwŒ›–@‹L”O“ú‚ÌU‘Ö‹x“úx(`2006”N)
-                If (Weekday(“ú•t) > vbMonday) Then
-                    prvj“ú = "‘–¯‚Ì‹x“ú"
-                End If
-            End If
-        ElseIf (int“ú = 5) Then
-            prvj“ú = "‚±‚Ç‚à‚Ì“ú"
-        ElseIf (int“ú = 6) Then
-            If (int”N >= 2007) Then
-                Select Case Weekday(“ú•t)
-                    Case vbTuesday, vbWednesday
-                        prvj“ú = "U‘Ö‹x“ú"    ' [5/3,5/4‚ª“ú—j]ƒP[ƒX‚Ì‚İA‚±‚±‚Å”»’è
-                End Select
-            End If
-        End If
-    Case 6
-        If (“ú•t = cst“¿me‰¤‚ÌŒ‹¥‚Ì‹V) Then
-            prvj“ú = "c‘¾q“¿me‰¤‚ÌŒ‹¥‚Ì‹V"
-        End If
-    Case 7
-        If (int”N >= 2003) Then
-            str‘æN—j“ú = (((int“ú - 1) \ 7) + 1) & Weekday(“ú•t)
-            If (str‘æN—j“ú = "32") Then  'Monday:2
-                prvj“ú = "ŠC‚Ì“ú"
-            End If
-        ElseIf (int”N >= 1996) Then
-            If (int“ú = 20) Then
-                prvj“ú = "ŠC‚Ì“ú"
-            End If
-        End If
-    Case 8
-        If (int“ú = 11) Then
-            If (int”N >= 2016) Then
-                prvj“ú = "R‚Ì“ú"
-            End If
-        End If
-    Case 9
-        '‘æ‚RŒ—j“ú(15`21)‚ÆH•ª“ú(22`24)‚ªd‚È‚é–‚Í‚È‚¢
-        intH•ª“ú = prvH•ª“ú(int”N)
-        If (int“ú = intH•ª“ú) Then  ' 1948`2150ˆÈŠO‚Í[99]
-            prvj“ú = "H•ª‚Ì“ú"      ' ‚ª•Ô‚é‚Ì‚Å¤•K‚¸‚‚É‚È‚é
-        Else
-            If (int”N >= 2003) Then
-                str‘æN—j“ú = (((int“ú - 1) \ 7) + 1) & Weekday(“ú•t)
-                If (str‘æN—j“ú = "32") Then  'Monday:2
-                    prvj“ú = "Œh˜V‚Ì“ú"
-                ElseIf (Weekday(“ú•t) = vbTuesday) Then
-                    If (int“ú = (intH•ª“ú - 1)) Then
-                        prvj“ú = "‘–¯‚Ì‹x“ú"
-                    End If
-                End If
-            ElseIf (int”N >= 1966) Then
-                If (int“ú = 15) Then
-                    prvj“ú = "Œh˜V‚Ì“ú"
-                End If
-            End If
-        End If
-    Case 10
+      If (int“ú = 1) Then
+        prvj“ú = "Œ³“ú"
+      Else
         If (int”N >= 2000) Then
-            str‘æN—j“ú = (((int“ú - 1) \ 7) + 1) & Weekday(“ú•t)
-            If (str‘æN—j“ú = "22") Then  'Monday:2
-                prvj“ú = "‘Ìˆç‚Ì“ú"
+          str‘æN—j“ú = (((int“ú - 1) \ 7) + 1) & Weekday(“ú•t)
+          If (str‘æN—j“ú = "22") Then  'Monday:2
+            prvj“ú = "¬l‚Ì“ú"
+          End If
+        Else
+          If (int“ú = 15) Then
+            prvj“ú = "¬l‚Ì“ú"
+          End If
+        End If
+      End If
+    Case 2
+      If (int“ú = 11) Then
+        If (int”N >= 1967) Then
+          prvj“ú = "Œš‘‹L”O‚Ì“ú"
+        End If
+      ElseIf (“ú•t = cstº˜a“Vc‚Ì‘å‘r‚Ì—ç) Then
+        prvj“ú = "º˜a“Vc‚Ì‘å‘r‚Ì—ç"
+      End If
+    Case 3
+      If (int“ú = prvt•ª“ú(int”N)) Then  ' 1948`2150ˆÈŠO‚Í[99]
+        prvj“ú = "t•ª‚Ì“ú"            ' ‚ª•Ô‚é‚Ì‚Å¤•K‚¸‚‚É‚È‚é
+      End If
+    Case 4
+      If (int“ú = 29) Then
+        If (int”N >= 2007) Then
+          prvj“ú = "º˜a‚Ì“ú"
+        ElseIf (int”N >= 1989) Then
+          prvj“ú = "‚İ‚Ç‚è‚Ì“ú"
+        Else
+          prvj“ú = "“Vc’a¶“ú"
+        End If
+      ElseIf (“ú•t = cst–¾me‰¤‚ÌŒ‹¥‚Ì‹V) Then
+        prvj“ú = "c‘¾q–¾me‰¤‚ÌŒ‹¥‚Ì‹V"
+      End If
+    Case 5
+      If (int“ú = 3) Then
+        prvj“ú = "Œ›–@‹L”O“ú"
+      ElseIf (int“ú = 4) Then
+        If (int”N >= 2007) Then
+          prvj“ú = "‚İ‚Ç‚è‚Ì“ú"
+        ElseIf (int”N >= 1986) Then
+          ' 5/4‚ª“ú—j“ú‚Íw‘ü‚Ì“ú—jx¤Œ—j“ú‚ÍwŒ›–@‹L”O“ú‚ÌU‘Ö‹x“úx(`2006”N)
+          If (Weekday(“ú•t) > vbMonday) Then
+            prvj“ú = "‘–¯‚Ì‹x“ú"
+          End If
+        End If
+      ElseIf (int“ú = 5) Then
+        prvj“ú = "‚±‚Ç‚à‚Ì“ú"
+      ElseIf (int“ú = 6) Then
+        If (int”N >= 2007) Then
+          Select Case Weekday(“ú•t)
+            Case vbTuesday, vbWednesday
+              prvj“ú = "U‘Ö‹x“ú"    ' [5/3,5/4‚ª“ú—j]ƒP[ƒX‚Ì‚İA‚±‚±‚Å”»’è
+          End Select
+        End If
+      End If
+    Case 6
+      If (“ú•t = cst“¿me‰¤‚ÌŒ‹¥‚Ì‹V) Then
+        prvj“ú = "c‘¾q“¿me‰¤‚ÌŒ‹¥‚Ì‹V"
+      End If
+    Case 7
+      If (int”N >= 2003) Then
+        str‘æN—j“ú = (((int“ú - 1) \ 7) + 1) & Weekday(“ú•t)
+        If (str‘æN—j“ú = "32") Then  'Monday:2
+          prvj“ú = "ŠC‚Ì“ú"
+        End If
+      ElseIf (int”N >= 1996) Then
+        If (int“ú = 20) Then
+          prvj“ú = "ŠC‚Ì“ú"
+        End If
+      End If
+    Case 8
+      If (int“ú = 11) Then
+        If (int”N >= 2016) Then
+          prvj“ú = "R‚Ì“ú"
+        End If
+      End If
+    Case 9
+      '‘æ‚RŒ—j“ú(15`21)‚ÆH•ª“ú(22`24)‚ªd‚È‚é–‚Í‚È‚¢
+      intH•ª“ú = prvH•ª“ú(int”N)
+      If (int“ú = intH•ª“ú) Then  ' 1948`2150ˆÈŠO‚Í[99]
+        prvj“ú = "H•ª‚Ì“ú"      ' ‚ª•Ô‚é‚Ì‚Å¤•K‚¸‚‚É‚È‚é
+      Else
+        If (int”N >= 2003) Then
+          str‘æN—j“ú = (((int“ú - 1) \ 7) + 1) & Weekday(“ú•t)
+          If (str‘æN—j“ú = "32") Then  'Monday:2
+            prvj“ú = "Œh˜V‚Ì“ú"
+          ElseIf (Weekday(“ú•t) = vbTuesday) Then
+            If (int“ú = (intH•ª“ú - 1)) Then
+              prvj“ú = "‘–¯‚Ì‹x“ú"
             End If
+          End If
         ElseIf (int”N >= 1966) Then
-            If (int“ú = 10) Then
-                prvj“ú = "‘Ìˆç‚Ì“ú"
-            End If
+          If (int“ú = 15) Then
+            prvj“ú = "Œh˜V‚Ì“ú"
+          End If
         End If
+      End If
+    Case 10
+      If (int”N >= 2000) Then
+        str‘æN—j“ú = (((int“ú - 1) \ 7) + 1) & Weekday(“ú•t)
+        If (str‘æN—j“ú = "22") Then  'Monday:2
+          prvj“ú = "‘Ìˆç‚Ì“ú"
+        End If
+      ElseIf (int”N >= 1966) Then
+        If (int“ú = 10) Then
+          prvj“ú = "‘Ìˆç‚Ì“ú"
+        End If
+      End If
     Case 11
-        If (int“ú = 3) Then
-            prvj“ú = "•¶‰»‚Ì“ú"
-        ElseIf (int“ú = 23) Then
-            prvj“ú = "‹Î˜JŠ´Ó‚Ì“ú"
-        ElseIf (“ú•t = cst‘¦ˆÊ—ç³“a‚Ì‹V) Then
-            prvj“ú = "‘¦ˆÊ—ç³“a‚Ì‹V"
-        End If
+      If (int“ú = 3) Then
+        prvj“ú = "•¶‰»‚Ì“ú"
+      ElseIf (int“ú = 23) Then
+        prvj“ú = "‹Î˜JŠ´Ó‚Ì“ú"
+      ElseIf (“ú•t = cst‘¦ˆÊ—ç³“a‚Ì‹V) Then
+        prvj“ú = "‘¦ˆÊ—ç³“a‚Ì‹V"
+      End If
     Case 12
-        If (int“ú = 23) Then
-            If (int”N >= 1989) Then
-                prvj“ú = "“Vc’a¶“ú"
-            End If
+      If (int“ú = 23) Then
+        If (int”N >= 1989) Then
+          prvj“ú = "“Vc’a¶“ú"
         End If
-    End Select
+      End If
+  End Select
 End Function
 
 '======================================================================
@@ -244,34 +244,34 @@ End Function
 '@@wŠCã•ÛˆÀ’¡…˜H•” —ïŒvZŒ¤‹†‰ï•Ò V‚±‚æ‚İ•Ö—˜’ x
 '@‚ÅĞ‰î‚³‚ê‚Ä‚¢‚é®‚Å‚·B
 Private Function prvt•ª“ú(ByVal ”N As Integer) As Integer
-    If (”N <= 1947) Then
-        prvt•ª“ú = 99        'j“ú–@{s‘O
-    ElseIf (”N <= 1979) Then
-        '(”N - 1983)‚ªƒ}ƒCƒiƒX‚É‚È‚é‚Ì‚ÅwFixŠÖ”x‚É‚·‚é
-        prvt•ª“ú = Fix(20.8357 + (0.242194 * (”N - 1980)) - Fix((”N - 1983) / 4))
-    ElseIf (”N <= 2099) Then
-        prvt•ª“ú = Fix(20.8431 + (0.242194 * (”N - 1980)) - Fix((”N - 1980) / 4))
-    ElseIf (”N <= 2150) Then
-        prvt•ª“ú = Fix(21.851 + (0.242194 * (”N - 1980)) - Fix((”N - 1980) / 4))
-    Else
-        prvt•ª“ú = 99        '2151”NˆÈ~‚Í—ªZ®‚ª–³‚¢‚Ì‚Å•s–¾
-    End If
+  If (”N <= 1947) Then
+    prvt•ª“ú = 99        'j“ú–@{s‘O
+  ElseIf (”N <= 1979) Then
+    '(”N - 1983)‚ªƒ}ƒCƒiƒX‚É‚È‚é‚Ì‚ÅwFixŠÖ”x‚É‚·‚é
+    prvt•ª“ú = Fix(20.8357 + (0.242194 * (”N - 1980)) - Fix((”N - 1983) / 4))
+  ElseIf (”N <= 2099) Then
+    prvt•ª“ú = Fix(20.8431 + (0.242194 * (”N - 1980)) - Fix((”N - 1980) / 4))
+  ElseIf (”N <= 2150) Then
+    prvt•ª“ú = Fix(21.851 + (0.242194 * (”N - 1980)) - Fix((”N - 1980) / 4))
+  Else
+    prvt•ª“ú = 99        '2151”NˆÈ~‚Í—ªZ®‚ª–³‚¢‚Ì‚Å•s–¾
+  End If
 End Function
 
 '========================================================================
 Private Function prvH•ª“ú(ByVal ”N As Integer) As Integer
-    If (”N <= 1947) Then
-        prvH•ª“ú = 99        'j“ú–@{s‘O
-    ElseIf (”N <= 1979) Then
-        '(”N - 1983)‚ªƒ}ƒCƒiƒX‚É‚È‚é‚Ì‚ÅwFixŠÖ”x‚É‚·‚é
-        prvH•ª“ú = Fix(23.2588 + (0.242194 * (”N - 1980)) - Fix((”N - 1983) / 4))
-    ElseIf (”N <= 2099) Then
-        prvH•ª“ú = Fix(23.2488 + (0.242194 * (”N - 1980)) - Fix((”N - 1980) / 4))
-    ElseIf (”N <= 2150) Then
-        prvH•ª“ú = Fix(24.2488 + (0.242194 * (”N - 1980)) - Fix((”N - 1980) / 4))
-    Else
-        prvH•ª“ú = 99        '2151”NˆÈ~‚Í—ªZ®‚ª–³‚¢‚Ì‚Å•s–¾
-    End If
+  If (”N <= 1947) Then
+    prvH•ª“ú = 99        'j“ú–@{s‘O
+  ElseIf (”N <= 1979) Then
+    '(”N - 1983)‚ªƒ}ƒCƒiƒX‚É‚È‚é‚Ì‚ÅwFixŠÖ”x‚É‚·‚é
+    prvH•ª“ú = Fix(23.2588 + (0.242194 * (”N - 1980)) - Fix((”N - 1983) / 4))
+  ElseIf (”N <= 2099) Then
+    prvH•ª“ú = Fix(23.2488 + (0.242194 * (”N - 1980)) - Fix((”N - 1980) / 4))
+  ElseIf (”N <= 2150) Then
+    prvH•ª“ú = Fix(24.2488 + (0.242194 * (”N - 1980)) - Fix((”N - 1980) / 4))
+  Else
+    prvH•ª“ú = 99        '2151”NˆÈ~‚Í—ªZ®‚ª–³‚¢‚Ì‚Å•s–¾
+  End If
 End Function
 
 '_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/

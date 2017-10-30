@@ -22,23 +22,23 @@ Private modeOfVim As String
 Private s As Double 'for storing time from when previousley pressing a key
 
 Public Sub init()'{{{
-	isNewStroke = True
-	Set keyMapDic = CreateObject("Scripting.Dictionary")
-	Call SetModeOfVim("normal")
+  isNewStroke = True
+  Set keyMapDic = CreateObject("Scripting.Dictionary")
+  Call SetModeOfVim("normal")
 End Sub'}}}
 
 Public Sub SetModeOfVim(modeName)'{{{
-	modeOfVim = modeName
+  modeOfVim = modeName
 End Sub'}}}
 
 '----------- Application layer mapping-----------------------
 Public Sub toggleVimKeybinde()'{{{
-	If keybinde <> "off" Then
-		Call AllKeyAssign_reset()
-		keybinde = "off"
-	Else
-		Call AllKeyToAssesKeyFunc()
-	End If
+  If keybinde <> "off" Then
+    Call AllKeyAssign_reset()
+    keybinde = "off"
+  Else
+    Call AllKeyToAssesKeyFunc()
+  End If
 End Sub'}}}
 
 Public Sub AllKeyToAssesKeyFunc()'{{{
@@ -197,8 +197,8 @@ Public Sub AllKeyToAssesKeyFunc()'{{{
     Application.OnKey "{F16}", "AssesKey"
     Application.OnKey "{ESC}", "AssesKey"
 
-	Application.OnKey "{HOME}", "move_head"
-	Application.OnKey "{END}", "move_tail"
+  Application.OnKey "{HOME}", "move_head"
+  Application.OnKey "{END}", "move_tail"
 End Sub'}}}
 
 Public Sub AllKeyAssign_reset()'{{{
@@ -512,133 +512,133 @@ End Sub '}}}
 
 '----------- mapping def function -----------------------
 Public Sub nmap(key, func, optional context = "default")'{{{
-	if not keyMapDic.exists(context) then
-		CreateMap(context)
-	end if
-	keyMapDic(context)("normal")(key) = func
+  if not keyMapDic.exists(context) then
+    CreateMap(context)
+  end if
+  keyMapDic(context)("normal")(key) = func
 End Sub'}}}
 
 Public Sub vmap(key, func, optional context = "default")'{{{
-	if not keyMapDic.exists(context) then
-		CreateMap(context)
-	end if
-	keyMapDic(context)("visual")(key) = func
+  if not keyMapDic.exists(context) then
+    CreateMap(context)
+  end if
+  keyMapDic(context)("visual")(key) = func
 End Sub'}}}
 
 Public Sub lvmap(key, func, optional context = "default")'{{{
-	if not keyMapDic.exists(context) then
-		CreateMap(context)
-	end if
-	keyMapDic(context)("line_visual")(key) = func
+  if not keyMapDic.exists(context) then
+    CreateMap(context)
+  end if
+  keyMapDic(context)("line_visual")(key) = func
 End Sub'}}}
 
 Private Sub CreateMap(context)'{{{
-	Dim tmp As Object
-	Set tmp = CreateObject("Scripting.Dictionary")
-	Set normalMap = CreateObject("Scripting.Dictionary")
-	Set visualMap = CreateObject("Scripting.Dictionary")
-	Set lin_visualMap = CreateObject("Scripting.Dictionary")
-	tmp.Add "normal", normalMap
-	tmp.Add "visual", visualMap
-	tmp.Add "line_visual", lin_visualMap
-	keyMapDic.Add context, tmp
+  Dim tmp As Object
+  Set tmp = CreateObject("Scripting.Dictionary")
+  Set normalMap = CreateObject("Scripting.Dictionary")
+  Set visualMap = CreateObject("Scripting.Dictionary")
+  Set lin_visualMap = CreateObject("Scripting.Dictionary")
+  tmp.Add "normal", normalMap
+  tmp.Add "visual", visualMap
+  tmp.Add "line_visual", lin_visualMap
+  keyMapDic.Add context, tmp
 End Sub'}}}
 
 '----------- executer-----------------------
 Private Sub AssesKey(optional context As String = "default")'{{{
-	'この関数はキーによって呼び出され,実行すべき処理を判定します｡
-	'TODO strokkeyはkeystringの順番によって連続で解釈出来るものとそうでないものが出来てしまっている。
-	'TODO contextの処理
+  'この関数はキーによって呼び出され,実行すべき処理を判定します｡
+  'TODO strokkeyはkeystringの順番によって連続で解釈出来るものとそうでないものが出来てしまっている。
+  'TODO contextの処理
 
-	Application.EnableCancelKey = xlDisabled 'for Esc Command. Without this, cannot catch ESC key.
-	'
-	If keyMapDic is Nothing Then 
-		Application.Run("keystrokeAsseser.init")
-		Application.Run("user_configure.mykeymap")
-	End If
+  Application.EnableCancelKey = xlDisabled 'for Esc Command. Without this, cannot catch ESC key.
+  '
+  If keyMapDic is Nothing Then 
+    Application.Run("keystrokeAsseser.init")
+    Application.Run("user_configure.mykeymap")
+  End If
 
-	s = GetTickCount '0 milisecond
+  s = GetTickCount '0 milisecond
 
-	'Get put key
-	If isNewStroke = True Then
-		keyStroke = ""
-		newkey = GetKeyString '新規の場合は､GetKeyboardStateを使う。こちらの関数でないと､のどかのmodifierkeyの影響を受けてしまう｡
-	Else
-		newkey = GetKeyStringAsync 'GetKeyboardStateを使うと前のキーの情報が残ってしまっている事があるためこちらを使う｡
-	End If
+  'Get put key
+  If isNewStroke = True Then
+    keyStroke = ""
+    newkey = GetKeyString '新規の場合は､GetKeyboardStateを使う。こちらの関数でないと､のどかのmodifierkeyの影響を受けてしまう｡
+  Else
+    newkey = GetKeyStringAsync 'GetKeyboardStateを使うと前のキーの情報が残ってしまっている事があるためこちらを使う｡
+  End If
 
-	If newkey = "" Then 'When Application.OnKey Works, but GetKeyString does not work.'{{{
-		MsgBox "couldn't get newkey"
-		isNewStroke = True
-		Exit Sub
-	End If'}}}
+  If newkey = "" Then 'When Application.OnKey Works, but GetKeyString does not work.'{{{
+    MsgBox "couldn't get newkey"
+    isNewStroke = True
+    Exit Sub
+  End If'}}}
 
-	keyStroke = keyStroke + newkey
+  keyStroke = keyStroke + newkey
 
-	'keyStrokeを評価
-	' Debug.print KeyStroke & "を評価します"
-	candidate = NumberOfHits(keyStroke, context, modeOfVim)
-	If candidate = 0 Then 'keyStrokeにヒットが0件
-		' Debug.Print "ヒットが0件"
-		isNewStroke = True
-		Exit Sub
-	ElseIf candidate = 1 And keyMapDic(context)(modeOfVim).Exists(keyStroke) Then '候補が一意かつヒットしている時
-		' Debug.print "候補が一意かつヒットしている時のAssesKeyの(関数呼び出しまでの)実行時間は" & GetTickCount - st & "ミリセカンド"
-		' Debug.Print keyMapDic(context)(modeOfVim)(keyStroke) & "をkeystrokeから呼び出し"
-		Call ExeStringPro(keyMapDic(context)(modeOfVim).Item(keyStroke))
-		isNewStroke = True
-		' Debug.Print "poformanace time is " & GetTickCount - s
-		Exit Sub
-	Else ' Debug.print "候補が複数の時"
-		isNewStroke = False
-		e = GetTickCount
+  'keyStrokeを評価
+  ' Debug.print KeyStroke & "を評価します"
+  candidate = NumberOfHits(keyStroke, context, modeOfVim)
+  If candidate = 0 Then 'keyStrokeにヒットが0件
+    ' Debug.Print "ヒットが0件"
+    isNewStroke = True
+    Exit Sub
+  ElseIf candidate = 1 And keyMapDic(context)(modeOfVim).Exists(keyStroke) Then '候補が一意かつヒットしている時
+    ' Debug.print "候補が一意かつヒットしている時のAssesKeyの(関数呼び出しまでの)実行時間は" & GetTickCount - st & "ミリセカンド"
+    ' Debug.Print keyMapDic(context)(modeOfVim)(keyStroke) & "をkeystrokeから呼び出し"
+    Call ExeStringPro(keyMapDic(context)(modeOfVim).Item(keyStroke))
+    isNewStroke = True
+    ' Debug.Print "poformanace time is " & GetTickCount - s
+    Exit Sub
+  Else ' Debug.print "候補が複数の時"
+    isNewStroke = False
+    e = GetTickCount
 
-		'wait next input key.
-		Do until e-s > timeoutLen
-			key = GetKeyStringAsync '(* GetKeyStringAsync returns "", when nothing is being pressed)
-			if key = "" Then '次のキーが押される前に､前のキーが離された場合｡
-'				Debug.print "最初のキーが離れました｡"
-				Exit Do
-			End if
+    'wait next input key.
+    Do until e-s > timeoutLen
+      key = GetKeyStringAsync '(* GetKeyStringAsync returns "", when nothing is being pressed)
+      if key = "" Then '次のキーが押される前に､前のキーが離された場合｡
+'        Debug.print "最初のキーが離れました｡"
+        Exit Do
+      End if
 
-			if key <> "" And key <> newkey Then '前のキーが離される前に次のキーが押された場合
-				' Debug.print "最初のキーが離されないままに､別のキー"& key &"が連続で押されました"
-				'AssesKeyCore(key) これを実行せずともApplication.onkeyによって次のAssesKeyが呼ばれる｡
-				Exit Sub
-			End if
-			e = GetTickCount
-		Loop
+      if key <> "" And key <> newkey Then '前のキーが離される前に次のキーが押された場合
+        ' Debug.print "最初のキーが離されないままに､別のキー"& key &"が連続で押されました"
+        'AssesKeyCore(key) これを実行せずともApplication.onkeyによって次のAssesKeyが呼ばれる｡
+        Exit Sub
+      End if
+      e = GetTickCount
+    Loop
 
-		'最初のキーが離れてからの監視体制
-		Do until e-s > timeoutLen
-			key = GetKeyStringAsync
-			if key <> "" Then
-				Exit Sub 
-			End if
-			e = GetTickCount
-		Loop
+    '最初のキーが離れてからの監視体制
+    Do until e-s > timeoutLen
+      key = GetKeyStringAsync
+      if key <> "" Then
+        Exit Sub 
+      End if
+      e = GetTickCount
+    Loop
 
-		' Debug.print "have waited for timeoutlen:" & timeoutlen & ", so will execute the stroke:" & KeyStroke
-		Application.Run keyMapDic(context)(modeOfVim)(keyStroke)
-		isNewStroke = True
-	End If
+    ' Debug.print "have waited for timeoutlen:" & timeoutlen & ", so will execute the stroke:" & KeyStroke
+    Application.Run keyMapDic(context)(modeOfVim)(keyStroke)
+    isNewStroke = True
+  End If
 End Sub
 '}}}
 
 '-----------supplimental functions-----------------------
 Private Function GetKeyStringAsync()'{{{
-	'関数実行時点で押されているキーを判別して返します｡
-	'shift'{{{
-	shift = False
+  '関数実行時点で押されているキーを判別して返します｡
+  'shift'{{{
+  shift = False
     If GetAsyncKeyState(16) <> 0 Then shift = True '}}} 'なぜか<0だと検知しない｡
 
-	'control'{{{
-	control = False
+  'control'{{{
+  control = False
     If GetAsyncKeyState(17) <> 0 Then control = True'}}}
 
-	'mainkey'{{{
-	mainkey = ""
-	'alphabet'{{{
+  'mainkey'{{{
+  mainkey = ""
+  'alphabet'{{{
     If GetAsyncKeyState(65) < 0 Then mainkey = "a"
     If GetAsyncKeyState(66) < 0 Then mainkey = "b"
     If GetAsyncKeyState(67) < 0 Then mainkey = "c"
@@ -665,7 +665,7 @@ Private Function GetKeyStringAsync()'{{{
     If GetAsyncKeyState(88) < 0 Then mainkey = "x"
     If GetAsyncKeyState(89) < 0 Then mainkey = "y"
     If GetAsyncKeyState(90) < 0 Then mainkey = "z"'}}}
-	'number'{{{
+  'number'{{{
     If GetAsyncKeyState(48) < 0 Then mainkey = "0"
     If GetAsyncKeyState(49) < 0 Then mainkey = "1"
     If GetAsyncKeyState(50) < 0 Then mainkey = "2"
@@ -676,8 +676,8 @@ Private Function GetKeyStringAsync()'{{{
     If GetAsyncKeyState(55) < 0 Then mainkey = "7"
     If GetAsyncKeyState(56) < 0 Then mainkey = "8"
     If GetAsyncKeyState(57) < 0 Then mainkey = "9"'}}}
-	'symbol'{{{
-	If GetAsyncKeyState(186) < 0 Then mainkey = ":"
+  'symbol'{{{
+  If GetAsyncKeyState(186) < 0 Then mainkey = ":"
     If GetAsyncKeyState(187) < 0 Then mainkey = ";"
     If GetAsyncKeyState(188) < 0 Then mainkey = ","
     If GetAsyncKeyState(189) < 0 Then mainkey = "-"
@@ -688,11 +688,11 @@ Private Function GetKeyStringAsync()'{{{
     If GetAsyncKeyState(220) < 0 Then mainkey = "\"
     If GetAsyncKeyState(221) < 0 Then mainkey = "]"
     If GetAsyncKeyState(222) < 0 Then mainkey = "^"'}}}
-	'others'{{{
-	If GetAsyncKeyState(23) < 0 Then mainkey = "<END>"
-	If GetAsyncKeyState(vbKeyEscape) < 0 Then mainkey = "<ESC>"
+  'others'{{{
+  If GetAsyncKeyState(23) < 0 Then mainkey = "<END>"
+  If GetAsyncKeyState(vbKeyEscape) < 0 Then mainkey = "<ESC>"
     If GetAsyncKeyState(24) < 0 Then mainkey = "<HOME>"'}}}
-	'Function key'{{{
+  'Function key'{{{
     If GetAsyncKeyState(112) < 0 Then mainkey = "F1"
     If GetAsyncKeyState(113) < 0 Then mainkey = "F2"
     If GetAsyncKeyState(114) < 0 Then mainkey = "F3"
@@ -711,151 +711,151 @@ Private Function GetKeyStringAsync()'{{{
     If GetAsyncKeyState(127) < 0 Then mainkey = "F16"
 '}}}'}}}
 
-	'返り値をセット'{{{
-	GetkeyStringAsync = ""
+  '返り値をセット'{{{
+  GetkeyStringAsync = ""
          Debug.print "mainkey" & mainkey
-	If shift Then
-		GetKeyStringAsync = UCase(mainkey)
-	ElseIf control Then
-		GetKeyStringAsync = "<c-" & mainkey & ">"
-	Else
-		GetKeyStringAsync = mainkey
-	End If'}}}
-'	'Debug.print "GetKeyStringの実行時間は" & GetTickCount - s & "ミリセカンド"
+  If shift Then
+    GetKeyStringAsync = UCase(mainkey)
+  ElseIf control Then
+    GetKeyStringAsync = "<c-" & mainkey & ">"
+  Else
+    GetKeyStringAsync = mainkey
+  End If'}}}
+'  'Debug.print "GetKeyStringの実行時間は" & GetTickCount - s & "ミリセカンド"
 End Function'}}}
 
 Private Function GetKeyString()'{{{
 'nodokaでmodifierkeyなどになっているキーは､Asyncでは取得出来ないためこちらで取得
-	'keyboardの状態をstateにセット'{{{
-	Dim state(255) As Byte
-	Call GetKeyboardState(state(0))
-	'http://www.yoshidastyle.net/2007/10/windowswin32api.html
-	' For i = 0 to 255
-	' 	if state(i) <> 0 And state(i) <> 1 Then
-'	' 		Debug.Print "仮想キーコード" & i "の状態は" & state(i)
-	' 	End If
-	' Next i'}}}
+  'keyboardの状態をstateにセット'{{{
+  Dim state(255) As Byte
+  Call GetKeyboardState(state(0))
+  'http://www.yoshidastyle.net/2007/10/windowswin32api.html
+  ' For i = 0 to 255
+  '   if state(i) <> 0 And state(i) <> 1 Then
+'  '     Debug.Print "仮想キーコード" & i "の状態は" & state(i)
+  '   End If
+  ' Next i'}}}
 
-	'shiftキーの判定'{{{
-	Dim shift As boolean
-	shift = False
-	shift = state(16) >= 128'}}}
+  'shiftキーの判定'{{{
+  Dim shift As boolean
+  shift = False
+  shift = state(16) >= 128'}}}
 
-	'controlキーの判定'{{{
-	Dim control As boolean
-	control = False
-	control = state(17) >= 128'}}}
+  'controlキーの判定'{{{
+  Dim control As boolean
+  control = False
+  control = state(17) >= 128'}}}
 
-	'mainkeyキーの取得'{{{
-	Dim mainkey As String : mainkey = ""
-	'mainkey
-	If shift Then
-		'number
-		If state(49) >= 128 Then mainkey = "!"
-		If state(50) >= 128 Then mainkey = """
-		If state(51) >= 128 Then mainkey = "#"
-		If state(52) >= 128 Then mainkey = "$"
-		If state(53) >= 128 Then mainkey = "%"
-		If state(54) >= 128 Then mainkey = "&"
-		If state(55) >= 128 Then mainkey = "'"
-		If state(56) >= 128 Then mainkey = "("
-		If state(57) >= 128 Then mainkey = ")"
-		'alphabet
-		If state(65) >= 128 Then mainkey = "A"
-		If state(66) >= 128 Then mainkey = "B"
-		If state(67) >= 128 Then mainkey = "C"
-		If state(68) >= 128 Then mainkey = "D"
-		If state(69) >= 128 Then mainkey = "E"
-		If state(70) >= 128 Then mainkey = "F"
-		If state(71) >= 128 Then mainkey = "G"
-		If state(72) >= 128 Then mainkey = "H"
-		If state(73) >= 128 Then mainkey = "I"
-		If state(74) >= 128 Then mainkey = "J"
-		If state(75) >= 128 Then mainkey = "K"
-		If state(76) >= 128 Then mainkey = "L"
-		If state(77) >= 128 Then mainkey = "M"
-		If state(78) >= 128 Then mainkey = "N"
-		If state(79) >= 128 Then mainkey = "O"
-		If state(80) >= 128 Then mainkey = "P"
-		If state(81) >= 128 Then mainkey = "Q"
-		If state(82) >= 128 Then mainkey = "R"
-		If state(83) >= 128 Then mainkey = "S"
-		If state(84) >= 128 Then mainkey = "T"
-		If state(85) >= 128 Then mainkey = "U"
-		If state(86) >= 128 Then mainkey = "V"
-		If state(87) >= 128 Then mainkey = "W"
-		If state(88) >= 128 Then mainkey = "X"
-		If state(89) >= 128 Then mainkey = "Y"
-		If state(90) >= 128 Then mainkey = "Z"
-		'symbol
-		If state(186) >= 128 Then mainkey = "*"
-		If state(187) >= 128 Then mainkey = "+"
-		If state(188) >= 128 Then mainkey = "<"
-		If state(189) >= 128 Then mainkey = "="
-		If state(190) >= 128 Then mainkey = ">"
-		If state(191) >= 128 Then mainkey = "?"
-		If state(192) >= 128 Then mainkey = "`"
-		If state(219) >= 128 Then mainkey = "{"
-		If state(220) >= 128 Then mainkey = "|"
-		If state(221) >= 128 Then mainkey = "}"
-		If state(222) >= 128 Then mainkey = "~"
-	Else
-		If state(48) >= 128 Then mainkey = "0"
-		If state(49) >= 128 Then mainkey = "1"
-		If state(50) >= 128 Then mainkey = "2"
-		If state(51) >= 128 Then mainkey = "3"
-		If state(52) >= 128 Then mainkey = "4"
-		If state(53) >= 128 Then mainkey = "5"
-		If state(54) >= 128 Then mainkey = "6"
-		If state(55) >= 128 Then mainkey = "7"
-		If state(56) >= 128 Then mainkey = "8"
-		If state(57) >= 128 Then mainkey = "9"
-		'alphabet
-		If state(86) >= 128 Then mainkey = "v" 'visual_mode直後からの移動キーをスムーズにするため先頭に｡
-		If state(65) >= 128 Then mainkey = "a"
-		If state(66) >= 128 Then mainkey = "b"
-		If state(67) >= 128 Then mainkey = "c"
-		If state(68) >= 128 Then mainkey = "d"
-		If state(69) >= 128 Then mainkey = "e"
-		If state(70) >= 128 Then mainkey = "f"
-		If state(71) >= 128 Then mainkey = "g"
-		If state(72) >= 128 Then mainkey = "h"
-		If state(73) >= 128 Then mainkey = "i"
-		If state(74) >= 128 Then mainkey = "j"
-		If state(75) >= 128 Then mainkey = "k"
-		If state(76) >= 128 Then mainkey = "l"
-		If state(77) >= 128 Then mainkey = "m"
-		If state(78) >= 128 Then mainkey = "n"
-		If state(79) >= 128 Then mainkey = "o"
-		If state(80) >= 128 Then mainkey = "p"
-		If state(81) >= 128 Then mainkey = "q"
-		If state(82) >= 128 Then mainkey = "r"
-		If state(83) >= 128 Then mainkey = "s"
-		If state(84) >= 128 Then mainkey = "t"
-		If state(85) >= 128 Then mainkey = "u"
-		If state(87) >= 128 Then mainkey = "w"
-		If state(88) >= 128 Then mainkey = "x"
-		If state(89) >= 128 Then mainkey = "y"
-		If state(90) >= 128 Then mainkey = "z"
-		'symbol
-		If state(186) >= 128 Then mainkey = ":"
-		If state(187) >= 128 Then mainkey = ";"
-		If state(188) >= 128 Then mainkey = ","
-		If state(189) >= 128 Then mainkey = "-"
-		If state(190) >= 128 Then mainkey = "."
-		If state(191) >= 128 Then mainkey = "/"
-		If state(192) >= 128 Then mainkey = "@"
-		If state(219) >= 128 Then mainkey = "["
-		If state(220) >= 128 Then mainkey = "\"
-		If state(221) >= 128 Then mainkey = "]"
-		If state(222) >= 128 Then mainkey = "^"
-		'others
-		If state(23) >= 128 Then mainkey = "<END>"
-		If state(24) >= 128 Then mainkey = "<HOME>"
-		If state(vbKeyEscape) >= 128 Then mainkey = "<ESC>"
-	End If
+  'mainkeyキーの取得'{{{
+  Dim mainkey As String : mainkey = ""
+  'mainkey
+  If shift Then
+    'number
+    If state(49) >= 128 Then mainkey = "!"
+    If state(50) >= 128 Then mainkey = """
+    If state(51) >= 128 Then mainkey = "#"
+    If state(52) >= 128 Then mainkey = "$"
+    If state(53) >= 128 Then mainkey = "%"
+    If state(54) >= 128 Then mainkey = "&"
+    If state(55) >= 128 Then mainkey = "'"
+    If state(56) >= 128 Then mainkey = "("
+    If state(57) >= 128 Then mainkey = ")"
+    'alphabet
+    If state(65) >= 128 Then mainkey = "A"
+    If state(66) >= 128 Then mainkey = "B"
+    If state(67) >= 128 Then mainkey = "C"
+    If state(68) >= 128 Then mainkey = "D"
+    If state(69) >= 128 Then mainkey = "E"
+    If state(70) >= 128 Then mainkey = "F"
+    If state(71) >= 128 Then mainkey = "G"
+    If state(72) >= 128 Then mainkey = "H"
+    If state(73) >= 128 Then mainkey = "I"
+    If state(74) >= 128 Then mainkey = "J"
+    If state(75) >= 128 Then mainkey = "K"
+    If state(76) >= 128 Then mainkey = "L"
+    If state(77) >= 128 Then mainkey = "M"
+    If state(78) >= 128 Then mainkey = "N"
+    If state(79) >= 128 Then mainkey = "O"
+    If state(80) >= 128 Then mainkey = "P"
+    If state(81) >= 128 Then mainkey = "Q"
+    If state(82) >= 128 Then mainkey = "R"
+    If state(83) >= 128 Then mainkey = "S"
+    If state(84) >= 128 Then mainkey = "T"
+    If state(85) >= 128 Then mainkey = "U"
+    If state(86) >= 128 Then mainkey = "V"
+    If state(87) >= 128 Then mainkey = "W"
+    If state(88) >= 128 Then mainkey = "X"
+    If state(89) >= 128 Then mainkey = "Y"
+    If state(90) >= 128 Then mainkey = "Z"
+    'symbol
+    If state(186) >= 128 Then mainkey = "*"
+    If state(187) >= 128 Then mainkey = "+"
+    If state(188) >= 128 Then mainkey = "<"
+    If state(189) >= 128 Then mainkey = "="
+    If state(190) >= 128 Then mainkey = ">"
+    If state(191) >= 128 Then mainkey = "?"
+    If state(192) >= 128 Then mainkey = "`"
+    If state(219) >= 128 Then mainkey = "{"
+    If state(220) >= 128 Then mainkey = "|"
+    If state(221) >= 128 Then mainkey = "}"
+    If state(222) >= 128 Then mainkey = "~"
+  Else
+    If state(48) >= 128 Then mainkey = "0"
+    If state(49) >= 128 Then mainkey = "1"
+    If state(50) >= 128 Then mainkey = "2"
+    If state(51) >= 128 Then mainkey = "3"
+    If state(52) >= 128 Then mainkey = "4"
+    If state(53) >= 128 Then mainkey = "5"
+    If state(54) >= 128 Then mainkey = "6"
+    If state(55) >= 128 Then mainkey = "7"
+    If state(56) >= 128 Then mainkey = "8"
+    If state(57) >= 128 Then mainkey = "9"
+    'alphabet
+    If state(86) >= 128 Then mainkey = "v" 'visual_mode直後からの移動キーをスムーズにするため先頭に｡
+    If state(65) >= 128 Then mainkey = "a"
+    If state(66) >= 128 Then mainkey = "b"
+    If state(67) >= 128 Then mainkey = "c"
+    If state(68) >= 128 Then mainkey = "d"
+    If state(69) >= 128 Then mainkey = "e"
+    If state(70) >= 128 Then mainkey = "f"
+    If state(71) >= 128 Then mainkey = "g"
+    If state(72) >= 128 Then mainkey = "h"
+    If state(73) >= 128 Then mainkey = "i"
+    If state(74) >= 128 Then mainkey = "j"
+    If state(75) >= 128 Then mainkey = "k"
+    If state(76) >= 128 Then mainkey = "l"
+    If state(77) >= 128 Then mainkey = "m"
+    If state(78) >= 128 Then mainkey = "n"
+    If state(79) >= 128 Then mainkey = "o"
+    If state(80) >= 128 Then mainkey = "p"
+    If state(81) >= 128 Then mainkey = "q"
+    If state(82) >= 128 Then mainkey = "r"
+    If state(83) >= 128 Then mainkey = "s"
+    If state(84) >= 128 Then mainkey = "t"
+    If state(85) >= 128 Then mainkey = "u"
+    If state(87) >= 128 Then mainkey = "w"
+    If state(88) >= 128 Then mainkey = "x"
+    If state(89) >= 128 Then mainkey = "y"
+    If state(90) >= 128 Then mainkey = "z"
+    'symbol
+    If state(186) >= 128 Then mainkey = ":"
+    If state(187) >= 128 Then mainkey = ";"
+    If state(188) >= 128 Then mainkey = ","
+    If state(189) >= 128 Then mainkey = "-"
+    If state(190) >= 128 Then mainkey = "."
+    If state(191) >= 128 Then mainkey = "/"
+    If state(192) >= 128 Then mainkey = "@"
+    If state(219) >= 128 Then mainkey = "["
+    If state(220) >= 128 Then mainkey = "\"
+    If state(221) >= 128 Then mainkey = "]"
+    If state(222) >= 128 Then mainkey = "^"
+    'others
+    If state(23) >= 128 Then mainkey = "<END>"
+    If state(24) >= 128 Then mainkey = "<HOME>"
+    If state(vbKeyEscape) >= 128 Then mainkey = "<ESC>"
+  End If
 
-	'Function key'{{{
+  'Function key'{{{
     If state(112) >= 128 Then mainkey = "F1"
     If state(113) >= 128 Then mainkey = "F2"
     If state(114) >= 128 Then mainkey = "F3"
@@ -875,30 +875,30 @@ Private Function GetKeyString()'{{{
 '}}}
 '}}}
 
-	'返り値にセット'{{{
-	If control Then
-		GetKeyString = "<c-" & mainkey & ">"
-	Else
-		GetKeyString = mainkey
-	End If'}}}
+  '返り値にセット'{{{
+  If control Then
+    GetKeyString = "<c-" & mainkey & ">"
+  Else
+    GetKeyString = mainkey
+  End If'}}}
 
 End Function'}}}
 
 Private Function NumberOfHits(stroke As String, context, modeOfVim) As Long'{{{
-	'keyMapDicの中で､keystrokeに前方一致する項目の数を返す
-	Dim s As LongLong
-	s = GetTickCount
+  'keyMapDicの中で､keystrokeに前方一致する項目の数を返す
+  Dim s As LongLong
+  s = GetTickCount
 
-	c = 0
-	keyList = keyMapDic(context)(modeOfVim).Keys
-	For i = 0 To UBound(keyList)
-		If InStr(keyList(i), stroke) = 1 Then
-			c = c + 1
-		End If
-	Next i
-	NumberOfHits = c
+  c = 0
+  keyList = keyMapDic(context)(modeOfVim).Keys
+  For i = 0 To UBound(keyList)
+    If InStr(keyList(i), stroke) = 1 Then
+      c = c + 1
+    End If
+  Next i
+  NumberOfHits = c
 
-'	' Debug.print "NumberOfHitsの実行時間は" & GetTickCount - s & "ミリセカンド"
+  '  ' Debug.print "NumberOfHitsの実行時間は" & GetTickCount - s & "ミリセカンド"
 End Function'}}}
 
 'TODO
