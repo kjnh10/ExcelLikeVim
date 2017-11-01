@@ -790,7 +790,7 @@ Private Function GetKeyString()'{{{
     'symbol
     If state(186) >= 128 Then mainkey = "*"
     If state(187) >= 128 Then mainkey = "+"
-    If state(188) >= 128 Then mainkey = "<"
+    If state(188) >= 128 Then mainkey = "<<"
     If state(189) >= 128 Then mainkey = "="
     If state(190) >= 128 Then mainkey = ">"
     If state(191) >= 128 Then mainkey = "?"
