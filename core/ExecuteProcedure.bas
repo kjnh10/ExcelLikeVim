@@ -3,7 +3,7 @@ Attribute VB_Name = "ExecuteProcedure"
 Function ExeStringPro(commandString As String, Optional bookName As String = "") '{{{
   'bookNameのmoduleを優先で探して実行。見つからなければこのブックのコマンドを探して実行。
 
-  Debug.Print "Start ExeStringPro"
+  'Debug.Print "Start ExeStringPro"
   Dim commandArray() As String
   Dim AWBcommandArray() As String
   commandArray = Split(commandString, " ")
@@ -39,7 +39,7 @@ Function ExeStringPro_core(commandArray) As Variant '{{{
   'return (Err.Number, result)
   Dim buf As New Collection
 
-  Debug.Print "Start ExeStringPro_core"
+  'Debug.Print "Start ExeStringPro_core"
   'TODO:引数が3つ以上ある関数の場合の処理
   On Error GoTo MyError
   If UBound(commandArray) = 0 Then

@@ -2,21 +2,16 @@
 ExcelLikeVim provides vim-like interface for Excel aiming to provide
 * Vim-like key mapping which has mode notion and is customizable(in ~/vimx/user_configure.bas).
 * Extensible plugin system. By default, some plugins are mimicked and included from popular vim plugin like unite.
-It's now under developing so 
 
 # Installation
-Go to the [releases page](https://github.com/kojinho10/ExcelLikeVim/releases/tag/v2.2), download *the latest vimx.xlam* file.
-Then register vimx.xlam as Excel addin.
+Go to the [releases page](https://github.com/kojinho10/ExcelLikeVim/releases/tag/v2.3.0), download the latest zip file.
+Then unzip it and put whole folders anywhere you like,register vimx.xlam as Excel addin.
+Additionaly you may need to 'Trust access to the VBA project object model' from security center. This is because this addin manages their own codes outside of .xlam file as text file.
 
 That's all.
 Now you can use Excel like vim!
 
-Also you may download the full project to modify some code.
-```bash
-git clone https://github.com/kojinho10/ExcelLikeVim.git
-```
-
-If you have some issue, please let me know [submit an issue](https://github.com/kojinho10/ExcelLikeVim/issues).
+If you have some issue, please let me know from [submit an issue](https://github.com/kojinho10/ExcelLikeVim/issues).
 
 # Usage
 * In normal-mode 'hjkl' to move around cells and some other operations.
@@ -89,9 +84,9 @@ Please see the section 'Default Key bindings' for more detailed list you can do.
 | LineVisual | `x`         | lv_d
 
 # Customization 
-Editing *~/vimx/user_configure.bas*, you can customize key-mapping and behaviror of some function through setting option.
 Firstly you need to make *~/vimx/user_configure.bas*
-This configure file will be loaded while Excel launch.
+Then editing *~/vimx/user_configure.bas*, you can customize key-mapping and behaviror of some function through setting option.
+This configure file will be loaded every time a Excel instance launchs.
 
 ## Example configuration of user_configure.bas
 ```vb

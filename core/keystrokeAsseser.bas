@@ -713,7 +713,7 @@ Private Function GetKeyStringAsync()'{{{
 
   '返り値をセット'{{{
   GetkeyStringAsync = ""
-         Debug.print "mainkey" & mainkey
+         'Debug.print "mainkey" & mainkey
   If shift Then
     GetKeyStringAsync = UCase(mainkey)
   ElseIf control Then

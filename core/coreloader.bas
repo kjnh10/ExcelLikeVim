@@ -104,10 +104,10 @@ End Sub'}}}
 
 Private Sub initModule(moduleName, Optional msgError As String = "") '{{{
   On Error Resume Next
-    Application.Run(moduleName & ".init")
-    If Err.Number <> 0 And Err.Number <> 1004 Then
-      msgError = msgError & vbCrLf & Err.Description & ":" & Err.Number
-    End If
+  Application.Run(moduleName & ".init")
+  If Err.Number <> 0 And Err.Number <> 1004 Then
+    msgError = msgError & vbCrLf & Err.Description & ":" & Err.Number
+  End If
 End Sub '}}}
 
 Private Sub clearAllModules() '{{{
@@ -129,14 +129,14 @@ Private Sub SetReference()'{{{
   'TODO to be able to specify a book
   'TODO stop hard coding
   'unite_command 用 本来はプラグイン側からの呼び出しを出来るようにしたい｡
-  Debug.Print AddToReference("C:\Program Files\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
-  Debug.Print AddToReference("C:\Program Files (x86)\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
+  AddToReference("C:\Program Files\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
+  AddToReference("C:\Program Files (x86)\Common Files\Microsoft Shared\VBA\VBA6\VBE6EXT.OLB")
 
-  Debug.Print AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSPPT.OLB")
-  Debug.Print AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSPPT.OLB")
+  AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSPPT.OLB")
+  AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSPPT.OLB")
 
-  Debug.Print AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSWORD.OLB")
-  Debug.Print AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSWORD.OLB")
+  AddToReference("C:\Program Files\Microsoft Office 15\Root\Office15\MSWORD.OLB")
+  AddToReference("C:\Program Files (x86)\Microsoft Office 15\Root\Office15\MSWORD.OLB")
 End Sub'}}}
 
 Private Function AddToReference(strFileName As String) As Boolean'{{{
@@ -152,9 +152,9 @@ Private Function AddToReference(strFileName As String) As Boolean'{{{
 MyError:
   Select Case Err.Number
     Case 32813
-      Debug.Print strFileName & "は既に参照設定されています。", , "タイプライブラリへの参照"
+      'Debug.Print strFileName & "は既に参照設定されています。", , "タイプライブラリへの参照"
     Case 48
-      Debug.Print strFileName & "は存在しません。"
+      'Debug.Print strFileName & "は存在しません。"
     Case 29060
       MsgBox "設定ファイルがインストールされていないか、" & vbNewLine & _
       "所定のフォルダーに存在しない場合が考えられます。" & vbNewLine & _
