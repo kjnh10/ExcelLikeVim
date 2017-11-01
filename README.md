@@ -82,6 +82,10 @@ Please see the section 'Default Key bindings' for more detailed list you can do.
 | LineVisual | `y`         | v_y
 | LineVisual | `d`         | lv_d
 | LineVisual | `x`         | lv_d
+| Emergency(※) | `F3`     | coreloade.reload
+
+Note that this binding will be lost when some error occurs because this settings are stored as macro variables.
+So press 'F3' to reload the settings. Only this key is directly assigned by Application.onkey so that it won't be lost at that time.
 
 # Customization 
 ## key mapping

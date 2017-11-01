@@ -75,6 +75,10 @@ Private Sub SetKeyMapping()'{{{
   Call vmap("d", "v_d")
   Call vmap("D", "v_D_")
   Call vmap("x", "v_x")
+  Call lvmap("j", "v_j") 'line visual map
+  Call lvmap("k", "v_k")
+  Call lvmap("gg", "v_gg")
+  Call lvmap("G", "v_G")
   Call lvmap("<ESC>", "v_ESC")
   Call lvmap("y", "v_y")
   Call lvmap("d", "lv_d")
