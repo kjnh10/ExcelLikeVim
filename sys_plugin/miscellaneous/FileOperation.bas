@@ -26,7 +26,7 @@ Sub q(Optional fileName As String = "") '{{{
 
   If Workbooks.count <= 1 Then
     On Error Resume Next
-    Workbooks("register.xlsx").Close savechanges:=False
+    Workbooks("register.xlsx").Close savechanges:=True
     Application.quit
   End If
 
@@ -37,7 +37,7 @@ Sub q_exclamation() '{{{
 
   If Workbooks.count <= 1 Then
     On Error Resume Next
-    Workbooks("registry.xlsx").Close savechanges:=False
+    Workbooks("register.xlsx").Close savechanges:=True
     Application.quit
   End If
 End Sub '}}}
@@ -48,7 +48,7 @@ Sub qa() '{{{
 
   If Workbooks.count <= 1 Then
     On Error Resume Next
-    Workbooks("registry.xlsx").Close savechanges:=False
+    Workbooks("register.xlsx").Close savechanges:=True
     Application.quit
   End If
 End Sub '}}}

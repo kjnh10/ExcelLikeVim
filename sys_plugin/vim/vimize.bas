@@ -737,7 +737,7 @@ End Sub'}}}
 
 Private Sub OpenRegisterBook()'{{{
   Application.ScreenUpdating = False
-  Workbooks.Open FileName:=ThisWorkbook.Path & "\sys_plugin\vim\data\register.xlsx", ReadOnly:=True
+  Workbooks.Open FileName:=ThisWorkbook.Path & "\sys_plugin\vim\data\register.xlsx"
   Windows("register.xlsx").Visible = False
 End Sub'}}}
 
