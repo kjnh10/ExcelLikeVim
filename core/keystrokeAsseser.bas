@@ -886,7 +886,6 @@ End Function'}}}
 
 Private Function NumberOfHits(stroke As String, context, modeOfVim) As Long'{{{
   'keyMapDic‚Ì’†‚Å¤keystroke‚É‘O•ûˆê’v‚·‚é€–Ú‚Ì”‚ğ•Ô‚·
-  Dim s As LongLong
   s = GetTickCount
 
   c = 0

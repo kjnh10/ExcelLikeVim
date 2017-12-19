@@ -93,9 +93,9 @@ Firstly you need to make *~/vimx/user_configure.bas*
 Then editing *~/vimx/user_configure.bas*, you can customize key-mapping and behaviror of some function through setting option.
 This configure file will be loaded every time a Excel instance launchs.
 ## your plugin
-Firstly you need to make directory ~/vimx/plugin/<plugin-name>/
+Firstly you need to make directory ~/vimx/plugin/plugin-name/
 If you put on *.bas* *.cls* files under this directory, it will be loaded when you press 'F3' within Excel.
-See ExcelLikeVim/doc\sample_user_config_dir/vimx/plugin for a sample.
+See ExcelLikeVim/doc/sample_user_config_dir/vimx/plugin for a sample.
 
 ## Example configuration of user_configure.bas
 ```vb
