@@ -7,6 +7,7 @@ ExcelLikeVim provides vim-like interface for Excel aiming to provide
 Go to the [releases page](https://github.com/kojinho10/ExcelLikeVim/releases/tag/v2.3.0), download the latest zip file.
 Then unzip it and put whole folders anywhere you like,register vimx.xlam as Excel addin.
 Additionaly you may need to 'Trust access to the VBA project object model' from security center. This is because this addin manages their own codes outside of .xlam file as text file.
+Also you may need to set reference to DAO 3.6 library if you are using old excel.
 
 That's all.
 Now you can use Excel like vim!
