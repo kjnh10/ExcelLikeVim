@@ -17,6 +17,7 @@ Const RMENU = &HA5       ' Right Alt
 Const KANJI = &H19       ' Kanji                   ' }}}
 
 Sub main()
+  Application.Cursor = xlNorthwestArrow
   Call keystrokeAsseser.AllKeyToAssesKeyFunc()
   Call SetKeyMapping()
   Call OpenRegisterBook()

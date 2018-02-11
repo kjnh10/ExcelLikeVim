@@ -11,7 +11,6 @@ Public Sub SetAppEvent() '{{{
 End Sub '}}}
 
 Public Sub init() '{{{
-  Application.Cursor = xlNorthwestArrow
   Call SetAppEvent
   Call keystrokeAsseser.init
   call vimize.main

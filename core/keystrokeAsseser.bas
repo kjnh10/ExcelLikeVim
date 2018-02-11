@@ -32,15 +32,6 @@ Public Sub SetModeOfVim(modeName)'{{{
 End Sub'}}}
 
 '----------- Application layer mapping-----------------------
-Public Sub toggleVimKeybinde()'{{{
-  If keybinde <> "off" Then
-    Call AllKeyAssign_reset()
-    keybinde = "off"
-  Else
-    Call AllKeyToAssesKeyFunc()
-  End If
-End Sub'}}}
-
 Public Sub AllKeyToAssesKeyFunc()'{{{
     Application.OnKey "a", "AssesKey"
     Application.OnKey "b", "AssesKey"
@@ -142,9 +133,9 @@ Public Sub AllKeyToAssesKeyFunc()'{{{
     Application.OnKey "+8", "AssesKey"
     Application.OnKey "+9", "AssesKey"
 
-    'Application.OnKey "^{a}", "AssesKey"
+    Application.OnKey "^{a}", "AssesKey"
     Application.OnKey "^{b}", "AssesKey"
-    'Application.OnKey "^{c}", "AssesKey"
+    Application.OnKey "^{c}", "AssesKey"
     Application.OnKey "^{d}", "AssesKey"
     Application.OnKey "^{e}", "AssesKey"
     Application.OnKey "^{f}", "AssesKey"
@@ -155,19 +146,19 @@ Public Sub AllKeyToAssesKeyFunc()'{{{
     Application.OnKey "^{k}", "AssesKey"
     Application.OnKey "^{l}", "AssesKey"
     Application.OnKey "^{m}", "AssesKey"
-    'Application.OnKey "^{n}", "AssesKey"
+    Application.OnKey "^{n}", "AssesKey"
     Application.OnKey "^{o}", "AssesKey"
-    'Application.OnKey "^{p}", "AssesKey"
+    Application.OnKey "^{p}", "AssesKey"
     Application.OnKey "^{q}", "AssesKey"
     Application.OnKey "^{r}", "AssesKey"
-    'Application.OnKey "^{s}", "AssesKey"
+    Application.OnKey "^{s}", "AssesKey"
     Application.OnKey "^{t}", "AssesKey"
     Application.OnKey "^{u}", "AssesKey"
-    'Application.OnKey "^{v}", "AssesKey"
-    'Application.OnKey "^{w}", "AssesKey"
-    'Application.OnKey "^{x}", "AssesKey"
+    Application.OnKey "^{v}", "AssesKey"
+    Application.OnKey "^{w}", "AssesKey"
+    Application.OnKey "^{x}", "AssesKey"
     Application.OnKey "^{y}", "AssesKey"
-    'Application.OnKey "^{z}", "AssesKey"
+    Application.OnKey "^{z}", "AssesKey"
     Application.OnKey "^0", "AssesKey"
     Application.OnKey "^1", "AssesKey"
     Application.OnKey "^2", "AssesKey"
@@ -180,7 +171,7 @@ Public Sub AllKeyToAssesKeyFunc()'{{{
     Application.OnKey "^9", "AssesKey"
 
     Application.OnKey "{F1}", "AssesKey"
-    'Application.OnKey "{F2}", "AssesKey"
+    Application.OnKey "{F2}", "AssesKey"
     Application.OnKey "{F3}", "AssesKey"
     Application.OnKey "{F4}", "AssesKey"
     Application.OnKey "{F5}", "AssesKey"
@@ -189,16 +180,13 @@ Public Sub AllKeyToAssesKeyFunc()'{{{
     Application.OnKey "{F8}", "AssesKey"
     Application.OnKey "{F9}", "AssesKey"
     Application.OnKey "{F10}", "AssesKey"
-    'Application.OnKey "{F11}", "AssesKey" KeyStrokeは消えてしまうのでそれでない呼び方が必要なため｡
-    ' Application.OnKey "{F12}", "AssesKey" 上書き保存をそのまま使う｡
+    Application.OnKey "{F11}", "AssesKey"
+    Application.OnKey "{F12}", "AssesKey"
     Application.OnKey "{F13}", "AssesKey"
     Application.OnKey "{F14}", "AssesKey"
     Application.OnKey "{F15}", "AssesKey"
     Application.OnKey "{F16}", "AssesKey"
     Application.OnKey "{ESC}", "AssesKey"
-
-  Application.OnKey "{HOME}", "move_head"
-  Application.OnKey "{END}", "move_tail"
 End Sub'}}}
 
 Public Sub AllKeyAssign_reset()'{{{
@@ -404,7 +392,7 @@ Public Sub AllKeyAssign_reset()'{{{
 
     Application.OnKey "{F1}"
     Application.OnKey "{F2}"
-    Application.OnKey "{F3}"
+    ' Application.OnKey "{F3}"
     Application.OnKey "{F4}"
     Application.OnKey "{F5}"
     Application.OnKey "{F6}"
@@ -418,96 +406,6 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "{F14}"
     Application.OnKey "{F15}"
     Application.OnKey "{F16}"
-End Sub '}}}
-
-Public Sub AllKeyAssign_dummy() '{{{
-    Application.OnKey "a", "dummy"
-    Application.OnKey "b", "dummy"
-    Application.OnKey "c", "dummy"
-    Application.OnKey "d", "dummy"
-    Application.OnKey "e", "dummy"
-    Application.OnKey "f", "dummy"
-    Application.OnKey "g", "dummy"
-    Application.OnKey "h", "dummy"
-    Application.OnKey "i", "dummy"
-    Application.OnKey "j", "dummy"
-    Application.OnKey "k", "dummy"
-    Application.OnKey "l", "dummy"
-    Application.OnKey "m", "dummy"
-    Application.OnKey "n", "dummy"
-    Application.OnKey "o", "dummy"
-    Application.OnKey "p", "dummy"
-    Application.OnKey "q", "dummy"
-    Application.OnKey "r", "dummy"
-    Application.OnKey "s", "dummy"
-    Application.OnKey "t", "dummy"
-    Application.OnKey "u", "dummy"
-    Application.OnKey "v", "dummy"
-    Application.OnKey "w", "dummy"
-    Application.OnKey "x", "dummy"
-    Application.OnKey "y", "dummy"
-    Application.OnKey "z", "dummy"
-    
-    Application.OnKey "0", "dummy"
-    Application.OnKey "1", "dummy"
-    Application.OnKey "2", "dummy"
-    Application.OnKey "3", "dummy"
-    Application.OnKey "4", "dummy"
-    Application.OnKey "5", "dummy"
-    Application.OnKey "6", "dummy"
-    Application.OnKey "7", "dummy"
-    Application.OnKey "8", "dummy"
-    Application.OnKey "9", "dummy"
-    
-    Application.OnKey "=", "dummy"
-    Application.OnKey "-", "dummy"
-    Application.OnKey "{^}", "dummy"
-    Application.OnKey "@", "dummy"
-    Application.OnKey "{[}", "dummy"
-    Application.OnKey ";", "dummy"
-    Application.OnKey ":", "dummy"
-    Application.OnKey "{]}", "dummy"
-    Application.OnKey ",", "dummy" '
-    Application.OnKey ".", "dummy"
-    Application.OnKey "/", "dummy" '
-    
-    Application.OnKey "+a", "dummy"
-    Application.OnKey "+b", "dummy"
-    Application.OnKey "+c", "dummy"
-    Application.OnKey "+d", "dummy"
-    Application.OnKey "+e", "dummy"
-    Application.OnKey "+f", "dummy"
-    Application.OnKey "+g", "dummy"
-    Application.OnKey "+h", "dummy"
-    Application.OnKey "+i", "dummy"
-    Application.OnKey "+j", "dummy"
-    Application.OnKey "+k", "dummy"
-    Application.OnKey "+l", "dummy"
-    Application.OnKey "+m", "dummy"
-    Application.OnKey "+n", "dummy"
-    Application.OnKey "+o", "dummy"
-    Application.OnKey "+p", "dummy"
-    Application.OnKey "+q", "dummy"
-    Application.OnKey "+r", "dummy"
-    Application.OnKey "+s", "dummy"
-    Application.OnKey "+t", "dummy"
-    Application.OnKey "+u", "dummy"
-    Application.OnKey "+v", "dummy"
-    Application.OnKey "+w", "dummy"
-    Application.OnKey "+x", "dummy"
-    Application.OnKey "+y", "dummy"
-    Application.OnKey "+z", "dummy"
-    
-    Application.OnKey "+0", "dummy"
-    Application.OnKey "+1", "dummy"
-    Application.OnKey "+2", "dummy"
-    Application.OnKey "+3", "dummy"
-    Application.OnKey "+4", "dummy"
-    Application.OnKey "+5", "dummy"
-    Application.OnKey "+6", "dummy"
-    Application.OnKey "+7", "dummy"
-    Application.OnKey "+8", "dummy"
-    Application.OnKey "+9", "dummy"
 End Sub '}}}
 
 '----------- mapping def function -----------------------
@@ -899,9 +797,4 @@ Private Function NumberOfHits(stroke As String, context, modeOfVim) As Long'{{{
 
   '  ' Debug.print "NumberOfHitsの実行時間は" & GetTickCount - s & "ミリセカンド"
 End Function'}}}
-
-'TODO
-'Application.onkeyが2回呼ばれてしまう問題
-'多分､Application.onkeyを呼び出したキーは､その後イベントに無視されるが
-'そうでないキー(最後のストローク)は､終了直後に次なるapplication.onkeyをよんでしまう｡
 
