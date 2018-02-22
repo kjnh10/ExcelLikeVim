@@ -112,6 +112,21 @@ Public Sub init()
 End Sub 
 
 private sub mykeymap()
+  'keys used for application default command
+  Application.OnKey "^{f}" 
+  Application.OnKey "^{a}"
+  Application.OnKey "^{c}"
+  Application.OnKey "^{n}"
+  Application.OnKey "^{p}"
+  Application.OnKey "^{s}"
+  Application.OnKey "^{v}"
+  Application.OnKey "^{w}"
+  Application.OnKey "^{x}"
+  Application.OnKey "^{z}"
+  Application.OnKey "{F2}"
+  Application.OnKey "{F11}"
+  Application.OnKey "{F12}"
+
   Call nmap("<HOME>", "move_head")
   Call nmap("<END>", "move_tail")
   Call nmap("t", "insertColumnRight")

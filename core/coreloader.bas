@@ -29,9 +29,13 @@ Public Sub init()'{{{
   Call initModule("configure")
 
   'user setting
-  'Call RegisterModule(Environ("homedrive") & Environ("homepath") & "\.vimx\user_configure.bas", ThisWorkbook)
-  Call RegisterModule(uDir & "user_configure.bas", ThisWorkbook)
-  Call initModule("user_configure")
+  On Error GoTo except
+    Call RegisterModule(uDir & "user_configure.bas", ThisWorkbook)
+    Call initModule("user_configure")
+  except:
+    If Err.Number <> 0 Then
+      Debug.print Err.Description
+    End If
 End Sub'}}}
 
 Public Function Udir() As String  'user_folder'{{{
