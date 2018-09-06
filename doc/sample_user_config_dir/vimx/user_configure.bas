@@ -16,7 +16,6 @@ private sub mykeymap() '{{{
   Application.OnKey "^{w}"
   Application.OnKey "^{x}"
   Application.OnKey "^{z}"
-  Application.OnKey "{F2}"
   Application.OnKey "{F11}"
   Application.OnKey "{F12}"
 
