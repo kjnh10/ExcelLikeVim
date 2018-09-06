@@ -24,6 +24,7 @@ Sub main()
 End Sub
 
 Private Sub SetKeyMapping()'{{{
+  Application.OnKey "{F2}"  ' used for enter insert-mode. so F2 is not be able to used in vim keybind.
   Call nmap("h", "move_left")
   Call nmap("j", "move_down")
   Call nmap("k", "move_up")
