@@ -9,3 +9,10 @@ Public sub setdefaultprop()
   Next f
 End Sub
 
+Public sub numberformat()
+  Dim PT As PivotTable
+  Set PT = ActiveCell.PivotTable
+  For Each f In PT.DataFields
+    f.NumberFormat = "#,##0,,"
+  Next f
+End Sub
