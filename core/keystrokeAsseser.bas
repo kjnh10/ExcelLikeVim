@@ -452,7 +452,13 @@ Private Sub AssesKey(optional context As String = "default")'{{{
   '
   If keyMapDic is Nothing Then 
     Application.Run("keystrokeAsseser.init")
-    Application.Run("user_configure.mykeymap")
+    Application.Run("configure.init")
+    On Error GoTo except
+      Application.Run("user_configure.init")
+    except:
+      If Err.Number <> 0 Then
+        Debug.print Err.Description
+      End If
   End If
 
   s = GetTickCount '0 milisecond
