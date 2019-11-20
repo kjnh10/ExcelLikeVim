@@ -39,13 +39,13 @@ Function GatherCandidates_command() As Collection'{{{
   Set result = Nothing
 End Function'}}}
 
-Function defaultAction_command(arg) 'table‚É‚µ‚½•û‚ª‚æ‚¢‚©'{{{
+Function defaultAction_command(arg) 'table is better? '{{{
   For Each f in Split(arg, vbCrLf)
     ExeStringPro(f)
   Next f
 End Function'}}}
 
-Function defaultAction_command_parent(arg) 'table‚É‚µ‚½•û‚ª‚æ‚¢‚©'{{{
+Function defaultAction_command_parent(arg) 'table is better? '{{{
   For Each f in Split(arg, vbCrLf)
     Dim g As Variant
     For Each g in Split(unite_argument, vbCrlF)
@@ -54,6 +54,6 @@ Function defaultAction_command_parent(arg) 'table‚É‚µ‚½•û‚ª‚æ‚¢‚©'{{{
   Next f
 End Function'}}}
 
-Sub kojikoji(arg)
-  Msgbox arg
+Sub hello(name)
+  Msgbox name
 End Sub

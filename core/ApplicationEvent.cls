@@ -30,19 +30,19 @@ Private Sub appevent_WorkbookBeforeClose(ByVal Wb As Workbook, Cancel As Boolean
 End Sub '}}}
 
 Private Sub appevent_SheetActivate(ByVal Sh As Object) '{{{
-  ' Debug.Print "App.clsで監視中です｡ SheetActivateイベントが発生しました｡"
+  ' Debug.Print "App.cls is monitoring.SheetActivate event occured"
   Debug.Print Sh.Name
   If Sh.Name = "Sheet3" Then
   End If
 End Sub '}}}
 
 Private Sub appevent_WorkbookActivate(ByVal Wb As Workbook) '{{{
-  'Debug.Print "App.clsで監視中です｡WorkbookActivateイベントが発生しました｡"
+  'Debug.Print "App.cls is monitoring.WorkbookActivate event occured"
 End Sub '}}}
 
 '------------------sub Function/Sub-----------------------------
 Private Sub UpdateMru(filePath As String) '{{{
-  'ファイルを開いた履歴を書き込む
+  ' record filename which is opend to mru file
   openTime = Now
   newRegister = True
   separator = ":::"
@@ -76,7 +76,7 @@ Private Sub UpdateMru(filePath As String) '{{{
   Next record
   Close #1
 
-  'TODO 利用したいpythonを指定出来るようにする。
+  'TODO specify which python to use
   PYTHONPATH = "python"
   On Error Resume Next
   Call Shell(PYTHONPATH & " " & ThisWorkbook.Path & "\src\lib\sort.pyw")

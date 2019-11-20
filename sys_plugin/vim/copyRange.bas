@@ -11,7 +11,7 @@ Private Declare PtrSafe Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long
 Private Declare PtrSafe Function MultiByteToWideChar Lib "kernel32" (ByVal CodePage As Long, ByVal dwFlags As Long, ByRef lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByVal lpWideCharStr As Long, ByVal cchWideChar As Long) As Long
 
 '**
-' コピーアドレスの取得
+' get copy address
 '**
 Public Function GetCopiedRange(SheetName As String) As Range
   Dim i As Long
@@ -51,7 +51,7 @@ Public Function GetCopiedRange(SheetName As String) As Range
 End Function
 
 '**
-' Unicode変換
+' convert unicode
 '**
 Private Function AnsiToUnicode(ByRef Ansi() As Byte) As String
   On Error GoTo ErrHandler

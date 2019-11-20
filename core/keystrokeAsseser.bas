@@ -3,11 +3,11 @@ Attribute VB_Name = "keystrokeAsseser"
 #If VBA7 And Win64 Then
   Private Declare PtrSafe Function GetAsyncKeyState Lib "User32.dll" (ByVal vKey As Long) As Integer
   Private Declare PtrSafe Function GetKeyboardState Lib "user32" (pbKeyState As Byte) As LongLong
-  Private Declare PtrSafe Function GetTickCount Lib "kernel32" () As LongLong 'パフォーマンス計測のため｡
+  Private Declare PtrSafe Function GetTickCount Lib "kernel32" () As LongLong 'for monitoring
 #Else
   Private Declare PtrSafe Function GetAsyncKeyState Lib "User32.dll" (ByVal vKey As Long) As Long
   Private Declare PtrSafe Function GetKeyboardState Lib "user32" (pbKeyState As Byte) As Long
-  Private Declare PtrSafe Function GetTickCount Lib "kernel32" () As Long 'パフォーマンス計測のため｡
+  Private Declare PtrSafe Function GetTickCount Lib "kernel32" () As Long 'for monitoring
 #End If
 
 Private Const timeoutLen As Single = 1000 'wait time for hitting next
@@ -448,9 +448,7 @@ End Sub'}}}
 
 '----------- executer-----------------------
 Private Sub AssesKey(optional context As String = "default")'{{{
-  'この関数はキーによって呼び出され,実行すべき処理を判定します｡
-  'TODO strokkeyはkeystringの順番によって連続で解釈出来るものとそうでないものが出来てしまっている。
-  'TODO contextの処理
+  ' This function will be called by pressing keys and interpret what to do and execute
 
   Application.EnableCancelKey = xlDisabled 'for Esc Command. Without this, cannot catch ESC key.
   '
@@ -483,41 +481,37 @@ Private Sub AssesKey(optional context As String = "default")'{{{
 
   keyStroke = keyStroke + newkey
 
-  'keyStrokeを評価
-  ' Debug.print KeyStroke & "を評価します"
+  'Assess keyStroke
   candidate = NumberOfHits(keyStroke, context, modeOfVim)
-  If candidate = 0 Then 'keyStrokeにヒットが0件
-    ' Debug.Print "ヒットが0件"
+  If candidate = 0 Then
+    ' Debug.Print "0 candidate"
     isNewStroke = True
     Exit Sub
-  ElseIf candidate = 1 And keyMapDic(context)(modeOfVim).Exists(keyStroke) Then '候補が一意かつヒットしている時
-    ' Debug.print "候補が一意かつヒットしている時のAssesKeyの(関数呼び出しまでの)実行時間は" & GetTickCount - st & "ミリセカンド"
-    ' Debug.Print keyMapDic(context)(modeOfVim)(keyStroke) & "をkeystrokeから呼び出し"
+  ElseIf candidate = 1 And keyMapDic(context)(modeOfVim).Exists(keyStroke) Then
+    ' Debug.Print keyMapDic(context)(modeOfVim)(keyStroke) & " called from keystroke"
     Call ExeStringPro(keyMapDic(context)(modeOfVim).Item(keyStroke))
     isNewStroke = True
     ' Debug.Print "poformanace time is " & GetTickCount - s
     Exit Sub
-  Else ' Debug.print "候補が複数の時"
+  Else ' for multiple candidates exist
     isNewStroke = False
     e = GetTickCount
 
     'wait next input key.
     Do until e-s > timeoutLen
       key = GetKeyStringAsync '(* GetKeyStringAsync returns "", when nothing is being pressed)
-      if key = "" Then '次のキーが押される前に､前のキーが離された場合｡
-'        Debug.print "最初のキーが離れました｡"
+      if key = "" Then 'the previously pressed key released before next key coming
         Exit Do
       End if
 
-      if key <> "" And key <> newkey Then '前のキーが離される前に次のキーが押された場合
-        ' Debug.print "最初のキーが離されないままに､別のキー"& key &"が連続で押されました"
-        'AssesKeyCore(key) これを実行せずともApplication.onkeyによって次のAssesKeyが呼ばれる｡
+      if key <> "" And key <> newkey Then 'the next key pressed before the privious key released
+        'AssesKeyCore(key) ' without this line, Application.onkey call next AssesKey()
         Exit Sub
       End if
       e = GetTickCount
     Loop
 
-    '最初のキーが離れてからの監視体制
+    'to monitor after the first key released
     Do until e-s > timeoutLen
       key = GetKeyStringAsync
       if key <> "" Then
@@ -535,10 +529,10 @@ End Sub
 
 '-----------supplimental functions-----------------------
 Private Function GetKeyStringAsync()'{{{
-  '関数実行時点で押されているキーを判別して返します｡
+  'return pressed key when executing function
   'shift'{{{
   shift = False
-    If GetAsyncKeyState(16) <> 0 Then shift = True '}}} 'なぜか<0だと検知しない｡
+    If GetAsyncKeyState(16) <> 0 Then shift = True '}}} '<0 not working (why?)
 
   'control'{{{
   control = False
@@ -561,13 +555,13 @@ Private Function GetKeyStringAsync()'{{{
     If GetAsyncKeyState(76) < 0 Then mainkey = "l"
     If GetAsyncKeyState(77) < 0 Then mainkey = "m"
     If GetAsyncKeyState(78) < 0 Then mainkey = "n"
-    If GetAsyncKeyState(79) < 0 Then mainkey = "o" 'なぜか
+    If GetAsyncKeyState(79) < 0 Then mainkey = "o"
     If GetAsyncKeyState(80) < 0 Then mainkey = "p"
     If GetAsyncKeyState(81) < 0 Then mainkey = "q"
     If GetAsyncKeyState(82) < 0 Then mainkey = "r"
     If GetAsyncKeyState(83) < 0 Then mainkey = "s"
     If GetAsyncKeyState(84) < 0 Then mainkey = "t"
-    If GetAsyncKeyState(85) < 0 Then mainkey = "u" 'なぜか
+    If GetAsyncKeyState(85) < 0 Then mainkey = "u"
     If GetAsyncKeyState(86) < 0 Then mainkey = "v"
     If GetAsyncKeyState(87) < 0 Then mainkey = "w"
     If GetAsyncKeyState(88) < 0 Then mainkey = "x"
@@ -619,9 +613,9 @@ Private Function GetKeyStringAsync()'{{{
     If GetAsyncKeyState(127) < 0 Then mainkey = "F16"
 '}}}'}}}
 
-  '返り値をセット'{{{
+  ' set result '{{{
   GetkeyStringAsync = ""
-         'Debug.print "mainkey" & mainkey
+  'Debug.print "mainkey" & mainkey
   If shift Then
     GetKeyStringAsync = UCase(mainkey)
   ElseIf control Then
@@ -629,32 +623,27 @@ Private Function GetKeyStringAsync()'{{{
   Else
     GetKeyStringAsync = mainkey
   End If'}}}
-'  'Debug.print "GetKeyStringの実行時間は" & GetTickCount - s & "ミリセカンド"
+'  'Debug.print "execution time of GetKeyString" & GetTickCount - s & "mili second"
 End Function'}}}
 
 Private Function GetKeyString()'{{{
-'nodokaでmodifierkeyなどになっているキーは､Asyncでは取得出来ないためこちらで取得
-  'keyboardの状態をstateにセット'{{{
+  ' Async can't get keys which is used for modifierkey by nodoka
+  '{{{
   Dim state(255) As Byte
   Call GetKeyboardState(state(0))
   'http://www.yoshidastyle.net/2007/10/windowswin32api.html
-  ' For i = 0 to 255
-  '   if state(i) <> 0 And state(i) <> 1 Then
-'  '     Debug.Print "仮想キーコード" & i "の状態は" & state(i)
-  '   End If
-  ' Next i'}}}
 
-  'shiftキーの判定'{{{
+  'check shift key pressed'{{{
   Dim shift As boolean
   shift = False
   shift = state(16) >= 128'}}}
 
-  'controlキーの判定'{{{
+  'check control key pressed'{{{
   Dim control As boolean
   control = False
   control = state(17) >= 128'}}}
 
-  'mainkeyキーの取得'{{{
+  'get mainkey'{{{
   Dim mainkey As String : mainkey = ""
   'mainkey
   If shift Then
@@ -719,7 +708,7 @@ Private Function GetKeyString()'{{{
     If state(56) >= 128 Then mainkey = "8"
     If state(57) >= 128 Then mainkey = "9"
     'alphabet
-    If state(86) >= 128 Then mainkey = "v" 'visual_mode直後からの移動キーをスムーズにするため先頭に｡
+    If state(86) >= 128 Then mainkey = "v" 'put first to make visual_mode smooth
     If state(65) >= 128 Then mainkey = "a"
     If state(66) >= 128 Then mainkey = "b"
     If state(67) >= 128 Then mainkey = "c"
@@ -783,7 +772,7 @@ Private Function GetKeyString()'{{{
 '}}}
 '}}}
 
-  '返り値にセット'{{{
+  '{{{
   If control Then
     GetKeyString = "<c-" & mainkey & ">"
   Else
@@ -793,7 +782,7 @@ Private Function GetKeyString()'{{{
 End Function'}}}
 
 Private Function NumberOfHits(stroke As String, context, modeOfVim) As Long'{{{
-  'keyMapDicの中で､keystrokeに前方一致する項目の数を返す
+  'return the number of candidates from keyMapDic which satisfy the keystroke pressed
   s = GetTickCount
 
   c = 0
@@ -805,6 +794,6 @@ Private Function NumberOfHits(stroke As String, context, modeOfVim) As Long'{{{
   Next i
   NumberOfHits = c
 
-  '  ' Debug.print "NumberOfHitsの実行時間は" & GetTickCount - s & "ミリセカンド"
+  '  ' Debug.print "The executed time of NumberOfHits" & GetTickCount - s & "milli second"
 End Function'}}}
 

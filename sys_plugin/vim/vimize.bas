@@ -235,7 +235,7 @@ Sub find() '{{{
   If Not obj Is Nothing Then
     obj.Activate
   Else
-    MsgBox "見つかりませんでした｡"
+    MsgBox "not found"
   End If
   'Selection.FindNext(After:=ActiveCell).Activate
 End Sub '}}}
@@ -326,7 +326,7 @@ Public Sub n_ESC_ime_off()'{{{
 End Sub'}}}
 
 Public Sub n_u()'{{{
-  'undo履歴を辞書でとる｡順番を覚えさせる｡システムの方はworkbook_changeイベントで｡自分が今どこにいるかも覚えている｡システム変更の場合の値は""｡
+  'only works for operation by manual operation. vba command get the history lost....
   keybd_event vbKeyControl, 0, 0, 0
   keybd_event vbKeyZ, 0, 0, 0
   keybd_event vbKeyZ, 0, KEYUP, 0

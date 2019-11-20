@@ -1,7 +1,8 @@
 Attribute VB_Name = "ExecuteProcedure"
 
 Function ExeStringPro(commandString As String, Optional bookName As String = "") '{{{
-  'bookNameのmoduleを優先で探して実行。見つからなければこのブックのコマンドを探して実行。
+  ' execute function specified by commandString
+  ' firstly execute modules of bookName. then search for this book.
 
   'Debug.Print "Start ExeStringPro"
   Dim commandArray() As String
@@ -9,7 +10,7 @@ Function ExeStringPro(commandString As String, Optional bookName As String = "")
   commandArray = Split(commandString, " ")
 
   If commandArray(0) = "-a" Then
-    commandString = Mid(commandString, Instr(commandString, " ") + 1) '2つ目のスペース以降を取得
+    commandString = Mid(commandString, Instr(commandString, " ") + 1) 'get after #2 space
     ExecuteAsIs commandString
     Exit Function
   End If
@@ -30,7 +31,7 @@ Function ExeStringPro(commandString As String, Optional bookName As String = "")
     If buf(1) = 0 Then
       Call SetVariant(ExeStringPro, buf(2))
     Else
-      MsgBox "指定された関数" & commandString & "の実行に失敗しました｡ 関数が存在しているか､引数が不正でないか確認して下さい｡"
+      MsgBox "specified function:" & commandString & " failed. check that the function exists and args are valid."
     End If
   End If
 End Function '}}}
@@ -40,7 +41,7 @@ Function ExeStringPro_core(commandArray) As Variant '{{{
   Dim buf As New Collection
 
   'Debug.Print "Start ExeStringPro_core"
-  'TODO:引数が3つ以上ある関数の場合の処理
+  'TODO: case for the number of args is greater than 3
   On Error GoTo MyError
   If UBound(commandArray) = 0 Then
     Call SetVariant(result, Application.run(commandArray(0)))
@@ -51,7 +52,7 @@ Function ExeStringPro_core(commandArray) As Variant '{{{
   End If
 
 MyError:
-  buf.Add Err.Number 'errorがなければ0が返る。
+  buf.Add Err.Number 'return 0 if no error
   buf.Add result
   Set ExeStringPro_core = buf
   Set buf = Nothing
@@ -79,23 +80,16 @@ Function ExecuteAsIs(code As String)'{{{
 End Function'}}}
 
 Public Function ExecCommand(sCommand As String, sResult As String) As Boolean  '{{{
-  ' 目　的：DOS コマンドの実行結果を取得します。  
-  ' 戻り値：エラーの有無を Boolean 型で返します。  
-  ' 　　　　エラー発生時は True、正常終了時は False です。  
-  ' 引　数：sCommand-> 必須/入力用です。実行コマンドを文字列型で渡します。  
-  ' 　　　　sResult -> 必須/出力用です。実行結果を文字列型で受け取ります。  
-  '　　　　　　　　　　失敗した場合はエラー内容を示します。  
-  ' 注　意：実行中はコマンドプロンプト ウィンドウが開きます。また実行後は自動的にウィンドウが閉じます。  
   'http://www.f3.dion.ne.jp/~element/msaccess/AcTipsGetDosResult.html
 
   Dim oShell As Object, oExec As Object  
   Set oShell = CreateObject("WScript.Shell")  
   Set oExec = oShell.Exec("%ComSpec% /c " & sCommand)  
 
-  ' 処理完了を待機します。  
+  ' wait the process finished
   Do Until oExec.status: DoEvents: Loop  
 
-    ' 戻り値をセットします。  
+    ' set result
     If Not oExec.StdErr.AtEndOfStream Then  
       ExecCommand = True  
       sResult = oExec.StdErr.ReadAll  
@@ -103,7 +97,7 @@ Public Function ExecCommand(sCommand As String, sResult As String) As Boolean  '
       sResult = oExec.StdOut.ReadAll  
     End If  
 
-    ' オブジェクト変数の参照を解放します。  
+    ' release the reference of obeject variable
     Set oExec = Nothing: Set oShell = Nothing  
   End Function  '}}}
 

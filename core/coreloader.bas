@@ -144,7 +144,6 @@ Private Sub SetReference()'{{{
 End Sub'}}}
 
 Private Function AddToReference(strFileName As String) As Boolean'{{{
-  '指定されたタイプライブラリへの参照を作成します｡
   On Error GoTo MyError
   ' Dim ref As Reference
   ' Set ref = ThisWorkbook.VBProject.References.AddFromFile(strFileName)
@@ -156,17 +155,17 @@ Private Function AddToReference(strFileName As String) As Boolean'{{{
 MyError:
   Select Case Err.Number
     Case 32813
-      'Debug.Print strFileName & "は既に参照設定されています。", , "タイプライブラリへの参照"
+      'Debug.Print strFileName & " already set"
     Case 48
-      'Debug.Print strFileName & "は存在しません。"
+      'Debug.Print strFileName & " not sound"
     Case 29060
-      MsgBox "設定ファイルがインストールされていないか、" & vbNewLine & _
-      "所定のフォルダーに存在しない場合が考えられます。" & vbNewLine & _
-      "よって、参照設定ができません。", , "タイプライブラリへの参照"
+      MsgBox "config file is not installed or" & vbNewLine & _
+      "config file is not properly placed" & vbNewLine & _
+      "can't set reference", , "reference to type library"
     Case Else
-      MsgBox "予期せぬエラーが発生しました。" & vbNewLine & _
+      MsgBox "unexpected error happend" & vbNewLine & _
       Err.Number & vbNewLine & _
-      Err.Description, 16, "タイプライブラリへの参照"
+      Err.Description, 16, "reference to type library"
   End Select
 End Function'}}}
 
@@ -261,16 +260,15 @@ Err_dir:
   End Function
 
   Private Sub getRecursive(folder_path As String, RegExp, FSO As FileSystemObject, result As Collection, Optional excluded_folder_pattern As String = "")
-    ' 現在ディレクトリ内の全ファイルの取得
     Dim file_path As Variant
     For Each file_path In FSO.GetFolder(folder_path).Files
       If RegExp.test(file_path) Then
-        DoEvents    ' フリーズ防止用
+        DoEvents    ' prevent freeze
         Call result.Add(CStr(file_path))
       End If
     Next
 
-    ' サブディレクトリの再帰
+    ' recursion for sub directory
     Dim dir As Variant
     For Each dir In FSO.GetFolder(folder_path).SubFolders
       if Not (dir Like "*"& excluded_folder_pattern &"*" And excluded_folder_pattern <> "") then

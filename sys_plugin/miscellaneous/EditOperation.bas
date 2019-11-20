@@ -28,7 +28,7 @@ Sub ex_up() '{{{
   Application.ScreenUpdating = False
   cur_row = ActiveCell.Row
   Rows(cur_row).Copy
-  'target_rowの選択
+  'select target_row
   Dim i As Long
   i = 1
   Do Until ActiveCell.Offset(-i, 0).EntireRow.Hidden = False
@@ -40,9 +40,8 @@ Sub ex_up() '{{{
   Rows(target_row).Select
   Selection.Insert
 
-  '移動前のセルを削除
+  ' remove the cell before moving
   Rows(cur_row + 1).Delete
-  '処理後の選択セルを自然に
   cells(target_row, target_column).Select
 End Sub '}}}
 
@@ -63,7 +62,6 @@ Sub ex_below() '{{{
   Selection.Insert
   Rows(cur_row).Delete
 
-  '処理後の選択セルを自然に
   cells(target_row, target_column).Select
 End Sub '}}}
 
@@ -71,7 +69,7 @@ Sub ex_right() '{{{
   Application.ScreenUpdating = False
   cur_col = ActiveCell.Column
   Columns(cur_col).Copy
-  'target_rowの選択
+  'select target_row
   Dim i As Long
   i = 1
   Do Until ActiveCell.Offset(0, i).EntireColumn.Hidden = False
@@ -84,7 +82,6 @@ Sub ex_right() '{{{
   Selection.Insert
   Columns(cur_col).Delete
 
-  '処理後の選択セルを自然に
   cells(target_row, target_column).Select
 End Sub '}}}
 
@@ -92,7 +89,7 @@ Sub ex_left() '{{{
   Application.ScreenUpdating = False
   cur_col = ActiveCell.Column
   Columns(cur_col).Copy
-  'target_rowの選択
+  'select target_row
   Dim i As Long
   i = 1
   Do Until ActiveCell.Offset(0, -i).EntireColumn.Hidden = False
@@ -105,7 +102,6 @@ Sub ex_left() '{{{
   Selection.Insert
   Columns(cur_col + 1).Delete
 
-  '処理後の選択セルを自然に
   cells(target_row, target_column).Select
 End Sub '}}}
 
@@ -130,7 +126,6 @@ Sub SetSeqNumber(Optional destRange As Range = Nothing) '{{{
   n = 1
   For Each r In destRange
     r.value = n
-    'Selection.NumberFormatLocal = "G/標準"
     Selection.NumberFormatLocal = "0_);[赤](0)"
     n = n + 1
   Next
@@ -150,7 +145,7 @@ Sub SortCurrentColumn() '{{{
       DataOption:=xlSortNormal
     End With
     .SetRange targetRange
-    .Header = xlYes '見出し行の有無の判断｡xlGuessはExcelに任せる｡
+    .Header = xlYes 'check header exists. xlGuess rely on Excel.
     .MatchCase = False
     .Orientation = xlTopToBottom
     .SortMethod = xlPinYin
@@ -215,7 +210,6 @@ Sub exclude()'{{{
 
   filterCondition = showedValueCollection.Keys
 
-  '空文字列がEmptyになっているので､stringの""に戻す｡
   For e = 0 to Ubound(filterCondition)
     filterCondition(e) = Mid(filterCondition(e),2)
   Next e
@@ -255,19 +249,19 @@ ERROR01:
 End Function '}}}
 
 Sub sp(Optional clearFilterdRowValue = 0) '{{{ smartpaste
-  'Todo コピー元のデータを消去する｡(Cut mode)
+  'TODO: erase data source
 
   Application.ScreenUpdating = False
 
-  'Microsoft Forms 2.0 Object Library に参照設定要
-  Dim V As Variant    'クリップボードのデータ全体
-  Dim A As Variant    'その内の一行
+  'need Microsoft Forms 2.0 Object Library reference
+  Dim V As Variant    'whole data on clipboard
+  Dim A As Variant    'one line
 
 
-  Set destRange = Range(ActiveCell, cells(Rows.count, ActiveCell.Column)) 'ActiveCellから一番下まで
-  Set destRange = destRange.SpecialCells(xlCellTypeVisible)   '可視セルのみを取得
+  Set destRange = Range(ActiveCell, cells(Rows.count, ActiveCell.Column)) 'ActiveCell to last row
+  Set destRange = destRange.SpecialCells(xlCellTypeVisible)   'get visible cells only
 
-  'clipboardからデータを取得し変数Vに2次元配列として格納'{{{
+  ''{{{
   Dim Dobj As DataObject
   Set Dobj = New DataObject
   With Dobj
@@ -277,10 +271,10 @@ Sub sp(Optional clearFilterdRowValue = 0) '{{{ smartpaste
     On Error GoTo 0
   End With'}}}
 
-  If Not IsEmpty(V) Then    'クリップボードからテキストが取得できた時のみ実行
-    V = Split(CStr(V), vbCrLf) '行を要素としたstring配列
+  If Not IsEmpty(V) Then
+    V = Split(CStr(V), vbCrLf)
 
-    'フィルターで隠れている行のデータを削除する｡'{{{
+    'erase lines hided by filter '{{{
     If clearFilterdRowValue = 1 Then
       referencRangeHeight = UBound(V) + 1
       referencRangeWidth = UBound(Split(CStr(V(0)), vbTab)) + 1
@@ -291,9 +285,8 @@ Sub sp(Optional clearFilterdRowValue = 0) '{{{ smartpaste
       Next c
     End If'}}}
 
-    '元データ削除 TODO
+    'TODO: delete source data
     If Application.CutCopyMode = xlCut Then
-      'srcからdstを除いた部分をClearContents
       Set srcRange = GetCopiedRange(ActiveSheet.Name)
       For Each c in srcRange
         c.Value = ""
@@ -302,13 +295,13 @@ Sub sp(Optional clearFilterdRowValue = 0) '{{{ smartpaste
       Application.CutCopyMode = False
     End If
 
-    '貼り付け'{{{
+    '{{{
     Dim i As Integer: i = 0
     Dim r As Range
     For Each r In destRange
-      A = Split(CStr(V(i)), vbTab) 'i行目
+      A = Split(CStr(V(i)), vbTab) 'i line
       For j = 0 to Ubound(A)
-        If Cstr(Val(A(j))) = A(j) Then 'A(j)が元は数値
+        If Cstr(Val(A(j))) = A(j) Then
           r.Offset(0, j).Value = Val(A(j))
         Else
           r.Offset(0, j).Value = A(j)

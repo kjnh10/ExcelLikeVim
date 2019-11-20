@@ -7,19 +7,18 @@ Public isExistPython As Boolean
 
 Public Sub unite(Optional sourceName As String = "") '{{{
   If sourceName = "" Then
-    Msgbox "sourceを指定してください｡使用出来るsource一覧を表示出来るようにする予定｡"
+    Msgbox "no source name specified"
   End If
 
   On Error GoTo Myerror
-  Set UniteCandidatesList = ExeStringPro("GatherCandidates_" & sourceName) 'CandidateListの設定
+  Set UniteCandidatesList = ExeStringPro("GatherCandidates_" & sourceName)
   On Error GoTo 0
-  unite_source = sourceName 'source名の設定
+  unite_source = sourceName
 
-  'TODO soureとcandidateはここで持たすのではなく,formオブジェクトのインスタンス変数として持たせた方が､複数子ウィンドウを立ちあげられよい？
   UniteInterface.Show
   Exit Sub
 Myerror:
-  MsgBox "sourceNameが不正です｡" & Err.Description
+  MsgBox "sourceName is invalid" & Err.Description
 End Sub '}}}
 
 'mru
@@ -32,14 +31,12 @@ Function GatherCandidates_mru() As Collection '{{{
   Do Until EOF(1)
     Line Input #1, buf
     FileName = Split(buf, ":::")(0)
-    ' If fso.FileExists(filename) Then 時間がかかりすぎるため｡
     If True Then
       result.Add buf
     End If
   Loop
   Close #1
 
-  'sort.pywが使えない場合｡mruファイルは最終行から読めば開かれた順になっているはず｡
   If Not isExistPython Then
     For i = result.Count to 1 Step -1
       reverseResult.Add result(i)
@@ -49,7 +46,7 @@ Function GatherCandidates_mru() As Collection '{{{
     Set GatherCandidates_mru = result
   End If
 End Function '}}}
-Function defaultAction_mru(arg) 'tableにした方がよいか'{{{
+Function defaultAction_mru(arg) 'table is better '{{{
   For Each f in Split(arg, vbCrLf)
     SmartOpenBook(f)
   Next f
@@ -65,7 +62,7 @@ Function GatherCandidates_sheet() As Collection '{{{
   Next sh
   Set GatherCandidates_sheet = result
 End Function '}}}
-Function defaultAction_sheet(arg) 'tableにした方がよいか'{{{
+Function defaultAction_sheet(arg) 'table is better '{{{
   Worksheets(arg).Activate
 End Function'}}}
 
@@ -80,7 +77,7 @@ Function GatherCandidates_book() As Collection '{{{
 
   Set GatherCandidates_book = result
 End Function '}}}
-Function defaultAction_book(arg) 'tableにした方がよいか'{{{
+Function defaultAction_book(arg) 'table is better '{{{
   Workbooks(arg).Activate
 End Function'}}}
 
@@ -101,7 +98,7 @@ Function GatherCandidates_filter() As Collection '{{{
 
   Set GatherCandidates_filter = ValueCollection
 End Function '}}}
-Function defaultAction_filter(SelectionMerged As String) 'tableにした方がよいか'{{{
+Function defaultAction_filter(SelectionMerged As String) 'table is better '{{{
   Application.ScreenUpdating = False
   ' If ActiveSheet.FilterMode Then
   ' ActiveSheet.ShowAllData
@@ -126,7 +123,7 @@ Function GatherCandidates_project() As Collection '{{{
 
   Set GatherCandidates_project = ValueCollection
 End Function '}}}
-Function defaultAction_project(SelectionMerged As String) 'tableにした方がよいか'{{{
+Function defaultAction_project(SelectionMerged As String) 'table is better? '{{{
   Application.ScreenUpdating = False
   If ActiveSheet.FilterMode Then
     ActiveSheet.ShowAllData

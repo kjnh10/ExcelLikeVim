@@ -70,7 +70,7 @@ Sub cos() '{{{
   Set atwb = ActiveWorkbook
   Workbooks.CheckOut (atwb.Path & "\" & atwb.Name)
   atwb.Save
-  atwb.CheckIn '閉じる事も含む
+  atwb.CheckIn 'include closing
   If Workbooks.count = 0 Then
     Application.quit
   End If
@@ -86,8 +86,8 @@ Function Path() '{{{
   Dim buf As String
   buf = ActiveWorkbook.Path
   With New MSForms.DataObject
-    .SetText buf      '変数の値をDataObjectに格納する
-    .PutInClipboard   'DataObjectのデータをクリップボードに格納する
+    .SetText buf
+    .PutInClipboard
   End With
 End Function '}}}
 
@@ -95,8 +95,8 @@ Function fpath() '{{{
   Dim AWF As String
   AWF = ActiveWorkbook.FullName
   With New MSForms.DataObject
-    .SetText AWF      '変数の値をDataObjectに格納する
-    .PutInClipboard   'DataObjectのデータをクリップボードに格納する
+    .SetText AWF
+    .PutInClipboard
   End With
   MsgBox AWF
 End Function '}}}
@@ -138,14 +138,13 @@ Public Function SmartOpenBook(filePath) '{{{
   Dim buf As String, Wb As Workbook
 
   On Error Goto Myerror
-  '存在チェック
   buf = dir(filePath)
   If buf = "" Then
-    MsgBox filePath & vbCrLf & "は存在しません", vbExclamation
+    MsgBox filePath & vbCrLf & " not found", vbExclamation
     Exit Function
   End If
 
-  '同名ブックのチェック
+  'check same name book
   For Each Wb In Workbooks
     If Wb.FullName = filePath Then
       Wb.Activate
@@ -161,8 +160,8 @@ Public Function SmartOpenBook(filePath) '{{{
 Myerror:
   MsgBox Err.Description & vbCrLf & "Alternatively filepath was copied to clipboard"
   With New MSForms.DataObject
-    .SetText filePath '変数の値をDataObjectに格納する
-    .PutInClipboard   'DataObjectのデータをクリップボードに格納する
+    .SetText filePath
+    .PutInClipboard
   End With
 End Function '}}}
 
@@ -170,16 +169,16 @@ End Function '}}}
 Public Sub PrintPdfDir(dirPath As String) '{{{
   Dim FileName As String
   Dim fileList As New Collection
-  FileName = dir(dirPath)  '最初のファイル名を取得
+  FileName = dir(dirPath)
   Do While FileName <> ""
     fileList.Add Item:=dirPath & FileName
-    FileName = dir              '次のファイル名を取得
+    FileName = dir
   Loop
   On Error GoTo err
   For Each f In fileList
     AdobeReader.PrintPdf FilePath:=CStr(f)
   Next f
   Exit Sub
-  err:            ' エラーハンドラー
+  err:
   MsgBox err.number & vbCr & err.Description, vbCritical
 End Sub  '}}}
