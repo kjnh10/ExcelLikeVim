@@ -350,7 +350,7 @@ Public Sub n_dd() '{{{
 End Sub '}}}
 
 Public Sub n_dc() '{{{
-  MsgBox "実装中です"
+  MsgBox "not implemented yet"
 End Sub '}}}
 
 '----------Mode Chage--------------------------
@@ -386,7 +386,7 @@ End Function '}}}
 
 Public Sub n_p(Optional registerName As String = """") '{{{
   Application.ScreenUpdating = False
-  Dim srcRegSheet As Worksheet '宣言がないとGetdataRangeが型を判定出来ずエラーになる｡
+  Dim srcRegSheet As Worksheet
   Set srcRegSheet = Workbooks("register.xlsx").Worksheets(registerName)
   Set srcRange = GetDataRange(srcRegSheet)
   srcRange.Copy
@@ -395,7 +395,7 @@ Public Sub n_p(Optional registerName As String = """") '{{{
     Range(ActiveCell.Row + 1 & ":" & ActiveCell.Row + srcRange.Rows.Count).Insert
     Cells(ActiveCell.Row + 1, 1).Select
   Else
-    ActiveCell.Select 'なぜかこれを行わないとvisual_modeに対する貼付けが出来ない｡←多分これを行わないとregsiterbookのrangeを選択している。?
+    ActiveCell.Select
   End If
 
   ActiveSheet.Paste
@@ -677,7 +677,7 @@ Public Sub registerSelection(Optional registerName As String = """")'{{{
 
   Selection.Copy(destRange)
   destRegSheet.Cells(2,3).Value = Selection.Rows.Count & ":" & Selection.Columns.Count
-  destRegSheet.Cells(2,4).Value = mode
+  destRegSheet.Cells(2,4).Value = GetmodeOfVim()
   DoEvents
 
   ' Workbooks("register.xlsx").Save

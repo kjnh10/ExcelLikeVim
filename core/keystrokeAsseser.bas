@@ -31,6 +31,10 @@ Public Sub SetModeOfVim(modeName)'{{{
   modeOfVim = modeName
 End Sub'}}}
 
+Public Function GetModeOfVim() As String '{{{
+  GetModeOfVim = modeOfVim
+End Function'}}}
+
 '----------- Application layer mapping-----------------------
 Public Sub AllKeyToAssesKeyFunc()'{{{
     Application.OnKey "a", "AssesKey"
