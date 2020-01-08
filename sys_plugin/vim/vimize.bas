@@ -180,7 +180,7 @@ Public Sub G(Optional numparams As String = "") '{{{
     Dim column As Long
     Dim row As Long
     row = numparams
-    column = ActiveCell.column
+    column = Application.worksheetfunction.min(ActiveCell.column, rows.count)
     Cells(row, column).Select
   End If
 End Sub '}}}

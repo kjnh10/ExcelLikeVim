@@ -523,24 +523,19 @@ Private Sub AssesKey(optional context As String = "default")'{{{
       e = GetTickCount
     Loop
 
-    If not isGettingNumParams Then
+    If not isGettingNumParams and keyMapDic(context)(modeOfVim).Exists(keyStroke) Then
       ' Debug.print "have waited for timeoutlen:" & timeoutlen & ", so will execute the stroke:" & KeyStroke
       Call ExeStringPro(Trim(keyMapDic(context)(modeOfVim).Item(keyStroke) + " " + numParamString))
-      numParamString = ""
-      isNewStroke = True
     End If
-  ElseIf candidate = 0 Then
-    ' Debug.Print "0 candidate"
-    isNewStroke = True
-    Exit Sub
-  ElseIf candidate = 1 Then
+  ElseIf candidate = 1 And keyMapDic(context)(modeOfVim).Exists(keyStroke) Then
     ' Debug.Print keyMapDic(context)(modeOfVim)(keyStroke) & " called from keystroke"
     Call ExeStringPro(Trim(keyMapDic(context)(modeOfVim).Item(keyStroke) + " " + numParamString))
-    numParamString = ""
-    isNewStroke = True
     ' Debug.Print "poformanace time is " & GetTickCount - s
-    Exit Sub
   End If
+
+  numParamString = ""
+  isNewStroke = True
+  isGettingNumParams = False
 End Sub
 '}}}
 
