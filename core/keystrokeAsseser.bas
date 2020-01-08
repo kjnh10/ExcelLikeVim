@@ -482,6 +482,7 @@ Private Sub AssesKey(optional context As String = "default")'{{{
     Exit Sub
   End If'}}}
 
+  'Assess newkey and keyStroke
   If IsNumeric(newkey) and isNewStroke Then ' number
     numParamString = newkey
     isGettingNumParams = True
@@ -494,9 +495,9 @@ Private Sub AssesKey(optional context As String = "default")'{{{
     keyStroke = keyStroke + newkey
   End If
 
-  'Assess keyStroke
   candidate = NumberOfHits(keyStroke, context, modeOfVim)
-  If candidate > 1 or isGettingNumParams Then  ' for multiple candidates exist
+  If candidate > 1 or (candidate = 1 and (not keyMapDic(context)(modeOfVim).Exists(keyStroke))) or isGettingNumParams Then
+    ' wait next key
     isNewStroke = False
     e = GetTickCount
 
