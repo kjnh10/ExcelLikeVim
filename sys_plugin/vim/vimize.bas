@@ -171,10 +171,18 @@ Public Sub gg() '{{{
   cells(1, ActiveCell.Column).Select
 End Sub '}}}
 
-Public Sub G() '{{{
-  With ActiveSheet.UsedRange
-    cells(.Rows(.Rows.count).Row, ActiveCell.Column).Select
-  End With
+Public Sub G(Optional numparams As String = "") '{{{
+  if numparams = "" Then
+    With ActiveSheet.UsedRange
+      cells(.Rows(.Rows.count).Row, ActiveCell.Column).Select
+    End With
+  Else
+    Dim column As Long
+    Dim row As Long
+    row = numparams
+    column = ActiveCell.column
+    Cells(row, column).Select
+  End If
 End Sub '}}}
 
 Sub vim_w() '{{{
@@ -341,7 +349,7 @@ End Sub '}}}
 
 Public Sub yank_value() '{{{
   ' ActiveCell.Value
-  MsgBox "Todo ¥¥¥"
+  MsgBox "Todo ï¿½ï¿½ï¿½"
 End Sub '}}}
 
 Public Sub n_dd() '{{{
@@ -400,7 +408,7 @@ Public Sub n_p(Optional registerName As String = """") '{{{
 
   ActiveSheet.Paste
   ' Application.ScreenUpdating = True
-  ' 'ctrl+v‚Ì‘—M¡undo‚Ì‚½‚ßƒL[ƒ{[ƒh‚ÅÀŒ»
+  ' 'ctrl+vï¿½Ì‘ï¿½ï¿½Mï¿½undoï¿½Ì‚ï¿½ï¿½ßƒLï¿½[ï¿½{ï¿½[ï¿½hï¿½Åï¿½ï¿½ï¿½
   ' ' ActiveSheet.Paste
   ' keybd_event vbKeyControl, 0, 0, 0
   ' keybd_event vbKeyV, 0, 0, 0
@@ -408,7 +416,7 @@ Public Sub n_p(Optional registerName As String = """") '{{{
   ' keybd_event vbKeyControl, 0, KEYUP, 0
   ' ' DoEvents
   '
-  ' 'ctrl+BackSpace‚Ì‘—M¡‘I‘ğ”ÍˆÍ‚Ì‰ğœ
+  ' 'ctrl+BackSpaceï¿½Ì‘ï¿½ï¿½Mï¿½ï¿½Iï¿½ï¿½ÍˆÍ‚Ì‰ï¿½ï¿½ï¿½
   ' keybd_event vbKeyShift, 0, 0, 0
   ' keybd_event vbKeyBack, 0, EXTENDED_KEY Or 0, 0
   ' keybd_event vbKeyBack, 0, EXTENDED_KEY Or KEYUP, 0

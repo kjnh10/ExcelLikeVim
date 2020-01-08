@@ -13,16 +13,19 @@ Attribute VB_Name = "keystrokeAsseser"
 Private Const timeoutLen As Single = 1000 'wait time for hitting next
 Private keyStroke As String
 Private isNewStroke As Boolean
+Private isGettingNumParams As Boolean
 
 Private keyMapDic As Object 'Collection of vim_mode_mapping_dictionary
-Private visualMap As Object 
-Private lin_visualMap As Object 
+Private visualMap As Object
+Private lin_visualMap As Object
 Private keybinde As String
 Private modeOfVim As String
 Private s As Double 'for storing time from when previousley pressing a key
+Private numParamString As String
 
 Public Sub init()'{{{
   isNewStroke = True
+  isGettingNumParams = False
   Set keyMapDic = CreateObject("Scripting.Dictionary")
   Call SetModeOfVim("normal")
 End Sub'}}}
@@ -63,7 +66,7 @@ Public Sub AllKeyToAssesKeyFunc()'{{{
     Application.OnKey "x", "AssesKey"
     Application.OnKey "y", "AssesKey"
     Application.OnKey "z", "AssesKey"
-    
+
     Application.OnKey "0", "AssesKey"
     Application.OnKey "1", "AssesKey"
     Application.OnKey "2", "AssesKey"
@@ -74,7 +77,7 @@ Public Sub AllKeyToAssesKeyFunc()'{{{
     Application.OnKey "7", "AssesKey"
     Application.OnKey "8", "AssesKey"
     Application.OnKey "9", "AssesKey"
-    
+
     Application.OnKey "-", "AssesKey"
     Application.OnKey "{^}", "AssesKey"
     Application.OnKey "@", "AssesKey"
@@ -220,7 +223,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "x"
     Application.OnKey "y"
     Application.OnKey "z"
-    
+
     Application.OnKey "0"
     Application.OnKey "1"
     Application.OnKey "2"
@@ -231,7 +234,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "7"
     Application.OnKey "8"
     Application.OnKey "9"
-    
+
     Application.OnKey "="
     Application.OnKey "-"
     Application.OnKey "{^}"
@@ -242,7 +245,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey ":"
     Application.OnKey "{]}"
     Application.OnKey "."
-    
+
     Application.OnKey "+a"
     Application.OnKey "+b"
     Application.OnKey "+c"
@@ -269,7 +272,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "+x"
     Application.OnKey "+y"
     Application.OnKey "+z"
-    
+
     Application.OnKey "+0"
     Application.OnKey "+1"
     Application.OnKey "+2"
@@ -280,7 +283,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "+7"
     Application.OnKey "+8"
     Application.OnKey "+9"
-    
+
     Application.OnKey "+-"
     Application.OnKey "+{^}"
     Application.OnKey "+?"
@@ -293,7 +296,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "+."
     Application.OnKey "+/"
     Application.OnKey "_"
-    
+
     'Ctrl
     Application.OnKey "^a"
     Application.OnKey "^b"
@@ -321,7 +324,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "^x"
     Application.OnKey "^y"
     Application.OnKey "^z"
-    
+
     Application.OnKey "^0"
     Application.OnKey "^1"
     Application.OnKey "^2"
@@ -332,7 +335,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "^7"
     Application.OnKey "^8"
     Application.OnKey "^9"
-    
+
     Application.OnKey "^-"
     Application.OnKey "^{^}"
     Application.OnKey "^?"
@@ -342,7 +345,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "^:"
     Application.OnKey "^{]}"
     Application.OnKey "^."
-    
+
     Application.OnKey "^+a"
     Application.OnKey "^+b"
     Application.OnKey "^+c"
@@ -369,7 +372,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "^+x"
     Application.OnKey "^+y"
     Application.OnKey "^+z"
-    
+
     Application.OnKey "^+0"
     Application.OnKey "^+1"
     Application.OnKey "^+2"
@@ -380,7 +383,7 @@ Public Sub AllKeyAssign_reset()'{{{
     Application.OnKey "^+7"
     Application.OnKey "^+8"
     Application.OnKey "^+9"
-    
+
     Application.OnKey "^+-"
     Application.OnKey "^+{^}"
     Application.OnKey "^+?"
@@ -452,7 +455,7 @@ Private Sub AssesKey(optional context As String = "default")'{{{
 
   Application.EnableCancelKey = xlDisabled 'for Esc Command. Without this, cannot catch ESC key.
   '
-  If keyMapDic is Nothing Then 
+  If keyMapDic is Nothing Then
     Application.Run("keystrokeAsseser.init")
     Application.Run("configure.init")
     On Error GoTo except
@@ -466,11 +469,11 @@ Private Sub AssesKey(optional context As String = "default")'{{{
   s = GetTickCount '0 milisecond
 
   'Get put key
-  If isNewStroke = True Then
+  If isNewStroke Then
     keyStroke = ""
-    newkey = GetKeyString 'V‹K‚Ìê‡‚Í¤GetKeyboardState‚ðŽg‚¤B‚±‚¿‚ç‚ÌŠÖ”‚Å‚È‚¢‚Æ¤‚Ì‚Ç‚©‚Ìmodifierkey‚Ì‰e‹¿‚ðŽó‚¯‚Ä‚µ‚Ü‚¤¡
+    newkey = GetKeyString 'ï¿½Vï¿½Kï¿½Ìê‡ï¿½Í¤GetKeyboardStateï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌŠÖï¿½ï¿½Å‚È‚ï¿½ï¿½Æ¤ï¿½Ì‚Ç‚ï¿½ï¿½ï¿½modifierkeyï¿½Ì‰eï¿½ï¿½ï¿½ï¿½ï¿½ó‚¯‚Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½
   Else
-    newkey = GetKeyStringAsync 'GetKeyboardState‚ðŽg‚¤‚Æ‘O‚ÌƒL[‚Ìî•ñ‚ªŽc‚Á‚Ä‚µ‚Ü‚Á‚Ä‚¢‚éŽ–‚ª‚ ‚é‚½‚ß‚±‚¿‚ç‚ðŽg‚¤¡
+    newkey = GetKeyStringAsync 'GetKeyboardStateï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Æ‘Oï¿½ÌƒLï¿½[ï¿½Ìï¿½ñ‚ªŽcï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½Ä‚ï¿½ï¿½éŽ–ï¿½ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ß‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½
   End If
 
   If newkey = "" Then 'When Application.OnKey Works, but GetKeyString does not work.'{{{
@@ -479,21 +482,21 @@ Private Sub AssesKey(optional context As String = "default")'{{{
     Exit Sub
   End If'}}}
 
-  keyStroke = keyStroke + newkey
+  If IsNumeric(newkey) and isNewStroke Then ' number
+    numParamString = newkey
+    isGettingNumParams = True
+  ElseIf (not isNewStroke) and isGettingNumParams and IsNumeric(newkey) Then
+    numParamString = numParamString + newkey
+  ElseIf (not isNewStroke) and isGettingNumParams and (not IsNumeric(newkey)) Then
+    isGettingNumParams = False
+    keyStroke = keyStroke + newkey
+  Else
+    keyStroke = keyStroke + newkey
+  End If
 
   'Assess keyStroke
   candidate = NumberOfHits(keyStroke, context, modeOfVim)
-  If candidate = 0 Then
-    ' Debug.Print "0 candidate"
-    isNewStroke = True
-    Exit Sub
-  ElseIf candidate = 1 And keyMapDic(context)(modeOfVim).Exists(keyStroke) Then
-    ' Debug.Print keyMapDic(context)(modeOfVim)(keyStroke) & " called from keystroke"
-    Call ExeStringPro(keyMapDic(context)(modeOfVim).Item(keyStroke))
-    isNewStroke = True
-    ' Debug.Print "poformanace time is " & GetTickCount - s
-    Exit Sub
-  Else ' for multiple candidates exist
+  If candidate > 1 or isGettingNumParams Then  ' for multiple candidates exist
     isNewStroke = False
     e = GetTickCount
 
@@ -515,14 +518,28 @@ Private Sub AssesKey(optional context As String = "default")'{{{
     Do until e-s > timeoutLen
       key = GetKeyStringAsync
       if key <> "" Then
-        Exit Sub 
+        Exit Sub
       End if
       e = GetTickCount
     Loop
 
-    ' Debug.print "have waited for timeoutlen:" & timeoutlen & ", so will execute the stroke:" & KeyStroke
-    Application.Run keyMapDic(context)(modeOfVim)(keyStroke)
+    If not isGettingNumParams Then
+      ' Debug.print "have waited for timeoutlen:" & timeoutlen & ", so will execute the stroke:" & KeyStroke
+      Call ExeStringPro(Trim(keyMapDic(context)(modeOfVim).Item(keyStroke) + " " + numParamString))
+      numParamString = ""
+      isNewStroke = True
+    End If
+  ElseIf candidate = 0 Then
+    ' Debug.Print "0 candidate"
     isNewStroke = True
+    Exit Sub
+  ElseIf candidate = 1 Then
+    ' Debug.Print keyMapDic(context)(modeOfVim)(keyStroke) & " called from keystroke"
+    Call ExeStringPro(Trim(keyMapDic(context)(modeOfVim).Item(keyStroke) + " " + numParamString))
+    numParamString = ""
+    isNewStroke = True
+    ' Debug.Print "poformanace time is " & GetTickCount - s
+    Exit Sub
   End If
 End Sub
 '}}}
@@ -605,7 +622,7 @@ Private Function GetKeyStringAsync()'{{{
     If GetAsyncKeyState(119) < 0 Then mainkey = "F8"
     If GetAsyncKeyState(120) < 0 Then mainkey = "F9"
     If GetAsyncKeyState(121) < 0 Then mainkey = "F10"
-    'If GetAsyncKeyState(122) < 0 Then mainkey = "F11" '‚È‚º‚©F11‚ª”­“®‚·‚éŽ–‚ª‚ ‚é‚Ì‚Å¤ã‘‚©‚ê‚é‚æ‚¤‚Éã‚É©VBE‹N“®ƒL[‚ªF11
+    'If GetAsyncKeyState(122) < 0 Then mainkey = "F11" 'ï¿½È‚ï¿½ï¿½ï¿½F11ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½éŽ–ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚Å¤ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½Éï¿½Éï¿½VBEï¿½Nï¿½ï¿½ï¿½Lï¿½[ï¿½ï¿½F11
     If GetAsyncKeyState(123) < 0 Then mainkey = "F12"
     If GetAsyncKeyState(124) < 0 Then mainkey = "F13"
     If GetAsyncKeyState(125) < 0 Then mainkey = "F14"
@@ -763,7 +780,7 @@ Private Function GetKeyString()'{{{
     If state(119) >= 128 Then mainkey = "F8"
     If state(120) >= 128 Then mainkey = "F9"
     If state(121) >= 128 Then mainkey = "F10"
-    'If state(122) >= 128 Then mainkey = "F11" '‚È‚º‚©F11‚ª”­“®‚·‚éŽ–‚ª‚ ‚é‚Ì‚Å¤ã‘‚©‚ê‚é‚æ‚¤‚Éã‚É©VBE‹N“®ƒL[‚ªF11
+    'If state(122) >= 128 Then mainkey = "F11" 'ï¿½È‚ï¿½ï¿½ï¿½F11ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½éŽ–ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚Å¤ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½Éï¿½Éï¿½VBEï¿½Nï¿½ï¿½ï¿½Lï¿½[ï¿½ï¿½F11
     If state(123) >= 128 Then mainkey = "F12"
     If state(124) >= 128 Then mainkey = "F13"
     If state(125) >= 128 Then mainkey = "F14"
