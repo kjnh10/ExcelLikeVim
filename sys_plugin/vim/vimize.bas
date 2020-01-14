@@ -746,9 +746,26 @@ Private Sub disableIME()'{{{
 End Sub'}}}
 
 Private Sub OpenRegisterBook()'{{{
-  Application.ScreenUpdating = False
-  Workbooks.Open FileName:=ThisWorkbook.Path & "\sys_plugin\vim\data\register.xlsx"
-  Windows("register.xlsx").Visible = False
+  Dim book As Workbook
+  Dim opened As Boolean
+  Dim cursetting_su As Boolean
+  Dim register_file_path As String: register_file_path = ThisWorkbook.Path & "\sys_plugin\vim\data\register.xlsx"
+
+  opened = False
+  For Each book in Workbooks
+    If register_file_path = book.FullName Then
+        opened = True
+        Exit For
+    End If
+  Next
+
+  If not opened Then
+    cursetting_su = Application.ScreenUpdating
+    Application.ScreenUpdating = False
+    Workbooks.Open FileName:= register_file_path
+    Windows("register.xlsx").Visible = False
+    Application.ScreenUpdating = cursetting_su
+  End If
 End Sub'}}}
 
 Private Function GetDataRange(sh As Worksheet) As Range'{{{
