@@ -20,26 +20,25 @@ public sub format_current_cell()
     end if
 end sub
 
-' public sub resolve_current_cell()
-' 複雑な数式に対してはうまく動かない
-'     dim formula as string
-'     dim res as string
-'     formula = activecell.formula
-'     if mid(formula, 1, 1) <> "=" then
-'         msgbox "active cell is not formula."
-'         exit sub
-'     else
-'         res = resolve(formula)
-'         msgbox res
-'         dim cb as object
-'         set cb = new dataobject
-'         with cb
-'             .settext res
-'             .putinclipboard  'クリップボードに反映する
-'         end with
-'         ' activecell.formula = format(formula)
-'     end if
-' end sub
+public sub resolve_current_cell()
+    dim formula as string
+    dim res as string
+    formula = activecell.formula
+    if mid(formula, 1, 1) <> "=" then
+        msgbox "active cell is not formula."
+        exit sub
+    else
+        res = resolve(format(formula))
+        msgbox res
+        dim cb as object
+        set cb = new dataobject
+        with cb
+            .settext res
+            .putinclipboard  'クリップボードに反映する
+        end with
+        ' activecell.formula = format(formula)
+    end if
+end sub
 
 private function format(formula as string)
     dim res as string: res = ""
@@ -81,53 +80,56 @@ private function format(formula as string)
     format = res
 end function
 
-private function resolve(formula as string, optional minlevel as long = 1)
+private function resolve(formula as string)
+    ' assume formula is formatted
     dim res as string: res = ""
-    dim level as long: level = 0
     dim c as string
     dim idx as integer
-    dim to_resolve as string: to_resolve = ""
+    dim line as string: line = ""
+    dim indent_string as string: indent_string = ""
+    dim to_resolve as boolean: to_resolve = true
 
     for idx = 1 to len(formula)
         c = mid(formula, idx, 1)
-        if (c <> " " and c <> VBLF) then
-            if (level<minlevel) then
-                res = res & c
-                if (c = "(") then
-                    level = level + 1
+        if (c = " ") then
+            indent_string = indent_string & " "
+        elseif (c = VBLF) then
+            dim prec as string: prec = mid(formula, idx-1, 1)
+            if prec <> "," and prec <> "=" then
+                if to_resolve then
+                    line = mod_evaluate(line)
                 end if
-            else
-                if (c = "(") then
-                    level = level + 1
-                    to_resolve = to_resolve & c
-                elseif (c = ")") then
-                    level = level - 1
-                    if (level < minlevel) then
-                        res = res & super_evaluate(to_resolve) & c
-                        to_resolve = ""
-                    else
-                        to_resolve = to_resolve & c
-                    end if
-                elseif (c = "," and level = minlevel) then
-                    res = res & super_evaluate(to_resolve) & c
-                    to_resolve = ""
-                else
-                    to_resolve = to_resolve & c
+            elseif prec = "," then
+                if to_resolve then
+                    line = mid(line, 1, len(line)-1)
+                    line = mod_evaluate(line)
+                    line = line & ","
                 end if
             end if
+
+            res = res & indent_string & line & VBLF
+            line = ""
+            indent_string = ""
+            to_resolve = true
+        else
+            if (c = "(" or c = ")") then
+                to_resolve = false
+            end if
+            line = line & c
         end if
     next
-    msgbox res
-    resolve = res
+
+    resolve = res & line
 end function
 
-private function super_evaluate(formula as string)
-    dim to_restore_sd as boolean: to_restore_sd = application.screenupdating
-    dim to_restore as string: to_restore = activecell.formula
-    ' application.screenupdating = false
-    activecell = "=" & formula
-    activesheet.calculate
-    super_evaluate = cstr(activecell.value)
-    activecell.formula = to_restore
-    ' application.screenupdating = to_restore_sd
+private function mod_evaluate(line as string)
+    on error goto asis
+        if vartype(evaluate(line)) = 8 then ' 8 -> string
+            line = chr(34) & evaluate(line) & chr(34)
+        else
+            line = chr(34) & evaluate(line) & chr(34)
+            line = cstr(evaluate(line))
+        end if
+    asis:
+        mod_evaluate = line
 end function
