@@ -1,38 +1,23 @@
 Attribute VB_Name = "ExecuteProcedure"
 
-Function ExeStringPro(commandString As String, Optional bookName As String = "") '{{{
+Function ExeStringPro(commandString As String) '{{{
   ' execute function specified by commandString
-  ' firstly execute modules of bookName. then search for this book.
-
-  'Debug.Print "Start ExeStringPro"
   Dim commandArray() As String
-  Dim AWBcommandArray() As String
+  commandString = Replace(commandString, "::", "!")
   commandArray = Split(commandString, " ")
 
-  If commandArray(0) = "-a" Then
+  If commandArray(0) = "-a" Then  'execute as is
     commandString = Mid(commandString, Instr(commandString, " ") + 1) 'get after #2 space
     ExecuteAsIs commandString
     Exit Function
   End If
 
-  If bookName = "" Then
-    On Error Resume Next 'for when there is no book 
-    bookName = ActiveWorkbook.Name
-    On Error Goto 0
-  End If
-  AWBcommandArray = commandArray
-  AWBcommandArray(0) = bookName & "!" & commandArray(0)
-
-  Set buf = ExeStringPro_core(AWBcommandArray)
-  If buf(1) = 0 Then 'Search command within ActiveWorkbook code
+  ' Application.Run ("'KiriMacro_20200107-64bit.xlsm'!jumpmore")
+  Set buf = ExeStringPro_core(commandArray)
+  If buf(1) = 0 Then
     Call SetVariant(ExeStringPro, buf(2))
   Else
-    Set buf = ExeStringPro_core(commandArray)
-    If buf(1) = 0 Then
-      Call SetVariant(ExeStringPro, buf(2))
-    Else
-      MsgBox "specified function:" & commandString & " failed. check that the function exists and args are valid."
-    End If
+    MsgBox "specified function:" & commandString & " failed. check that the function exists and args are valid."
   End If
 End Function '}}}
 
@@ -44,6 +29,7 @@ Function ExeStringPro_core(commandArray) As Variant '{{{
   'TODO: case for the number of args is greater than 3
   On Error GoTo MyError
   If UBound(commandArray) = 0 Then
+    debug.print commandArray(0)
     Call SetVariant(result, Application.run(commandArray(0)))
   ElseIf UBound(commandArray) = 1 Then
     Call SetVariant(result, Application.run(commandArray(0), commandArray(1)))

@@ -424,17 +424,15 @@ Public Sub n_p(Optional registerName As String = """") '{{{
 End Sub '}}}
 
 Sub command_vim() '{{{
-  Dim AWB As String
   Dim commandString As String
 
-  AWB = ActiveWorkbook.Name
   commandString = InputBox("Please Enter Command you wanna do", "command", "")
   If commandString = "" Then
     Exit Sub
   End If
 
-  commandString = Replace(commandString, "!", "_exclamation")
-  Call ExeStringPro(commandString, AWB)
+  commandString = Replace(commandString, "!", "_exclamation")  ' for [q!] or [w!] command. ! is not allowed in vba function name
+  Call ExeStringPro(commandString)
 End Sub '}}}
 
 '------------Visual Mode----------------------
