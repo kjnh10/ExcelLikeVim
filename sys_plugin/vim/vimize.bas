@@ -54,6 +54,9 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("yv", "yank_value")
   Call nmap("p", "n_p")
   Call nmap("u", "n_u")
+  Call nmap("zM", "Collapse_All")
+  Call nmap("zR", "Expand_All")
+
   Call nmap("<ESC>", "n_ESC")
 
   Call vmap("<ESC>", "v_ESC")
