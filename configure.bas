@@ -14,6 +14,8 @@ Public Sub init() '{{{
   Call SetAppEvent
   Call keystrokeAsseser.init
   call vimize.main
+
   application.onkey "{F3}", "coreloader.reload"
+  ' application.onkey "^+p", "'ExeStringPro ""unite command""'"
 End Sub '}}}
 
