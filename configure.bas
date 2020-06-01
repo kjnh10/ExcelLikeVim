@@ -16,6 +16,6 @@ Public Sub init() '{{{
   call vimize.main
 
   application.onkey "{F3}", "coreloader.reload"
-  ' application.onkey "^+p", "'ExeStringPro ""unite command""'"
+  application.onkey "^P", "'ExeStringPro ""unite command""'"
 End Sub '}}}
 
