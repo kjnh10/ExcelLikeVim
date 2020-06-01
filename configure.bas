@@ -7,14 +7,11 @@ Public Sub SetAppEvent() '{{{
     Set myobject = New ApplicationEvent
     Set myobject.appEvent = Application
   End If
-  ' MsgBox "setiing AppEvent is done"
+  Debug.Print "setiing AppEvent is done"
 End Sub '}}}
 
 Public Sub init() '{{{
   Call SetAppEvent
-  Call keystrokeAsseser.init
-  call vimize.main
-
   application.onkey "{F3}", "coreloader.reload"
   application.onkey "^P", "'ExeStringPro ""unite command""'"
 End Sub '}}}
