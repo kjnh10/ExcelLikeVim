@@ -49,7 +49,7 @@ Sub ex_below() '{{{
   Application.ScreenUpdating = False
   cur_row = ActiveCell.Row
   Rows(cur_row).Copy
-  'target_row‚Ì‘I‘ğ
+  'target_rowï¿½Ì‘Iï¿½ï¿½
   Dim i As Long
   i = 1
   Do Until ActiveCell.Offset(i, 0).EntireRow.Hidden = False
@@ -126,7 +126,7 @@ Sub SetSeqNumber(Optional destRange As Range = Nothing) '{{{
   n = 1
   For Each r In destRange
     r.value = n
-    Selection.NumberFormatLocal = "0_);[Ô](0)"
+    Selection.NumberFormatLocal = "0_);[ï¿½ï¿½](0)"
     n = n + 1
   Next
 End Sub '}}}
@@ -329,6 +329,10 @@ Sub sp2() '{{{ smartpaste
   Next r
 End Sub '}}}
 
+Sub num_format_million()
+  Selection.NumberFormatLocal = "#,##0,,"
+End Sub
+
 '---------diff-----------------
 Sub diffsh(targetsh As Worksheet, fromsh As Worksheet)'{{{
   'TODO prompt
@@ -344,7 +348,7 @@ Sub diffRange(targetRange As Range, fromRange As Range)'{{{
 End Sub'}}}
 
 Sub abcdefc(targetRange As Range, fromRange As Range)'{{{
-  Call diffsh(ActiveWorkbook.Worksheets("•ÏX“_"), ActiveWorkbook.Worksheets("•ÏXŒ³"))
+  Call diffsh(ActiveWorkbook.Worksheets("ï¿½ÏXï¿½_"), ActiveWorkbook.Worksheets("ï¿½ÏXï¿½ï¿½"))
 End Sub'}}}
 
 '-----------Supplimental functions------------------------
