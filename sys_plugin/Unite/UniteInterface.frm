@@ -15,6 +15,9 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 '-----------------Below this line , Write down code-----------------------------------
+Private ListBox1Bottom As Double
+Private ListBox1Right As Double
+
 Private Sub UserForm_Initialize() '{{{
         ListBox1.MultiSelect = fmMultiSelectMulti
         ' ListBox1.MultiSelect = fmMultiSelectExtended
@@ -25,6 +28,13 @@ Private Sub UserForm_Initialize() '{{{
         Next Buf
 
         TextBox1.SetFocus
+
+        'Call the Window API to enable resizing
+        Call ResizeWindowSettings(Me, True)
+
+        'Get the bottom right anchor position of the objects to be resized
+        ListBox1Bottom = Me.Height - ListBox1.Top - ListBox1.Height
+        ListBox1Right = Me.Width - ListBox1.Left - ListBox1.Width
 End Sub '}}}
 
 Private Sub TextBox1_Change() '{{{
@@ -184,3 +194,11 @@ Private Sub ListBox1_DblClick(ByVal Cancel As MSForms.ReturnBoolean) '{{{
         Unload Me
 End Sub '}}}
 
+
+Private Sub UserForm_Resize()
+        On Error Resume Next
+        'Set the new position of the objects
+        ListBox1.Height = Me.Height - ListBox1Bottom - ListBox1.Top - 15
+        ListBox1.Width = Me.Width - ListBox1Right - ListBox1.Left - 10
+        On Error GoTo 0
+End Sub
