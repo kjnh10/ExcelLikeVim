@@ -9,16 +9,54 @@ public sub format_current_cell()
         exit sub
     else
         res = format(formula)
-        msgbox res
+        Set UniteCandidatesList = GatherCandidates_formula(res)
+        unite_source = "formula"
+        UniteInterface.Show
+
+        ' msgbox res
         dim cb as object
         set cb = new dataobject
         with cb
             .settext res
-            .putinclipboard  'クリップボードに反映する
+            .putinclipboard
         end with
         ' activecell.formula = format(formula)
     end if
 end sub
+
+Function GatherCandidates_formula(arg As string) As Collection
+    Dim lines As New Collection
+    Dim line as string
+    for idx = 1 to len(arg)
+        char = mid(arg, idx, 1)
+        if char = VBLF then
+            lines.Add line
+            line = ""
+        else
+            line = line & char
+        end if
+    Next
+    lines.Add line
+    Set GatherCandidates_formula = lines
+End Function
+
+Private Sub defaultAction_formula(arg As String)
+    On Error GoTo Err
+        Dim target as Range
+        Set target = Range(convert_to_jumpable(arg))
+    Finally:
+    On Error Resume Next
+        Application.Goto Reference:=target
+        Exit Sub
+    Err:
+        msgbox "The line you selected is not valid range to jump"
+End Sub
+
+Private Function convert_to_jumpable(arg As String) As String
+    arg = Replace(arg, ",", "")
+    arg = Replace(arg, " ", "")
+    convert_to_jumpable = arg
+End Function
 
 public sub resolve_current_cell()
     dim formula as string
@@ -29,12 +67,15 @@ public sub resolve_current_cell()
         exit sub
     else
         res = resolve(format(formula))
-        msgbox res
+        Set UniteCandidatesList = GatherCandidates_formula(res)
+        unite_source = "formula"
+        UniteInterface.Show
+        ' msgbox res
         dim cb as object
         set cb = new dataobject
         with cb
             .settext res
-            .putinclipboard  'クリップボードに反映する
+            .putinclipboard
         end with
         ' activecell.formula = format(formula)
     end if
