@@ -88,11 +88,22 @@ private function format(formula as string)
     dim idx as integer
     dim indent_string as string: indent_string = ""
     dim one_indent_size as long: one_indent_size = 4
+    dim is_in_quotation as boolean: is_in_quotation = False
 
     for idx = 1 to len(formula)
         c = mid(formula, idx, 1)
-        if (c <> " " and c <> VBLF) then
-            if (c = "(") then
+        if (c <> VBLF) then
+            if (c = """" and not is_in_quotation) then
+                is_in_quotation = true
+                res = res & c
+            elseif (c = """" and is_in_quotation) then
+                is_in_quotation = false
+                res = res & c
+            elseif (c = " " and is_in_quotation) then
+                res = res & c
+            elseif (c = " " and not is_in_quotation) then
+
+            elseif (c = "(") then
                 res = res & c
                 level = level + 1
                 indent_string = indent_string & "    "
