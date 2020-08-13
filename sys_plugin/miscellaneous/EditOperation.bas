@@ -333,6 +333,16 @@ Sub num_format_million()
   Selection.NumberFormatLocal = "#,##0,,"
 End Sub
 
+Sub topleft()
+  Dim backsh As worksheet
+  Set backsh = ActiveSheet
+  For Each ws In ActiveWorkbook.Worksheets
+    ws.Activate
+    Range("A1").Select
+  Next ws
+  backsh.Activate
+End Sub
+
 '---------diff-----------------
 Sub diffsh(targetsh As Worksheet, fromsh As Worksheet)'{{{
   'TODO prompt
@@ -345,10 +355,6 @@ End Sub'}}}
 
 Sub diffRange(targetRange As Range, fromRange As Range)'{{{
   'TODO
-End Sub'}}}
-
-Sub abcdefc(targetRange As Range, fromRange As Range)'{{{
-  Call diffsh(ActiveWorkbook.Worksheets("�ύX�_"), ActiveWorkbook.Worksheets("�ύX��"))
 End Sub'}}}
 
 '-----------Supplimental functions------------------------
