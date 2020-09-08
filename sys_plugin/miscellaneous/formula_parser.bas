@@ -14,12 +14,7 @@ public sub format_current_cell()
         UniteInterface.Show
 
         ' msgbox res
-        dim cb as object
-        set cb = new dataobject
-        with cb
-            .settext res
-            .putinclipboard
-        end with
+        SetStrToClipBoard(res)
         ' activecell.formula = format(formula)
     end if
 end sub
@@ -71,12 +66,7 @@ public sub resolve_current_cell()
         unite_source = "formula"
         UniteInterface.Show
         ' msgbox res
-        dim cb as object
-        set cb = new dataobject
-        with cb
-            .settext res
-            .putinclipboard
-        end with
+        SetStrToClipBoard(res)
         ' activecell.formula = format(formula)
     end if
 end sub

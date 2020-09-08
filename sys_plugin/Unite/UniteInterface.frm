@@ -138,10 +138,7 @@ Private Sub ListBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal shift
 
         If KeyCode = vbKeyY Then 'y
                 Me.Hide
-                With New MSForms.DataObject
-                        .SetText Me.ListBox1.List(Me.ListBox1.ListIndex) '変数の値をDataObjectに格納する
-                        .PutInClipboard   'DataObjectのデータをクリップボードに格納する
-                End With
+                SetStrToClipBoard(Me.ListBox1.List(Me.ListBox1.ListIndex))
                 Unload Me
         End If
 

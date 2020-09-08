@@ -85,19 +85,13 @@ Function Path() '{{{
   MsgBox ActiveWorkbook.Path
   Dim buf As String
   buf = ActiveWorkbook.Path
-  With New MSForms.DataObject
-    .SetText buf
-    .PutInClipboard
-  End With
+  SetStrToClipBoard(buf)
 End Function '}}}
 
 Function fpath() '{{{
   Dim AWF As String
   AWF = ActiveWorkbook.FullName
-  With New MSForms.DataObject
-    .SetText AWF
-    .PutInClipboard
-  End With
+  SetStrToClipBoard(AWF)
   MsgBox AWF
 End Function '}}}
 
@@ -159,10 +153,7 @@ Public Function SmartOpenBook(filePath) '{{{
   Exit Function
 Myerror:
   MsgBox Err.Description & vbCrLf & "Alternatively filepath was copied to clipboard"
-  With New MSForms.DataObject
-    .SetText filePath
-    .PutInClipboard
-  End With
+  SetStrToClipBoard(filePath)
 End Function '}}}
 
 'PDF copy
