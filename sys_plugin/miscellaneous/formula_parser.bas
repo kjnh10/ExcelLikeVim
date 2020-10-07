@@ -50,6 +50,7 @@ End Sub
 Private Function convert_to_jumpable(arg As String) As String
     arg = Replace(arg, ",", "")
     arg = Replace(arg, " ", "")
+    arg = Replace(arg, """", "")
     convert_to_jumpable = arg
 End Function
 
