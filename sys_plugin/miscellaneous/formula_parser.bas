@@ -48,8 +48,8 @@ Private Sub defaultAction_formula(arg As String)
 End Sub
 
 Private Function convert_to_jumpable(arg As String) As String
+    arg = Trim(arg)
     arg = Replace(arg, ",", "")
-    arg = Replace(arg, " ", "")
     arg = Replace(arg, """", "")
     convert_to_jumpable = arg
 End Function
