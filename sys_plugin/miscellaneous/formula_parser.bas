@@ -14,12 +14,7 @@ public sub format_current_cell()
         UniteInterface.Show
 
         ' msgbox res
-        dim cb as object
-        set cb = new dataobject
-        with cb
-            .settext res
-            .putinclipboard
-        end with
+        SetStrToClipBoard(res)
         ' activecell.formula = format(formula)
     end if
 end sub
@@ -53,8 +48,9 @@ Private Sub defaultAction_formula(arg As String)
 End Sub
 
 Private Function convert_to_jumpable(arg As String) As String
+    arg = Trim(arg)
     arg = Replace(arg, ",", "")
-    arg = Replace(arg, " ", "")
+    arg = Replace(arg, """", "")
     convert_to_jumpable = arg
 End Function
 
@@ -71,12 +67,7 @@ public sub resolve_current_cell()
         unite_source = "formula"
         UniteInterface.Show
         ' msgbox res
-        dim cb as object
-        set cb = new dataobject
-        with cb
-            .settext res
-            .putinclipboard
-        end with
+        SetStrToClipBoard(res)
         ' activecell.formula = format(formula)
     end if
 end sub
@@ -88,11 +79,22 @@ private function format(formula as string)
     dim idx as integer
     dim indent_string as string: indent_string = ""
     dim one_indent_size as long: one_indent_size = 4
+    dim is_in_quotation as boolean: is_in_quotation = False
 
     for idx = 1 to len(formula)
         c = mid(formula, idx, 1)
-        if (c <> " " and c <> VBLF) then
-            if (c = "(") then
+        if (c <> VBLF) then
+            if (c = """" and not is_in_quotation) then
+                is_in_quotation = true
+                res = res & c
+            elseif (c = """" and is_in_quotation) then
+                is_in_quotation = false
+                res = res & c
+            elseif (c = " " and is_in_quotation) then
+                res = res & c
+            elseif (c = " " and not is_in_quotation) then
+
+            elseif (c = "(") then
                 res = res & c
                 level = level + 1
                 indent_string = indent_string & "    "
