@@ -133,3 +133,29 @@ Function defaultAction_project(SelectionMerged As String) 'table is better? '{{{
   Call move_down()
 End Function '}}}
 
+
+'external link
+Function GatherCandidates_extlink() As Collection '{{{
+  Dim ValueCollection As New Collection
+  For Each link in ActiveWorkbook.LinkSources(xlExcelLinks)
+    ValueCollection.Add link
+  Next link
+  Set GatherCandidates_extlink = ValueCollection
+End Function '}}}
+Sub defaultAction_extlink(arg) 'table is better? '{{{
+  For Each file in Split(arg, vbCrLf)
+    change_link(file)
+  Next file
+End Sub '}}}
+
+Sub change_link(filepath)
+  Dim new_file As Variant
+  parent_folder = Left$(filepath, InStrRev(filepath, "\") - 1)
+  ChDir parent_folder
+  new_file = Application.GetOpenFilename(Title:="Change " & filepath & " to: ")
+  If VarType(new_file) <> vbBoolean Then
+    msgbox "changing link " & vbCrLf & "from: " & filepath & vbCrLf & "to: " & new_file
+    ActiveWorkbook.ChangeLink Name:=filepath, NewName:=new_file, Type:= xlExcelLinks
+    msgbox "link change finished"
+  End If
+End Sub
