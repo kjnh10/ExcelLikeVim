@@ -33,12 +33,16 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("G", "G")
   Call nmap("w", "vim_w")
   Call nmap("b", "vim_b")
+  Call nmap("c", "vim_c")
+  Call nmap("x", "v_x")
+  Call nmap("r", "vim_r")
+  Call nmap("R", "vim_R_")
   Call nmap("<c-u>", "scroll_up")
   Call nmap("<c-d>", "scroll_down")
   Call nmap("^", "move_head")
   Call nmap("$", "move_tail")
   Call nmap("i", "insert_mode")
-  Call nmap("a", "insert_mode")
+  Call nmap("a", "append_mode")
   Call nmap("V", "n_v_")
   Call nmap("v", "n_v")
   Call nmap(":", "command_vim")
@@ -60,6 +64,8 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("<ESC>", "n_ESC")
 
   Call vmap("<ESC>", "v_ESC")
+  Call vmap("O", "v_o_cap")   'EC - added
+  Call vmap("o", "v_o")   'EC - added
   Call vmap("j", "v_j")
   Call vmap("k", "v_k")
   Call vmap("h", "v_h")
@@ -77,8 +83,7 @@ Private Sub SetKeyMapping()'{{{
   Call vmap("<END>", "v_move_tail")
   Call vmap(":", "command_vim")
   Call vmap("y", "v_y")
-  Call vmap("d", "v_d")
-  Call vmap("D", "v_D_")
+  Call vmap("d", "v_D_")
   Call vmap("x", "v_x")
   Call lvmap("j", "v_j") 'line visual map
   Call lvmap("k", "v_k")
@@ -144,20 +149,7 @@ Function move_right() '{{{
 End Function '}}}
 
 Sub move_head() '{{{
-  Dim startCell As Range
-  Set startCell = ActiveCell
-
-  Dim dest As Range
-  Set dest = cells(ActiveCell.Row, 1)
-  If dest.value = "" Then
-    Set dest = dest.End(xlToRight)
-  End If
-
-  If dest.Column = Columns.Count Then
-    Set dest = Cells(dest.Row, 1)
-  End If
-
-  dest.Activate
+  ActiveSheet.Cells(ActiveCell.Row, 1).Select
 End Sub '}}}
 
 Sub move_tail() '{{{
@@ -194,6 +186,48 @@ End Sub '}}}
 
 Sub vim_b() '{{{
   ActiveCell.End(xlToLeft).Select
+End Sub '}}}
+
+Sub vim_c()
+  v_x
+  insert_mode
+
+  Application.OnUndo Text:="Undo change", Procedure:="vim_c_undo"
+End Sub
+Sub vim_c_undo()
+  n_p
+End Sub
+
+Sub vim_R_() '{{{
+  Dim obj As Object
+  searchString = InputBox("Type text to find...","Find", "")
+  replaceString = InputBox("Type text to replace...","Replace", "")
+  If searchString = "" or Then
+    Exit Sub
+  End If
+  Set obj = ActiveSheet.cells.replace(what:=searchString, replacement:=replaceString, lookat:=xlPart)
+  If Not obj Is Nothing Then
+    obj.Activate
+  Else
+    MsgBox "not found"
+  End If
+  'Selection.FindNext(After:=ActiveCell).Activate
+End Sub '}}}
+
+Sub vim_r() '{{{
+  Dim obj As Object
+  searchString = InputBox("Type text to find...","Find", "")
+  replaceString = InputBox("Type text to replace...","Replace", "")
+  If searchString = "" or Then
+    Exit Sub
+  End If
+  Set obj = ActiveCell.replace(what:=searchString, replacement:=replaceString, lookat:=xlPart)
+  If Not obj Is Nothing Then
+    obj.Activate
+  Else
+    MsgBox "not found"
+  End If
+  'Selection.FindNext(After:=ActiveCell).Activate
 End Sub '}}}
 
 Function scroll_up() '{{{
@@ -238,7 +272,7 @@ End Function '}}}
 
 Sub find() '{{{
   Dim obj As Object
-  searchString = InputBox("/", "command", "")
+  searchString = InputBox("Type text to find...","Find", "")
   If searchString = "" Then
     Exit Sub
   End If
@@ -386,6 +420,17 @@ Public Sub vertival_visual_mode()'{{{
 
 End Sub'}}}
 
+Function append_mode() '{{{
+  keyupControlKeys
+  releaseShiftKeys
+  keybd_event vbKeyF2, 0, 0, 0
+  keybd_event vbKeyF2, 0, KEYUP, 0
+  keybd_event vbKeyHome, 0, 0, 0
+  keybd_event vbKeyHome, 0, KEYUP, 0
+  ' Application.OnTime Now + TimeValue("00:00:00"), "disableIME"
+  unkeyupControlKeys
+End Function '}}}
+
 Function insert_mode() '{{{
   keyupControlKeys
   releaseShiftKeys
@@ -495,6 +540,39 @@ Public Sub v_G() '{{{
   End With
 
   buf.Activate
+End Sub '}}}
+
+Sub v_o_cap() '{{{
+  Dim selecc As Range
+  Set selecc = Selection
+
+  selecc.Insert Shift:=xlShiftDown
+
+  Call v_ESC()
+
+  insert_mode
+End Sub
+
+Sub v_o() '{{{
+  Dim selecc As Range
+  Set selecc = Selection
+
+  Dim selecc_off As Range
+  Set selecc_off = selecc.Offset(1,0)
+
+  selecc_off.Insert Shift:=xlShiftDown
+
+  Call v_ESC()
+
+  selecc.Offset(1,0).Select
+  insert_mode
+End Sub '}}}
+
+Sub v_d() '{{{
+  Dim selecc As Range
+  Set selecc = Selection
+
+  selecc.Delete Shift:=xlShiftUp
 End Sub '}}}
 
 Sub v_w() '{{{
@@ -648,18 +726,13 @@ Public Sub lv_d(Optional registerName As String = """")'{{{
   Call v_ESC()
 End Sub'}}}'}}}
 
-Public Sub v_d(Optional registerName As String = """")'{{{
+Public Sub v_x(Optional registerName As String = """")'{{{
   Application.ScreenUpdating = False
   Call registerSelection(registerName)
   Selection.ClearContents
   Call v_ESC()
-End Sub'}}}'}}}
 
-Public Sub v_x(Optional registerName As String = """")'{{{
-  Application.ScreenUpdating = False
-  Call registerSelection(registerName)
-  Selection.Clear
-  Call v_ESC()
+  Application.OnUndo Text:="Undo x out", Procedure:="vim_c_undo"
 End Sub'}}}'}}}
 
 Public Sub v_D_(Optional registerName As String = """")'{{{
