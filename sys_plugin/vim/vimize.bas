@@ -242,7 +242,7 @@ End Sub
 
 Sub vim_R_() '{{{
   Dim obj As Object
-  searchString = InputBox("Type text to find...", "Find", "")
+  searchString = InputBox("Type text to find...", "Replace", "")
   replaceString = InputBox("Type text to replace...", "Replace", "")
   If searchString = "" Then
     Exit Sub
