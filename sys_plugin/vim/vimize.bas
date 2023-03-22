@@ -201,13 +201,7 @@ Sub move_head() '{{{
 End Sub '}}}
 
 Sub move_tail() '{{{
-  Dim dest As Range
-  Set dest = cells(ActiveCell.Row, Columns.Count)
-  If dest.value = "" Then
-    Set dest = dest.End(xlToLeft)
-  End If
-
-  dest.Activate
+  ActiveSheet.Cells(ActiveCell.Row, ActiveSheet.UsedRange.Columns.Count).Select
 End Sub '}}}
 
 Public Sub gg() '{{{
@@ -458,7 +452,7 @@ Public Sub vertival_visual_mode()'{{{
 
 End Sub'}}}
 
-Function append_mode() '{{{
+Function insert_mode() '{{{
   keyupControlKeys
   releaseShiftKeys
   keybd_event vbKeyF2, 0, 0, 0
@@ -469,7 +463,7 @@ Function append_mode() '{{{
   unkeyupControlKeys
 End Function '}}}
 
-Function insert_mode() '{{{
+Function append_mode() '{{{
   keyupControlKeys
   releaseShiftKeys
   keybd_event vbKeyF2, 0, 0, 0
