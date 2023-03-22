@@ -200,33 +200,23 @@ End Sub
 
 Sub vim_R_() '{{{
   Dim obj As Object
-  searchString = InputBox("Type text to find...","Find", "")
-  replaceString = InputBox("Type text to replace...","Replace", "")
-  If searchString = "" or Then
+  searchString = InputBox("Type text to find...", "Find", "")
+  replaceString = InputBox("Type text to replace...", "Replace", "")
+  If searchString = "" Then
     Exit Sub
   End If
-  Set obj = ActiveSheet.cells.replace(what:=searchString, replacement:=replaceString, lookat:=xlPart)
-  If Not obj Is Nothing Then
-    obj.Activate
-  Else
-    MsgBox "not found"
-  End If
+  ActiveSheet.UsedRange.Replace what:=searchString, replacement:=replaceString, lookat:=xlPart
   'Selection.FindNext(After:=ActiveCell).Activate
 End Sub '}}}
 
 Sub vim_r() '{{{
   Dim obj As Object
-  searchString = InputBox("Type text to find...","Find", "")
-  replaceString = InputBox("Type text to replace...","Replace", "")
-  If searchString = "" or Then
+  searchString = InputBox("Type text to find...", "Find", "")
+  replaceString = InputBox("Type text to replace...", "Replace", "")
+  If searchString = "" Then
     Exit Sub
   End If
-  Set obj = ActiveCell.replace(what:=searchString, replacement:=replaceString, lookat:=xlPart)
-  If Not obj Is Nothing Then
-    obj.Activate
-  Else
-    MsgBox "not found"
-  End If
+  ActiveCell.Replace what:=searchString, replacement:=replaceString, lookat:=xlPart
   'Selection.FindNext(After:=ActiveCell).Activate
 End Sub '}}}
 
