@@ -68,8 +68,8 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("<ESC>", "n_ESC")
 
   Call vmap("<ESC>", "v_ESC")
-  Call vmap("O", "v_o_cap")   'EC - added
-  Call vmap("o", "v_o")   'EC - added
+  Call vmap("O", "v_o_cap")
+  Call vmap("o", "v_o")
   Call vmap("j", "v_j")
   Call vmap("k", "v_k")
   Call vmap("h", "v_h")
