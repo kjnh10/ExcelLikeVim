@@ -63,7 +63,7 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("dd", "n_dd")
   Call nmap("dc", "n_dc")
   Call nmap("yy", "n_yy")
-  Call nmap("yv", "yank_value")
+  Call nmap("y", "v_y")
   Call nmap("p", "n_p")
   Call nmap("u", "n_u")
   Call nmap("zM", "Collapse_All")
@@ -426,11 +426,6 @@ Public Sub n_yy() '{{{
   Application.ScreenUpdating = False
   Call n_v_()
   Call v_y()
-End Sub '}}}
-
-Public Sub yank_value() '{{{
-  ' ActiveCell.Value
-  MsgBox "Todo ���"
 End Sub '}}}
 
 Sub MoveBack()
