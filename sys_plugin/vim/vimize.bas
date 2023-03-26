@@ -34,6 +34,7 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("K", "move_up_5")
   Call nmap("L", "move_right_5")
   Call nmap("gg", "gg")
+  Call nmap("G", "G")
   Call nmap("B", "MoveBack")
   Call nmap("W", "MoveNext")
   Call nmap("w", "vim_w")
@@ -75,7 +76,6 @@ Private Sub SetKeyMapping()'{{{
   Call vmap("o", "v_o")
   Call vmap("j", "v_j")
   Call vmap("k", "v_k")
-  Call vmap("i", "v_i")
   Call vmap("h", "v_h")
   Call vmap("l", "v_l")
   Call vmap("J", "v_J_")
@@ -580,14 +580,6 @@ Public Sub v_J_()'{{{
   keybd_event vbKeyShift, 0, KEYUP, 0
 End Sub'}}}
 
-Public Sub v_i()
-  insert_mode
-  keybd_event vbKeyControl, 0, 0, 0
-  keybd_event wbKeyEnter, 0, 0, 0
-  keybd_event wbKeyEnter, 0, KEYUP, 0
-  keybd_event vbKeyControl, 0, KEYUP, 0
-End Sub
-
 Public Sub v_k()'{{{
   keybd_event vbKeyShift, 0, 0, 0
   keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
@@ -675,10 +667,10 @@ Public Sub v_G() '{{{
 End Sub '}}}
 
 Sub v_o_cap() '{{{
-  Dim selecc As Range
-  Set selecc = Selection
+  Dim buf As Range
+  Set buf = Selection
 
-  selecc.Insert Shift:=xlShiftDown
+  buf.Insert Shift:=xlShiftDown
 
   Call v_ESC()
 
@@ -686,25 +678,25 @@ Sub v_o_cap() '{{{
 End Sub
 
 Sub v_o() '{{{
-  Dim selecc As Range
-  Set selecc = Selection
+  Dim buf As Range
+  Set buf = Selection
 
-  Dim selecc_off As Range
-  Set selecc_off = selecc.Offset(1,0)
+  Dim buf_off As Range
+  Set buf_off = buf.Offset(1,0)
 
-  selecc_off.Insert Shift:=xlShiftDown
+  buf_off.Insert Shift:=xlShiftDown
 
   Call v_ESC()
 
-  selecc.Offset(1,0).Select
+  buf.Offset(1,0).Select
   insert_mode
 End Sub '}}}
 
 Sub v_d() '{{{
-  Dim selecc As Range
-  Set selecc = Selection
+  Dim buf As Range
+  Set buf = Selection
 
-  selecc.Delete Shift:=xlShiftUp
+  buf.Delete Shift:=xlShiftUp
 End Sub '}}}
 
 Sub v_w() '{{{
