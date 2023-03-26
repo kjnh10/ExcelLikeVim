@@ -34,7 +34,8 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("K", "move_up_5")
   Call nmap("L", "move_right_5")
   Call nmap("gg", "gg")
-  Call nmap("G", "G")
+  Call nmap("B", "MoveBack")
+  Call nmap("W", "MoveNext")
   Call nmap("w", "vim_w")
   Call nmap("b", "vim_b")
   Call nmap("c", "vim_c")
@@ -56,6 +57,8 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("N", "findPrevious")
   Call nmap("o", "insertRowDown")
   Call nmap("O", "insertRowUp")
+  Call nmap("dap", "dap")
+  Call nmap("yap", "yap")
   Call nmap("dd", "n_dd")
   Call nmap("dc", "n_dc")
   Call nmap("yy", "n_yy")
@@ -72,6 +75,7 @@ Private Sub SetKeyMapping()'{{{
   Call vmap("o", "v_o")
   Call vmap("j", "v_j")
   Call vmap("k", "v_k")
+  Call vmap("i", "v_i")
   Call vmap("h", "v_h")
   Call vmap("l", "v_l")
   Call vmap("J", "v_J_")
@@ -203,6 +207,12 @@ End Sub '}}}
 Sub move_tail() '{{{
   ActiveSheet.Cells(ActiveCell.Row, ActiveSheet.UsedRange.Columns.Count).Select
 End Sub '}}}
+
+sub rename()
+  ActiveCell.Name = InputBox("Enter new name:", "Rename", "")
+nputBox()
+
+End sub
 
 Public Sub gg() '{{{
   cells(1, ActiveCell.Column).Select
@@ -349,6 +359,7 @@ Function insertRowDown() '{{{
   keybd_event vbKeyMenu, 0, KEYUP, 0
   unkeyupControlKeys
   period_buff = "o"
+  insert_mode
 End Function '}}}
 
 Function insertRowUp() '{{{
@@ -362,6 +373,7 @@ Function insertRowUp() '{{{
   keybd_event vbKeyMenu, 0, KEYUP, 0
   unkeyupControlKeys
   period_buff = "+o"
+  insert_mode
 End Function '}}}
 
 Function insertColumnRight() '{{{
@@ -420,6 +432,26 @@ Public Sub yank_value() '{{{
   ' ActiveCell.Value
   MsgBox "Todo ���"
 End Sub '}}}
+
+Sub MoveBack()
+On Error Resume Next
+Sheets(ActiveSheet.Index - 1).Activate
+If Err.Number <> 0 Then Sheets(1).Activate
+End Sub
+
+Sub MoveNext()
+On Error Resume Next
+Sheets(ActiveSheet.Index + 1).Activate
+If Err.Number <> 0 Then Sheets(1).Activate
+End Sub
+
+Public Sub yap()
+  ActiveSheet.Copy After:=ActiveWorkbook.ActiveSheet
+End Sub
+
+Public Sub dap()
+  ActiveSheet.Delete
+End Sub
 
 Public Sub n_dd() '{{{
   Call n_yy()
@@ -547,6 +579,14 @@ Public Sub v_J_()'{{{
   keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
   keybd_event vbKeyShift, 0, KEYUP, 0
 End Sub'}}}
+
+Public Sub v_i()
+  insert_mode
+  keybd_event vbKeyControl, 0, 0, 0
+  keybd_event wbKeyEnter, 0, 0, 0
+  keybd_event wbKeyEnter, 0, KEYUP, 0
+  keybd_event vbKeyControl, 0, KEYUP, 0
+End Sub
 
 Public Sub v_k()'{{{
   keybd_event vbKeyShift, 0, 0, 0
