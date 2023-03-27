@@ -29,14 +29,8 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("j", "move_down")
   Call nmap("k", "move_up")
   Call nmap("l", "move_right")
-  Call nmap("H", "move_left_5")
-  Call nmap("J", "move_down_5")
-  Call nmap("K", "move_up_5")
-  Call nmap("L", "move_right_5")
   Call nmap("gg", "gg")
   Call nmap("G", "G")
-  Call nmap("B", "MoveBack")
-  Call nmap("W", "MoveNext")
   Call nmap("w", "vim_w")
   Call nmap("b", "vim_b")
   Call nmap("c", "vim_c")
@@ -72,16 +66,12 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("<ESC>", "n_ESC")
 
   Call vmap("<ESC>", "v_ESC")
-  Call vmap("O", "v_o_cap")
+  Call vmap("O", "v_O_")
   Call vmap("o", "v_o")
   Call vmap("j", "v_j")
   Call vmap("k", "v_k")
   Call vmap("h", "v_h")
   Call vmap("l", "v_l")
-  Call vmap("J", "v_J_")
-  Call vmap("K", "v_K_")
-  Call vmap("H", "v_H_")
-  Call vmap("L", "v_L_")
   Call vmap("gg", "v_gg")
   Call vmap("G", "v_G")
   Call vmap("w", "v_w")
@@ -95,7 +85,8 @@ Private Sub SetKeyMapping()'{{{
   Call vmap("<END>", "v_move_tail")
   Call vmap(":", "command_vim")
   Call vmap("y", "v_y")
-  Call vmap("d", "v_D_")
+  Call vmap("d", "v_d")
+  Call vmap("D", "v_D_")
   Call vmap("x", "v_x")
   Call lvmap("j", "v_j") 'line visual map
   Call lvmap("k", "v_k")
@@ -120,16 +111,6 @@ Function move_up() '{{{
   Err.Number = 0
 End Function '}}}
 
-Function move_up_5() '{{{
-  ' keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
-  ' keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
-  move_up
-  move_up
-  move_up
-  move_up
-  move_up
-End Function '}}}
-
 Function move_down() '{{{
   ' keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
   ' keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
@@ -144,16 +125,6 @@ Function move_down() '{{{
   End With
 End Function '}}}
 
-Function move_down_5() '{{{
-  ' keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
-  ' keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
-  move_down
-  move_down
-  move_down
-  move_down
-  move_down
-End Function '}}}
-
 Function move_left() '{{{
   ' keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
   ' keybd_event vbKeyLeft, 0, EXTENDED_KEY Or KEYUP, 0
@@ -164,16 +135,6 @@ Function move_left() '{{{
   On Error Resume Next
   ActiveCell.Offset(0,-1).Activate
   Err.Number = 0
-End Function '}}}
-
-Function move_left_5() '{{{
-  ' keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
-  ' keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
-  move_left
-  move_left
-  move_left
-  move_left
-  move_left
 End Function '}}}
 
 Function move_right() '{{{
@@ -190,16 +151,6 @@ Function move_right() '{{{
   End With
 End Function '}}}
 
-Function move_right_5() '{{{
-  ' keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
-  ' keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
-  move_right
-  move_right
-  move_right
-  move_right
-  move_right
-End Function '}}}
-
 Sub move_head() '{{{
   ActiveSheet.Cells(ActiveCell.Row, 1).Select
 End Sub '}}}
@@ -207,12 +158,6 @@ End Sub '}}}
 Sub move_tail() '{{{
   ActiveSheet.Cells(ActiveCell.Row, ActiveSheet.UsedRange.Columns.Count).Select
 End Sub '}}}
-
-sub rename()
-  ActiveCell.Name = InputBox("Enter new name:", "Rename", "")
-nputBox()
-
-End sub
 
 Public Sub gg() '{{{
   cells(1, ActiveCell.Column).Select
@@ -428,18 +373,6 @@ Public Sub n_yy() '{{{
   Call v_y()
 End Sub '}}}
 
-Sub MoveBack()
-On Error Resume Next
-Sheets(ActiveSheet.Index - 1).Activate
-If Err.Number <> 0 Then Sheets(1).Activate
-End Sub
-
-Sub MoveNext()
-On Error Resume Next
-Sheets(ActiveSheet.Index + 1).Activate
-If Err.Number <> 0 Then Sheets(1).Activate
-End Sub
-
 Public Sub yap()
   ActiveSheet.Copy After:=ActiveWorkbook.ActiveSheet
 End Sub
@@ -560,38 +493,8 @@ Public Sub v_j()'{{{
   keybd_event vbKeyShift, 0, KEYUP, 0
 End Sub'}}}
 
-Public Sub v_J_()'{{{
-  keybd_event vbKeyShift, 0, 0, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyShift, 0, KEYUP, 0
-End Sub'}}}
-
 Public Sub v_k()'{{{
   keybd_event vbKeyShift, 0, 0, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyShift, 0, KEYUP, 0
-End Sub'}}}
-
-Public Sub v_K_()'{{{
-  keybd_event vbKeyShift, 0, 0, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
   keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
   keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
   keybd_event vbKeyShift, 0, KEYUP, 0
@@ -604,38 +507,8 @@ Public Sub v_h()'{{{
   keybd_event vbKeyShift, 0, KEYUP, 0
 End Sub'}}}
 
-Public Sub v_H_()'{{{
-  keybd_event vbKeyShift, 0, 0, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyLeft, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyShift, 0, KEYUP, 0
-End Sub'}}}
-
 Public Sub v_l()'{{{
   keybd_event vbKeyShift, 0, 0, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyShift, 0, KEYUP, 0
-End Sub'}}}
-
-Public Sub v_L_()'{{{
-  keybd_event vbKeyShift, 0, 0, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or KEYUP, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
-  keybd_event vbKeyRight, 0, EXTENDED_KEY Or KEYUP, 0
   keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
   keybd_event vbKeyRight, 0, EXTENDED_KEY Or KEYUP, 0
   keybd_event vbKeyShift, 0, KEYUP, 0
@@ -661,7 +534,7 @@ Public Sub v_G() '{{{
   buf.Activate
 End Sub '}}}
 
-Sub v_o_cap() '{{{
+Sub v_O_() '{{{
   Dim buf As Range
   Set buf = Selection
 
