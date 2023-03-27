@@ -188,11 +188,6 @@ End Sub '}}}
 Sub vim_c()
   v_x
   insert_mode
-
-  Application.OnUndo Text:="Undo change", Procedure:="vim_c_undo"
-End Sub
-Sub vim_c_undo()
-  n_p
 End Sub
 
 Sub vim_R_() '{{{
@@ -723,8 +718,6 @@ Public Sub v_x(Optional registerName As String = """")'{{{
   Call registerSelection(registerName)
   Selection.ClearContents
   Call v_ESC()
-
-  Application.OnUndo Text:="Undo x out", Procedure:="vim_c_undo"
 End Sub'}}}'}}}
 
 Public Sub v_D_(Optional registerName As String = """")'{{{
