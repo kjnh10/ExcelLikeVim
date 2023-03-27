@@ -660,7 +660,13 @@ Public Sub v_x(Optional registerName As String = """")'{{{
   Call registerSelection(registerName)
   Selection.Clear
   Call v_ESC()
+
+  Application.OnUndo Text:="Undo v_x", Procedure:="v_x_undo"
 End Sub'}}}'}}}
+
+Sub v_x_undo()
+  n_p
+End Sub
 
 Public Sub v_D_(Optional registerName As String = """")'{{{
   Application.ScreenUpdating = False
