@@ -137,9 +137,13 @@ End Function '}}}
 'external link
 Function GatherCandidates_extlink() As Collection '{{{
   Dim ValueCollection As New Collection
-  For Each link in ActiveWorkbook.LinkSources(xlExcelLinks)
-    ValueCollection.Add link
-  Next link
+  Dim links As Variant 
+  links = ActiveWorkbook.LinkSources(xlExcelLinks)
+  If not IsEmpty(links) Then
+    For Each link in links
+      ValueCollection.Add link
+    Next link
+  End If
   Set GatherCandidates_extlink = ValueCollection
 End Function '}}}
 Sub defaultAction_extlink(arg) 'table is better? '{{{
