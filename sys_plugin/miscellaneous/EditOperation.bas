@@ -155,11 +155,11 @@ End Sub '}}}
 
 '--------sheet_move-------------------
 Sub ActivateLeftSheet() '{{{
-  sendkeys "^{PGDN}"
+  sendkeys "^{PGUP}"
 End Sub '}}}
 
 Sub ActivateRightSheet() '{{{
-  sendkeys "^{PGUP}"
+  sendkeys "^{PGDN}"
 End Sub '}}}
 
 Sub ActivateFirstSheet(Optional where As String) '{{{
