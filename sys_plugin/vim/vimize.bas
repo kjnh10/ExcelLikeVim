@@ -29,10 +29,16 @@ Private Sub SetKeyMapping()'{{{
   Call nmap("j", "move_down")
   Call nmap("k", "move_up")
   Call nmap("l", "move_right")
+  Call nmap("H", "move_left_5")
+  Call nmap("J", "move_down_5")
+  Call nmap("K", "move_up_5")
+  Call nmap("L", "move_right_5")
   Call nmap("gg", "gg")
   Call nmap("G", "G")
   Call nmap("w", "vim_w")
   Call nmap("b", "vim_b")
+  Call nmap("W", "next_sheet")
+  Call nmap("B", "prior_sheet")
   Call nmap("<c-u>", "scroll_up")
   Call nmap("<c-d>", "scroll_down")
   Call nmap("^", "move_head")
@@ -103,6 +109,14 @@ Function move_up() '{{{
   Err.Number = 0
 End Function '}}}
 
+Function move_up_5()
+  move_up
+  move_up
+  move_up
+  move_up
+  move_up
+End Function
+
 Function move_down() '{{{
   ' keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
   ' keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
@@ -117,6 +131,14 @@ Function move_down() '{{{
   End With
 End Function '}}}
 
+Function move_down_5()
+  move_down
+  move_down
+  move_down
+  move_down
+  move_down
+End Function
+
 Function move_left() '{{{
   ' keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
   ' keybd_event vbKeyLeft, 0, EXTENDED_KEY Or KEYUP, 0
@@ -128,6 +150,14 @@ Function move_left() '{{{
   ActiveCell.Offset(0,-1).Activate
   Err.Number = 0
 End Function '}}}
+
+Function move_left_5()
+  move_left
+  move_left
+  move_left
+  move_left
+  move_left
+End Function
 
 Function move_right() '{{{
   ' keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
@@ -142,6 +172,14 @@ Function move_right() '{{{
     Err.Number = 0
   End With
 End Function '}}}
+
+Function move_right_5()
+  move_right
+  move_right
+  move_right
+  move_right
+  move_right
+End Function
 
 Sub move_head() '{{{
   Dim startCell As Range
@@ -195,6 +233,22 @@ End Sub '}}}
 Sub vim_b() '{{{
   ActiveCell.End(xlToLeft).Select
 End Sub '}}}
+
+Sub prior_sheet()
+If ActiveSheet.Index > 1 Then
+  Sheets(ActiveSheet.Index - 1).Activate
+Else
+  Sheets(1).Activate
+End If
+End Sub
+
+Sub next_sheet()
+If ActiveSheet.Index < ActiveWorkbook.Sheets.Count Then
+  Sheets(ActiveSheet.Index + 1).Activate
+Else
+  Sheets(ActiveWorkbook.Sheets.Count).Activate
+End If
+End Sub
 
 Function scroll_up() '{{{
   Dim scroll_width As Integer
