@@ -1,30 +1,31 @@
 # Overview
-ExcelLikeVim provides vim-like interface for Excel aiming to provide
-* Vim-like key mapping which has mode notion and is customizable(in ~/vimx/user_configure.bas).
-* Extensible plugin system. By default, some plugins are mimicked and included from popular vim plugin like unite.
+ExcelLikeVim provides a Vim-like interface for Excel, aiming to provide:
+* Vim-like key mapping which has mode notion and is customizable (in ```~/vimx/user_configure.bas```).
+* Extensible plugin system - by default, some plugins are mimicked and included from popular Vim plugins, like Unite.
 
 # Installation
-Go to the [releases page](https://github.com/kjnh10/ExcelLikeVim/releases), download the latest zip file.(Or you can clone this repository)
-Then unzip it and put whole folders anywhere you like and register vimx.xlam as Excel addin.
-Additionaly you may need to 'Trust access to the VBA project object model' from security center. This is because this addin manages their own codes outside of .xlam file as text file.
-Also you may need to set reference to DAO 3.6 library if you are using old excel.
+Go to the [releases page](https://github.com/kjnh10/ExcelLikeVim/releases) and download the latest zip file (or clone this repository).
+Then, unzip it and put the whole folder anywhere you like and register `vimx.xlam` as an Excel add-in (`File > Options > Add-ins`).  
+Additionally, you may need to 'Trust access to the VBA project object model' from the trust centre (`File > Options > Trust Center > Trust Center Settings > Macro Settings`). 
+This is because this add-in manages its own code outside of `.xlam` file as a text file.
+Also, you may need to set a reference to DAO 3.6 library if you are using an old version of Excel.
 
-That's all.
-Now you can use Excel like vim!
+Restart Excel, and that's all.
+Now you can use Excel like Vim!
 
-If you have some issue, please let me know from [submit an issue](https://github.com/kjnh10/ExcelLikeVim/issues).
+If you have have an issue, please let me know by [submitting an issue](https://github.com/kjnh10/ExcelLikeVim/issues).
 
 # Usage
-* In normal-mode 'hjkl' to move around cells and some other operations.
-* To edit values in a cell, enter insert mode by typing 'i' in normal-mode
-* You can execute function with a string in command-mode entered by typing ':'in normal-mode
-* You can select cells in visual mode entered by 'v' in normal-mode
-Please see the section 'Default Key bindings' for more detailed list you can do.
+* In normal-mode, use `hjkl` to move around cells and other operations.
+* To edit values in a cell, enter insert mode by typing `i` in normal-mode.
+* You can execute functions with a string in command-mode, entered by typing `:` in normal-mode
+* You can select cells in visual mode by using `v` in normal-mode.  
+Please see [Default Keybindings](#default-keybindings) for a detailed list of commands available.
 
 # Default Keybindings
-| Mode       | Keystroke | Function name                   |
-| ---------- | :-------  | :------------------------------ |
-| Normal     | `h`       | move_left
+| Mode       | Keystroke   | Function name                   |
+| ---------- | :---------  | :------------------------------ |
+| Normal     | `h`         | move_left
 | Normal     | `j`         | move_down
 | Normal     | `k`         | move_up
 | Normal     | `l`         | move_right
@@ -85,18 +86,16 @@ Please see the section 'Default Key bindings' for more detailed list you can do.
 | LineVisual | `x`         | lv_d
 | Emergency(※) | `F3`     | coreloade.reload
 
-Note that this binding will be lost when some error occurs because this settings are stored as macro variables.
-So press 'F3' to reload the settings. Only this key is directly assigned by Application.onkey so that it won't be lost at that time.
+**Note:** These bindings will be lost when an error occurs because these settings are stored as macro variables.
+To fix this, press `F3` to reload the settings. Only this key is directly assigned by Application.onkey so that it won't be lost.
 
 # Customization 
-## key mapping
-Firstly you need to make *~/vimx/user_configure.bas*
-Then editing *~/vimx/user_configure.bas*, you can customize key-mapping and behaviror of some function through setting option.
-This configure file will be loaded every time a Excel instance launchs.
-## your plugin
-Firstly you need to make directory ~/vimx/plugin/plugin-name/
-If you put on *.bas* *.cls* files under this directory, it will be loaded when you press 'F3' within Excel.
-See ExcelLikeVim/doc/sample_user_config_dir/vimx/plugin for a sample.
+## Key mapping
+Create `~/vimx/user_configure.bas`, which you can edit to customise key-mappings and behaviour of functions by setting options.
+This configuration file will be loaded every time an Excel instance launches.
+## Your plugin
+Create directory `~/vimx/plugin/plugin-name/`. Any `*.bas` or `*.cls` files in this directory will be loaded when you press `F3`.
+See [a sample](./doc/sample_user_confg_dir/vimx/plugin).
 
 ## Example configuration of user_configure.bas
 ```vb
@@ -192,7 +191,6 @@ End Sub
   ```
 
 # Contributing
-Nice that you want to spend some time improving this Addin.
-Solving issues is always appreciated.
+Thank you for spending time improving this add-in. Solving issues is always appreciated.
 If you're going to add a feature, it would be best to [submit an issue](https://github.com/kojinho10/ExcelLikeVim/issues).
 
