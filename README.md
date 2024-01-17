@@ -95,7 +95,7 @@ Create `~/vimx/user_configure.bas`, which you can edit to customise key-mappings
 This configuration file will be loaded every time an Excel instance launches.
 ## Your plugin
 Create directory `~/vimx/plugin/plugin-name/`. Any `*.bas` or `*.cls` files in this directory will be loaded when you press `F3`.
-See [a sample](./doc/sample_user_confg_dir/vimx/plugin).
+See [a sample](./doc/sample_user_config_dir/vimx/plugin/scraping/IE_scrayper.bas).
 
 ## Example configuration of user_configure.bas
 ```vb
