@@ -60,6 +60,7 @@ private sub mykeymap() '{{{
 	Call nmap(",b", "unite book")
 	Call nmap(",p", "unite project")
 	Call nmap(",f", "unite filter")
+	Call nmap(",l", "unite extlink")
 	Call nmap("tl", "ActivateLeftSheet")
 	Call nmap("th", "ActivateRightSheet")
 	Call nmap("tL", "ActivateLastSheet")
